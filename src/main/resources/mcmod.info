@@ -11,6 +11,7 @@
   "credits": "The Forge and FML guys, for making this example",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "requiredMods": ["geckolib3"],
+  "dependencies": ["geckolib3"]
 }
 ]
