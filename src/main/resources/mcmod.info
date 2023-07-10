@@ -1,0 +1,16 @@
+[
+{
+  "modid": "gtfo_craft",
+  "name": "GTFO: Craft Protocol",
+  "description": "The game GTFO but in minecraft!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Itskillerluc"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
