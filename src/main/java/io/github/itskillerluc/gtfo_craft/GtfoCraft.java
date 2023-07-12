@@ -2,9 +2,11 @@ package io.github.itskillerluc.gtfo_craft;
 
 import io.github.itskillerluc.gtfo_craft.client.entity.renderer.RenderStriker;
 import io.github.itskillerluc.gtfo_craft.entity.EntityStriker;
+import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,6 +24,9 @@ public class GtfoCraft
     public static GtfoCraft instance;
 
     private static Logger logger;
+
+    @SidedProxy(clientSide = "io.github.itskillerluc.gtfo_craft.proxy.ClientProxy", serverSide = "io.github.itskillerluc.gtfo_craft.proxy.CommonProxy")
+    public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

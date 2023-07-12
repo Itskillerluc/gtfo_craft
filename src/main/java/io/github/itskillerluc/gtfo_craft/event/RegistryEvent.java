@@ -6,9 +6,12 @@ import io.github.itskillerluc.gtfo_craft.registry.EntityRegistry;
 import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber(modid = GtfoCraft.MODID)
 public class RegistryEvent {
@@ -25,5 +28,10 @@ public class RegistryEvent {
     @SubscribeEvent
     public static void blockRegistry(net.minecraftforge.event.RegistryEvent.Register<Block> registryEvent) {
         BlockRegistry.registerBlocks(registryEvent);
+    }
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public static void onModelRegister(ModelRegistryEvent event) {
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.FOG), 0, "inventory");
     }
 }
