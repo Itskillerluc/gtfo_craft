@@ -1,16 +1,11 @@
 package io.github.itskillerluc.gtfo_craft;
 
-import io.github.itskillerluc.gtfo_craft.client.entity.renderer.RenderStriker;
-import io.github.itskillerluc.gtfo_craft.entity.EntityStriker;
 import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = GtfoCraft.MODID, name = GtfoCraft.NAME, version = GtfoCraft.VERSION)
@@ -38,9 +33,8 @@ public class GtfoCraft
 
     }
 
-    @SideOnly(Side.CLIENT)
     @Mod.EventHandler
     public void registerRenderers(FMLPreInitializationEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityStriker.class, RenderStriker::new);
+        proxy.registerRenderers(event);
     }
 }

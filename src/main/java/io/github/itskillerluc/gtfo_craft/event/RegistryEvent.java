@@ -33,5 +33,6 @@ public class RegistryEvent {
     @SideOnly(Side.CLIENT)
     public static void onModelRegister(ModelRegistryEvent event) {
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.FOG), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.FOG_REPELLER, 0, "inventory");
     }
 }

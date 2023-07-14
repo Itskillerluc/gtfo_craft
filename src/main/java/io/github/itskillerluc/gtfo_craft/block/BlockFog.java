@@ -25,6 +25,10 @@ public class BlockFog extends BlockBreakable {
         setUnlocalizedName("fog");
     }
 
+    public BlockFog(Material materialIn, boolean ignoreSimilarityIn) {
+        super(materialIn, ignoreSimilarityIn);
+    }
+
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
