@@ -1,13 +1,8 @@
 package io.github.itskillerluc.gtfo_craft.proxy;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import io.github.itskillerluc.gtfo_craft.client.entity.renderer.RenderBigStriker;
-import io.github.itskillerluc.gtfo_craft.client.entity.renderer.RenderShooter;
-import io.github.itskillerluc.gtfo_craft.client.entity.renderer.RenderStriker;
-import io.github.itskillerluc.gtfo_craft.entity.EntityBigStriker;
-import io.github.itskillerluc.gtfo_craft.entity.EntityFogRepeller;
-import io.github.itskillerluc.gtfo_craft.entity.EntityShooter;
-import io.github.itskillerluc.gtfo_craft.entity.EntityStriker;
+import io.github.itskillerluc.gtfo_craft.client.entity.renderer.*;
+import io.github.itskillerluc.gtfo_craft.entity.*;
 import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -44,6 +39,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityStriker.class, RenderStriker::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigStriker.class, RenderBigStriker::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShooter.class, RenderShooter::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigShooter.class, RenderBigShooter::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntitySmallCharger.class, RenderSmallCharger::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigCharger.class, RenderBigCharger::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFogRepeller.class, renderManager -> new RenderSnowball<>(renderManager, ItemRegistry.FOG_REPELLER, Minecraft.getMinecraft().getRenderItem()));
     }
 }

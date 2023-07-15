@@ -73,11 +73,9 @@ public class EntityFogRepeller extends EntityArrow {
                     }
                 }
             }
-            BlockPos blockpos = result.getBlockPos();
-
-            this.motionX = (double)((float)(result.hitVec.x - this.posX));
-            this.motionY = (double)((float)(result.hitVec.y - this.posY));
-            this.motionZ = (double)((float)(result.hitVec.z - this.posZ));
+            this.motionX = result.hitVec.x - this.posX;
+            this.motionY = result.hitVec.y - this.posY;
+            this.motionZ = result.hitVec.z - this.posZ;
             float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
             this.posX -= this.motionX / (double)f2 * 0.05000000074505806D;
             this.posY -= this.motionY / (double)f2 * 0.05000000074505806D;
