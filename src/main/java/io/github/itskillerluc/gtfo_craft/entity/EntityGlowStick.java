@@ -12,7 +12,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityGlowStick extends EntityArrow {
-    public static final int STRENGTH = 8;
     public static final int TIME = 400;
 
     public EntityGlowStick(World worldIn) {
@@ -39,12 +38,15 @@ public class EntityGlowStick extends EntityArrow {
     }
     @Override
     protected ItemStack getArrowStack() {
-        return new ItemStack(ItemRegistry.FOG_REPELLER);
+        return new ItemStack(ItemRegistry.GLOW_STICK);
     }
 
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (world.getBlockState(getPosition()).getMaterial().isReplaceable()) {
+            world.setBlockState(getPosition(), BlockRegistry.GLOW_STICK_BLOCK.getDefaultState());
+        }
         if (this.timeInGround >= TIME) {
             this.setDead();
         }
