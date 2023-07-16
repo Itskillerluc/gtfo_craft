@@ -1,20 +1,14 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -25,16 +19,16 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityShooter extends EntityMob implements IAnimatable, IRangedAttackMob {
+public class EntityBigShadow extends EntityMob implements IAnimatable {
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private static final DataParameter<Boolean> ATTACKING =
-            EntityDataManager.createKey(EntityShooter.class, DataSerializers.BOOLEAN);
+            EntityDataManager.createKey(EntityBigShadow.class, DataSerializers.BOOLEAN);
 
-    public EntityShooter(World worldIn) {
+    public EntityBigShadow(World worldIn) {
         super(worldIn);
-        setSize(1.2f, 3.5f);
+        setSize(1.6f, 4f);
     }
 
     @Override
@@ -67,7 +61,7 @@ public class EntityShooter extends EntityMob implements IAnimatable, IRangedAtta
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1, 5, 20));
+        this.tasks.addTask(4, new StrikerAttackGoal(this, 1, true));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -78,8 +72,9 @@ public class EntityShooter extends EntityMob implements IAnimatable, IRangedAtta
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5D);
     }
 
     @Override
@@ -91,12 +86,12 @@ public class EntityShooter extends EntityMob implements IAnimatable, IRangedAtta
         AnimationBuilder builder = new AnimationBuilder();
         boolean cont = false;
         if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.shooter.walk", ILoopType.EDefaultLoopTypes.LOOP);
+            builder.addAnimation("animation.big_shadow.walk", ILoopType.EDefaultLoopTypes.LOOP);
             cont = true;
         }
 
         if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.shooter.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+            builder.addAnimation("animation.big_shadow.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
             cont = true;
         }
         event.getController().setAnimation(builder);
@@ -107,20 +102,47 @@ public class EntityShooter extends EntityMob implements IAnimatable, IRangedAtta
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this);
-        double d0 = target.posX - this.posX;
-        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
-        double d2 = target.posZ - this.posZ;
-        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityPellet.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
-        this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.spawnEntity(entityPellet);
-    }
+    class StrikerAttackGoal extends EntityAIAttackMelee {
+        private EntityBigShadow entity;
+        private int animCounter = 0;
+        private int animTickLength = 20;
 
-    @Override
-    public void setSwingingArms(boolean swingingArms) {
-        dataManager.set(ATTACKING, swingingArms);
+        public StrikerAttackGoal(EntityBigShadow pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
+            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+            entity = pMob;
+        }
+
+        @Override
+        protected void checkAndPerformAttack(EntityLivingBase pEnemy, double pDistToEnemySqr) {
+            if (pDistToEnemySqr <= this.getAttackReachSqr(pEnemy) && this.attackTick <= 0) {
+                if(entity != null) {
+                    entity.dataManager.set(ATTACKING, true);
+                    animCounter = 0;
+                }
+            }
+
+            super.checkAndPerformAttack(pEnemy, pDistToEnemySqr);
+        }
+
+        @Override
+        public void updateTask() {
+            super.updateTask();
+            if(entity.isAttacking()) {
+                animCounter++;
+
+                if(animCounter >= animTickLength) {
+                    animCounter = 0;
+                    entity.dataManager.set(ATTACKING, false);
+                }
+            }
+        }
+
+
+        @Override
+        public void resetTask() {
+            animCounter = 0;
+            entity.dataManager.set(ATTACKING, false);
+            super.resetTask();
+        }
     }
 }
