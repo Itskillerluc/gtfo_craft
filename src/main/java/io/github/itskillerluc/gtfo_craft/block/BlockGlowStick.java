@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class BlockGlowStick extends BlockBreakable implements ITileEntityProvider {
     public BlockGlowStick() {
-        super(BlockRegistry.FOG_MATERIAL, false);
+        super(Material.AIR, false);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
         setRegistryName(new ResourceLocation(GtfoCraft.MODID, "glow_stick"));
         setUnlocalizedName("glow_stick");

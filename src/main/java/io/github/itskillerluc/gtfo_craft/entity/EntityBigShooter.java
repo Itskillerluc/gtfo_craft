@@ -108,7 +108,7 @@ public class EntityBigShooter extends EntityMob implements IAnimatable, IRangedA
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this);
+        EntityPellet entityPellet = new EntityPellet(world, this, 2);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;

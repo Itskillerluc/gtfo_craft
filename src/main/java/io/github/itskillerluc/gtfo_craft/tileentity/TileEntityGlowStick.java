@@ -9,10 +9,30 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityGlowStick extends TileEntity implements ITickable {
+    public static final int TOTAL_TIME = 400;
+
+    public int time;
+
     @Override
     public void update() {
-        if (world.getEntitiesWithinAABB(EntityGlowStick.class, new AxisAlignedBB(getPos())).isEmpty()) {
-            world.setBlockState(getPos(), Blocks.AIR.getDefaultState());
+        time++;
+        if (time >= TOTAL_TIME) {
+            if (!world.isRemote) {
+                world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            }
         }
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("time", time);
+        return compound;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        this.time = compound.getInteger("time");
     }
 }

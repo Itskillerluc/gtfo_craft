@@ -34,7 +34,18 @@ public class EntityGlowStick extends EntityArrow {
 
     @Override
     protected void onHit(RayTraceResult result) {
-
+        world.setBlockState(getPosition(), BlockRegistry.GLOW_STICK_BLOCK.getDefaultState());
+        this.motionX = result.hitVec.x - this.posX;
+        this.motionY = result.hitVec.y - this.posY;
+        this.motionZ = result.hitVec.z - this.posZ;
+        float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+        this.posX -= this.motionX / (double)f2 * 0.05000000074505806D;
+        this.posY -= this.motionY / (double)f2 * 0.05000000074505806D;
+        this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
+        this.inGround = true;
+        this.arrowShake = 7;
+        this.setIsCritical(false);
+        pickupStatus = PickupStatus.DISALLOWED;
     }
     @Override
     protected ItemStack getArrowStack() {
@@ -44,9 +55,7 @@ public class EntityGlowStick extends EntityArrow {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (world.getBlockState(getPosition()).getMaterial().isReplaceable()) {
-            world.setBlockState(getPosition(), BlockRegistry.GLOW_STICK_BLOCK.getDefaultState());
-        }
+
         if (this.timeInGround >= TIME) {
             this.setDead();
         }

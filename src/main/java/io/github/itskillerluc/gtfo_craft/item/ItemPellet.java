@@ -32,7 +32,7 @@ public class ItemPellet extends Item {
 
         if (!worldIn.isRemote)
         {
-            EntityPellet pellet = new EntityPellet(worldIn, playerIn);
+            EntityPellet pellet = new EntityPellet(worldIn, playerIn, 1);
             pellet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 3F, 1.0F);
             worldIn.spawnEntity(pellet);
         }
