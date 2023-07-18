@@ -2,6 +2,7 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTurret;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -65,7 +66,7 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
+        return new TileEntityTurret(8, 40, 10, this.blockState.getBaseState().getValue(FACING));
     }
 
     @SideOnly(Side.CLIENT)
