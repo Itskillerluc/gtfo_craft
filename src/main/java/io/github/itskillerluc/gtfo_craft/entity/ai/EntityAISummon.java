@@ -1,4 +1,4 @@
-package io.github.itskillerluc.gtfo_craft.entity;
+package io.github.itskillerluc.gtfo_craft.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

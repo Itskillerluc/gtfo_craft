@@ -67,6 +67,7 @@ public class EntityMother extends EntityMob implements IAnimatable {
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
+        this.tasks.addTask(6, new EntityAIAvoidEntity<>(this, EntityPlayer.class, entity -> getAttackTarget() != null && getAttackTarget().isEntityEqual(entity), 17, 1.3, 1.5));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -108,11 +109,11 @@ public class EntityMother extends EntityMob implements IAnimatable {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!world.isRemote) {
+        if (!world.isRemote && getAttackTarget() != null) {
             time++;
             if (time >= SUMMON_TIME) {
                 for (int i = 0; i <= SUMMON_COUNT; i++) {
-                    EntityZombie entity = new EntityZombie(world);
+                    EntityBaby entity = new EntityBaby(world);
                     entity.setPosition(this.posX, this.posY, this.posZ);
                     world.spawnEntity(entity);
                 }

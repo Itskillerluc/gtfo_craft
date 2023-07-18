@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "gtfo_craft:turret_slow", "y": 180 },
+    "facing=east": { "model": "gtfo_craft:turret_slow", "y": 270 },
+    "facing=south": { "model": "gtfo_craft:turret_slow" },
+    "facing=west": { "model": "gtfo_craft:turret_slow", "y": 90 }
+  }
+}

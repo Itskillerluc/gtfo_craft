@@ -47,6 +47,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntitySmallShadow.class, RenderSmallShadow::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBaby.class, RenderBaby::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityMother.class, RenderMother::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigMother.class, RenderBigMother::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityTank.class, RenderTank::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityImmortal.class, RenderImmortal::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityPellet.class, renderManager -> new RenderSnowball<>(renderManager, ItemRegistry.PELLET, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityFogRepeller.class, renderManager -> new RenderSnowball<>(renderManager, ItemRegistry.FOG_REPELLER, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGlowStick.class, renderManager -> new RenderSnowball<>(renderManager, ItemRegistry.GLOW_STICK, Minecraft.getMinecraft().getRenderItem()));

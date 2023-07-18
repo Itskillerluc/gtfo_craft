@@ -18,6 +18,7 @@ public class ItemRegistry {
 
     public static void registerItems(RegistryEvent.Register<Item> registryEvent) {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG).setRegistryName(BlockRegistry.FOG.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TURRET_SLOW).setRegistryName(BlockRegistry.TURRET_SLOW.getRegistryName()));
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);
         registryEvent.getRegistry().register(AMMO);

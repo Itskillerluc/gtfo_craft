@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -66,7 +67,7 @@ public class EntityBigShooter extends EntityMob implements IAnimatable, IRangedA
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 1, 5, 20));
+        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 40, 20, 3));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -108,7 +109,7 @@ public class EntityBigShooter extends EntityMob implements IAnimatable, IRangedA
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 2);
+        EntityPellet entityPellet = new EntityPellet(world, this, 5);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;
