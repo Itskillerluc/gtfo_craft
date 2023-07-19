@@ -19,7 +19,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityBigCharger extends EntityMob implements IAnimatable {
+public class EntityBigCharger extends ModEntity implements IAnimatable {
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -57,6 +57,7 @@ public class EntityBigCharger extends EntityMob implements IAnimatable {
 
     @Override
     protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

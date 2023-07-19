@@ -25,7 +25,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityHybrid extends EntityMob implements IAnimatable, IRangedAttackMob {
+public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttackMob {
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -63,6 +63,7 @@ public class EntityHybrid extends EntityMob implements IAnimatable, IRangedAttac
 
     @Override
     protected void initEntityAI() {
+        super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

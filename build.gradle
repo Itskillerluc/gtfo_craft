@@ -1,15 +1,18 @@
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = "https://repo.spongepowered.org/maven" }
         mavenCentral()
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
-        
 apply plugin: 'net.minecraftforge.gradle'
+
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
@@ -26,6 +29,11 @@ repositories {
     }
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   Snapshot are built nightly.
@@ -38,6 +46,7 @@ minecraft {
     
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
+    String resolved_core_config = mod_mixin_configs.replace('${mod_id}', mod_id)
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
     runs {
@@ -49,6 +58,8 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            arg '-torg.spongepowered.asm.launch.MixinTweaker'
+
         }
 
         server {
@@ -58,8 +69,15 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            arg '-torg.spongepowered.asm.launch.MixinTweaker'
+
         }
     }
+}
+
+mixin {
+    add sourceSets.main, mod_mixin_refmap.replace('${mod_id}', mod_id)
+    config mod_mixin_configs.replace('${mod_id}', mod_id)
 }
 
 dependencies {
@@ -73,6 +91,12 @@ dependencies {
     // compile "some.group:artifact:version"
 
     implementation "software.bernie.geckolib:geckolib-forge-1.12.2:3.0.31"
+
+    embed('org.spongepowered:mixin:0.8.3-SNAPSHOT') {
+        exclude module: 'guava'
+        exclude module: 'commons-io'
+        exclude module: 'gson'
+    }
 
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
@@ -92,14 +116,21 @@ dependencies {
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
+    from {
+        configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+    } {
+        exclude "LICENSE.txt", "META-INF/MANIFSET.MF", "META-INF/maven/**", "META-INF/*.RSA", "META-INF/*.SF"
+    }
     manifest {
         attributes([
             "Specification-Title": "gtfo_craft",
             "Specification-Vendor": "itskillerluc",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
+            "MixinConfigs": mod_mixin_configs.replace('${mod_id}', mod_id),
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"itskillerluc",
+            "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
@@ -118,6 +149,11 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = "https://repo.spongepowered.org/maven" }
 }
 
 // Example configuration to allow publishing using the maven-publish task

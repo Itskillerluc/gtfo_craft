@@ -1,9 +1,10 @@
 package io.github.itskillerluc.gtfo_craft.tileentity;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -12,15 +13,20 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
+import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
 
 public class TileEntityTurret extends TileEntity implements ITickable {
-    public final int damage;
-    public final int speed;
-    public final int range;
-    private final EnumFacing direction;
+    public int damage = 0;
+    public int speed = 0;
+    public int range = 0;
+    private EnumFacing direction = EnumFacing.NORTH;
+    public static final int CAPACITY = 512;
+    public int ammo = 0;
     private int timer = 0;
+
+    public TileEntityTurret(){}
 
     public TileEntityTurret(int damage, int speed, int range, EnumFacing direction) {
         this.damage = damage;
@@ -31,7 +37,7 @@ public class TileEntityTurret extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        if (timer >= speed) {
+        if (ammo >= 1 && timer >= speed) {
             int scalar = 0;
             for (int i = 1; i <= range; i++) {
                 if (world.isAirBlock(getPos().offset(direction, i))) {
@@ -46,17 +52,23 @@ public class TileEntityTurret extends TileEntity implements ITickable {
 
             target.ifPresent(entityLiving -> {
                 entityLiving.attackEntityFrom(DamageSource.GENERIC, damage);
-                world.playSound(((double) pos.getX()), ((double) pos.getY()), ((double) pos.getZ()), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.BLOCKS, 1, 1, false);
+                world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.BLOCKS, 1, 1, false);
                 timer = 0;
+                ammo--;
             });
         }
         timer++;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT( NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("timer", this.timer);
+        compound.setInteger("ammo", this.ammo);
+        compound.setInteger("damage", this.damage);
+        compound.setInteger("speed", this.speed);
+        compound.setInteger("range", this.range);
+        compound.setString("direction", this.direction.getName2());
         return compound;
     }
 
@@ -64,5 +76,40 @@ public class TileEntityTurret extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.timer = compound.getInteger("timer");
+        this.ammo = compound.getInteger("ammo");
+        this.damage = compound.getInteger("damage");
+        this.speed = compound.getInteger("speed");
+        this.range = compound.getInteger("range");
+        this.direction = EnumFacing.byName(compound.getString("direction"));
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = super.getUpdateTag();
+        tag.setInteger("timer", this.timer);
+        tag.setInteger("ammo", this.ammo);
+        tag.setInteger("damage", this.damage);
+        tag.setInteger("speed", this.speed);
+        tag.setInteger("range", this.range);
+        tag.setString("direction", this.direction.getName2());
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(NBTTagCompound tag) {
+        super.handleUpdateTag(tag);
+        this.timer = tag.getInteger("timer");
+        this.ammo = tag.getInteger("ammo");
+        this.damage = tag.getInteger("damage");
+        this.speed = tag.getInteger("speed");
+        this.range = tag.getInteger("range");
+        this.direction = EnumFacing.byName(tag.getString("direction"));
+    }
+
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, -1, getUpdateTag());
     }
 }

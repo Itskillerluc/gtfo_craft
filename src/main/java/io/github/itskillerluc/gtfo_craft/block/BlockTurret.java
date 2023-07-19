@@ -2,6 +2,7 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
+import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTurret;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -13,12 +14,18 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentBase;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,14 +40,18 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     protected static final AxisAlignedBB EAST = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
     protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
     protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
+    private final int damage, speed, range;
 
-    public BlockTurret(Material blockMaterialIn, MapColor blockMapColorIn) {
+    public BlockTurret(Material blockMaterialIn, MapColor blockMapColorIn, String name, int damage, int speed, int range) {
         super(blockMaterialIn, blockMapColorIn);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
         this.setLightOpacity(0);
-        setRegistryName(new ResourceLocation(GtfoCraft.MODID, "turret_slow"));
-        setUnlocalizedName("turret_slow");
+        setRegistryName(new ResourceLocation(GtfoCraft.MODID, name));
+        setUnlocalizedName(name);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
+        this.damage = damage;
+        this.speed = speed;
+        this.range = range;
     }
     public boolean isFullCube(IBlockState state)
     {
@@ -66,7 +77,7 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityTurret(8, 40, 10, this.blockState.getBaseState().getValue(FACING));
+        return new TileEntityTurret(damage, speed, range, getStateFromMeta(meta).getValue(FACING));
     }
 
     @SideOnly(Side.CLIENT)
@@ -83,13 +94,13 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
+        i = i | state.getValue(FACING).getHorizontalIndex();
         return i;
     }
 
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
-        return state.getBlock() != this ? state : state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+        return state.getBlock() != this ? state : state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     protected BlockStateContainer createBlockState()
@@ -99,7 +110,7 @@ public class BlockTurret extends Block implements ITileEntityProvider {
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumFacing enumfacing = (EnumFacing)state.getValue(FACING);
+        EnumFacing enumfacing = state.getValue(FACING);
         switch (enumfacing) {
             case SOUTH:
                 return SOUTH;
@@ -112,4 +123,23 @@ public class BlockTurret extends Block implements ITileEntityProvider {
         }
     }
 
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (worldIn.getTileEntity(pos) instanceof TileEntityTurret) {
+            TileEntityTurret turret = ((TileEntityTurret) worldIn.getTileEntity(pos));
+            if (playerIn.getHeldItem(hand).getItem().equals(ItemRegistry.AMMO)) {
+                int fit = playerIn.getHeldItem(hand).getCount() - Math.max(0, turret.ammo + playerIn.getHeldItem(hand).getCount() - TileEntityTurret.CAPACITY);
+                turret.ammo += fit;
+                playerIn.getHeldItem(hand).shrink(fit);
+                if (worldIn.isRemote) {
+                    playerIn.sendStatusMessage(new TextComponentString(turret.ammo + "/" + TileEntityTurret.CAPACITY).setStyle(new Style().setColor(TextFormatting.GOLD)), true);
+                }
+                return fit != 0;
+            } else if (worldIn.isRemote) {
+                playerIn.sendStatusMessage(new TextComponentString(turret.ammo + "/" + TileEntityTurret.CAPACITY).setStyle(new Style().setColor(TextFormatting.GOLD)), true);
+            }
+
+        }
+        return false;
+    }
 }

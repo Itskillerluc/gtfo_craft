@@ -39,11 +39,6 @@ public class BlockFog extends BlockBreakable {
         return false;
     }
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
     public int quantityDropped(Random random)
     {
         return 0;
