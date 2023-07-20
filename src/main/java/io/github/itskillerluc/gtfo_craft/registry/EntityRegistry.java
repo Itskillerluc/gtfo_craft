@@ -25,6 +25,8 @@ public class EntityRegistry {
         registryEvent.getRegistry().register(getEntityEntry(id++, "Big Mother", "big_mother", EntityBigMother.class, 0x931303, 0x0a9302, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Tank", "tank", EntityTank.class, 0xfa987d, 0x149afe, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Immortal", "immortal", EntityImmortal.class, 0xaaa000, 0xa08939a, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "Flyer", "flyer", EntityFlyer.class, 0x000333, 0x3024a0, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "Big Flyer", "big_flyer", EntityBigFlyer.class, 0xab038d, 0x298000, 160, 2, false));
         registryEvent.getRegistry().register(EntityEntryBuilder.create().name("Fog Repeller").id(new ResourceLocation(GtfoCraft.MODID, "fog_repeller"), id++).entity(EntityFogRepeller.class).tracker(160, 2, true).build());
         registryEvent.getRegistry().register(EntityEntryBuilder.create().name("Pellet").id(new ResourceLocation(GtfoCraft.MODID, "pellet"), id++).entity(EntityPellet.class).tracker(160, 2, true).build());
         registryEvent.getRegistry().register(EntityEntryBuilder.create().name("Glow Stick").id(new ResourceLocation(GtfoCraft.MODID, "glow_stick"), id++).entity(EntityGlowStick.class).tracker(160, 2, true).build());

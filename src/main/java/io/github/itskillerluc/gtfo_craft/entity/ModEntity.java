@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 public abstract class ModEntity extends EntityMob {
     public ModEntity(World worldIn) {
         super(worldIn);
-        ((PathNavigateGround) this.navigator).setBreakDoors(true);
     }
 
     @Override

@@ -3,7 +3,6 @@ package io.github.itskillerluc.gtfo_craft.entity.ai;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.MathHelper;
 
@@ -19,16 +18,18 @@ public class EntityAIRangedBurst extends EntityAIBase {
     private final float attackRadius;
     private final float maxAttackDistance;
     private final int burst;
+    private final int fullAttackDuration;
     private boolean shouldAttackNextTick = false;
     private int bursted = 0;
 
-    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn, int burst)
+    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
     {
-        this(attacker, movespeed, maxAttackTime, maxAttackTime, maxAttackDistanceIn, burst);
+        this(attacker, movespeed, maxAttackTime, maxAttackTime, maxAttackDistanceIn, burst, fullAttackDuration);
     }
 
-    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn, int burst)
+    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
     {
+        this.fullAttackDuration = fullAttackDuration;
         this.rangedAttackTime = -1;
         this.burst = burst -1;
 
