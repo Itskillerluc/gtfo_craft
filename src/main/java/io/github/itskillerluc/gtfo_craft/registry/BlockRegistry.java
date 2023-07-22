@@ -17,6 +17,7 @@ public class BlockRegistry {
     public static final Block TURRET_FAST = new BlockTurret(Material.IRON, MapColor.IRON, "turret_fast", 2, 10, 10).setBlockUnbreakable();
     public static final BlockBreakableDoor BREAKABLE_DOOR = new BlockBreakableDoor(Material.WOOD);
     public static final BlockGlowStick GLOW_STICK_BLOCK = new BlockGlowStick();
+    public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
 
     public static void registerBlocks(RegistryEvent.Register<Block> registryEvent) {
         registryEvent.getRegistry().register(FOG);
@@ -26,5 +27,6 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(TURRET_MEDIUM);
         registryEvent.getRegistry().register(TURRET_FAST);
         registryEvent.getRegistry().register(BREAKABLE_DOOR);
+        registryEvent.getRegistry().register(GENERATOR);
     }
 }
