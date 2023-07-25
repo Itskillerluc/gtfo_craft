@@ -24,6 +24,7 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TURRET_SLOW).setRegistryName(BlockRegistry.TURRET_SLOW.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TURRET_MEDIUM).setRegistryName(BlockRegistry.TURRET_MEDIUM.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TURRET_FAST).setRegistryName(BlockRegistry.TURRET_FAST.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BATTERY).setRegistryName(BlockRegistry.BATTERY.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.GENERATOR).setRegistryName(BlockRegistry.GENERATOR.getRegistryName()));
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);

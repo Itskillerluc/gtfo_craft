@@ -18,6 +18,10 @@ public class CommonProxy {
         throw new IllegalStateException("This should only be called from client side");
     }
 
+    public void addScheduledTaskServer(Runnable run) {
+        run.run();
+    }
+
     public EntityPlayer getClientPlayer() {
         throw new IllegalStateException("This should only be called from client side");
     }

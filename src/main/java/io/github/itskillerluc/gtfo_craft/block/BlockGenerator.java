@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockGenerator extends BlockHorizontal implements ITileEntityProvider {
+public class BlockGenerator extends BlockHorizontal {
     public static final PropertyBool POWERED = PropertyBool.create("powered");
 
     public BlockGenerator(Material materialIn) {
@@ -107,11 +107,5 @@ public class BlockGenerator extends BlockHorizontal implements ITileEntityProvid
     public IBlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3)).withProperty(POWERED, (meta & 0b100) == 0b100 );
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return null;
     }
 }

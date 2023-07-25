@@ -2,7 +2,7 @@
   "compatibilityLevel": "JAVA_8",
   "package": "io.github.itskillerluc.gtfo_craft.mixin",
   "refmap": "refmap.gtfo_craft.json",
-  "mixins": ["MixinDoorBreakAI"],
+  "mixins": ["SprintMixin"],
   "client": [],
   "server": []
 }

@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft;
 
+import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -26,6 +27,7 @@ public class GtfoCraft
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         event.getModMetadata().version = VERSION;
+        PacketHandler.init();
     }
 
     @EventHandler
