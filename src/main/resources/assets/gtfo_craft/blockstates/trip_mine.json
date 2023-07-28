@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": { "model": "gtfo_craft:trip_mine", "y": 0, "x": 90 },
+    "facing=east": { "model": "gtfo_craft:trip_mine", "y": 90, "x": 90 },
+    "facing=south": { "model": "gtfo_craft:trip_mine", "x": 90, "y": 180 },
+    "facing=west": { "model": "gtfo_craft:trip_mine", "y": 270, "x": 90 },
+    "facing=up": { "model": "gtfo_craft:trip_mine"},
+    "facing=down": { "model": "gtfo_craft:trip_mine", "x": 180}
+  }
+}

@@ -19,6 +19,7 @@ public class BlockRegistry {
     public static final BlockGlowStick GLOW_STICK_BLOCK = new BlockGlowStick();
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
     public static final BlockBattery BATTERY = new BlockBattery();
+    public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
 
     public static void registerBlocks(RegistryEvent.Register<Block> registryEvent) {
         registryEvent.getRegistry().register(FOG);
@@ -30,5 +31,6 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(BREAKABLE_DOOR);
         registryEvent.getRegistry().register(GENERATOR);
         registryEvent.getRegistry().register(BATTERY);
+        registryEvent.getRegistry().register(TRIP_MINE);
     }
 }

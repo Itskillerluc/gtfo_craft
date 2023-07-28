@@ -1,11 +1,14 @@
 package io.github.itskillerluc.gtfo_craft.registry;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
+import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityFog;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityGlowStick;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTripMine;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTurret;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileEntityRegistry {
@@ -13,6 +16,9 @@ public class TileEntityRegistry {
         registerTile(TileEntityFog.class, "tile_fog");
         registerTile(TileEntityGlowStick.class, "glow_stick");
         registerTile(TileEntityTurret.class, "turret");
+        registerTile(TileEntityTripMine.class, "trip_mine");
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripMine.class, new RenderTripMine());
     }
 
     private static void registerTile(Class<? extends TileEntity> clazz, String key) {

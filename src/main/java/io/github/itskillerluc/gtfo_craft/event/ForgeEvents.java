@@ -48,7 +48,7 @@ public class ForgeEvents {
                     event.getWorld().setBlockState(event.getPos().offset(event.getFace()), BlockRegistry.BATTERY.getDefaultState());
                     event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
                 }
-            } else if (!event.getWorld().getBlockState(event.getPos()).getBlock().onBlockActivated(event.getWorld(), event.getPos(), event.getWorld().getBlockState(event.getPos()), event.getEntityPlayer(), event.getHand(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z)) {
+            } else {
                 event.setCanceled(true);
             }
         }
@@ -56,6 +56,13 @@ public class ForgeEvents {
 
     @SubscribeEvent
     public static void rightClickItem(PlayerInteractEvent.RightClickItem event) {
+        if (event.getEntityPlayer().getEntityData().getBoolean("hasBattery")) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void breakBlock(PlayerInteractEvent.LeftClickBlock event) {
         if (event.getEntityPlayer().getEntityData().getBoolean("hasBattery")) {
             event.setCanceled(true);
         }
