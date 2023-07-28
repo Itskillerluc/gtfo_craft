@@ -22,18 +22,19 @@ public class RenderTripMine extends TileEntitySpecialRenderer<TileEntityTripMine
     @Override
     public void render(TileEntityTripMine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
-        createLine(new Vec3d(x, y, z), 0.2f, new Vector4f(1, 1, 1, 1f), new Vector4f(240, 240, 240, 240), partialTicks, te);
+        createLine(new Vec3d(x, y, z), 0.1f, new Vector4f(1, .5f, .5f, 5f), new Vector4f(255, 255, 255, 255), partialTicks, te);
     }
 
     private void createLine(Vec3d c1, float width, Vector4f color, Vector4f brightness, float partialTick, TileEntityTripMine te) {
         Tessellator tessellator = Tessellator.getInstance();
+
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
         GlStateManager.enableDepth();
         GlStateManager.depthMask(false);
         GlStateManager.pushMatrix();
-        this.bindTexture(new ResourceLocation(GtfoCraft.MODID, "/other/laser.png"));
+        this.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/laser.png"));
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP p = mc.player;
@@ -52,7 +53,6 @@ public class RenderTripMine extends TileEntitySpecialRenderer<TileEntityTripMine
         Vec3d SE = end.subtract(start);
 
         Vec3d crossBeam = PS.crossProduct(SE).normalize();
-
         Vec3d p1 = start.add(crossBeam.scale(width * .5d));
         Vec3d p2 = start.subtract(crossBeam.scale(width * .5d));
         Vec3d p3 = end.add(crossBeam.scale(width * .5d));
@@ -61,10 +61,11 @@ public class RenderTripMine extends TileEntitySpecialRenderer<TileEntityTripMine
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         int b1 = 240 >> 16 & 65535;
         int b2 = 240 & 65535;
-        bufferBuilder.pos(p1.x, p1.y, p1.z).color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2).tex(0.0D, 0.0D).endVertex();
-        bufferBuilder.pos(p3.x, p3.y, p3.z).color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2).tex(1.0D, 0.0D).endVertex();
-        bufferBuilder.pos(p4.x, p4.y, p4.z).color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2).tex(1.0D, 1.0D).endVertex();
-        bufferBuilder.pos(p2.x, p2.y, p2.z).color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2).tex(0.0D, 1.0D).endVertex();
+        //.color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2)
+        bufferBuilder.pos(p1.x, p1.y, p1.z).tex(0.0D, 0.0D).lightmap(b1, b2).color(color.x, color.y, color.z, color.w * 0.5f).endVertex();
+        bufferBuilder.pos(p3.x, p3.y, p3.z).tex(1.0D, 0.0D).lightmap(b1, b2).color(color.x, color.y, color.z, color.w * 0.5f).endVertex();
+        bufferBuilder.pos(p4.x, p4.y, p4.z).tex(1.0D, 1.0D).lightmap(b1, b2).color(color.x, color.y, color.z, color.w * 0.5f).endVertex();
+        bufferBuilder.pos(p2.x, p2.y, p2.z).tex(0.0D, 1.0D).lightmap(b1, b2).color(color.x, color.y, color.z, color.w * 0.5f).endVertex();
         tessellator.draw();
 
         GlStateManager.popMatrix();

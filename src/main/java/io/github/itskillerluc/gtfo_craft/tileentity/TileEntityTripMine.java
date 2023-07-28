@@ -33,7 +33,7 @@ public class TileEntityTripMine extends TileEntity implements ITickable {
         if (world.getWorldTime() % 5 == 0) {
             laserLength = checkForObstruction();
         }
-        Vec3d scale = new Vec3d(this.direction.getDirectionVec()).scale(this.laserLength);
+        Vec3d scale = new Vec3d(this.direction.getDirectionVec()).scale(this.laserLength - 1);
         Optional<EntityLivingBase> target = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).expand(scale.x, scale.y, scale.z))
                 .stream().min(Comparator.comparingInt(entity -> (int) entity.getDistanceSq(pos)));
 
@@ -96,5 +96,16 @@ public class TileEntityTripMine extends TileEntity implements ITickable {
 
     public void setLaserLength(int laserLength) {
         this.laserLength = laserLength;
+    }
+
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == 1;
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        Vec3d scale = new Vec3d(this.direction.getDirectionVec()).scale(this.laserLength);
+        return new AxisAlignedBB(this.pos).expand(scale.x * 2 + 5, scale.y * 2 + 5, scale.z * 2 + 5);
     }
 }

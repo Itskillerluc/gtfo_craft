@@ -17,8 +17,6 @@ public class TileEntityRegistry {
         registerTile(TileEntityGlowStick.class, "glow_stick");
         registerTile(TileEntityTurret.class, "turret");
         registerTile(TileEntityTripMine.class, "trip_mine");
-
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripMine.class, new RenderTripMine());
     }
 
     private static void registerTile(Class<? extends TileEntity> clazz, String key) {
