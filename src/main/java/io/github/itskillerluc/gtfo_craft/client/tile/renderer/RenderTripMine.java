@@ -22,7 +22,7 @@ public class RenderTripMine extends TileEntitySpecialRenderer<TileEntityTripMine
     @Override
     public void render(TileEntityTripMine te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         super.render(te, x, y, z, partialTicks, destroyStage, alpha);
-        createLine(new Vec3d(x, y, z), 0.1f, new Vector4f(1, .5f, .5f, 5f), new Vector4f(255, 255, 255, 255), partialTicks, te);
+        createLine(new Vec3d(x, y, z), 0.1f, new Vector4f(1, .3f, .3f, 5f), new Vector4f(255, 255, 255, 255), partialTicks, te);
     }
 
     private void createLine(Vec3d c1, float width, Vector4f color, Vector4f brightness, float partialTick, TileEntityTripMine te) {
