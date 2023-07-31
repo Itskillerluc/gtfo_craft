@@ -1,9 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.item;
 
 import io.github.itskillerluc.gtfo_craft.entity.EntitySpitter;
-import net.minecraft.entity.EntityHanging;
-import net.minecraft.entity.item.EntityItemFrame;
-import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -11,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -23,11 +19,11 @@ public class ItemSpitterSpawn extends Item {
         ItemStack itemstack = player.getHeldItem(hand);
         BlockPos blockpos = pos.offset(facing);
 
-        if (facing != EnumFacing.DOWN && facing != EnumFacing.UP && player.canPlayerEdit(blockpos, facing, itemstack))
+        if (player.canPlayerEdit(blockpos, facing, itemstack))
         {
             EntitySpitter spitter = this.createEntity(worldIn, blockpos, facing);
 
-            if (spitter != null && spitter.onValidSurface())
+            if (spitter != null)
             {
                 if (!worldIn.isRemote)
                 {
@@ -51,7 +47,26 @@ public class ItemSpitterSpawn extends Item {
     {
         EntitySpitter spitter = new EntitySpitter(worldIn);
         spitter.setFacing(clickedSide);
-        spitter.setPosition(pos.getX(), pos.getY(), pos.getZ());
+        switch (clickedSide) {
+            case DOWN:
+                spitter.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                break;
+            case UP:
+                spitter.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                break;
+            case NORTH:
+                spitter.setPosition(pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.75f);
+                break;
+            case SOUTH:
+                spitter.setPosition(pos.getX() + 0.5, pos.getY() + 0.25, pos.getZ() + 0.25);
+                break;
+            case WEST:
+                spitter.setPosition(pos.getX() + 0.75, pos.getY() + 0.25, pos.getZ() + 0.5);
+                break;
+            case EAST:
+                spitter.setPosition(pos.getX() + 0.25, pos.getY() + 0.25, pos.getZ() + 0.5);
+                break;
+        }
         return spitter;
     }
 }

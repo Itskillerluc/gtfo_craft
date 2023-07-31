@@ -17,21 +17,26 @@ public class RenderSpitter extends GeoEntityRenderer<EntitySpitter> {
         GlStateManager.pushMatrix();
         switch (animatable.getFacing()) {
             case DOWN:
+                GlStateManager.translate(0, 0.5, 0);
                 GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                 break;
             case UP:
                 break;
             case NORTH:
-                GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                GlStateManager.translate(0, 0.25, -0.25);
+                GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
                 break;
             case SOUTH:
-                GlStateManager.rotate(90.0F, 0.0F, 180.0F, 1.0F);
+                GlStateManager.translate(0, 0.25, 0.25);
+                GlStateManager.rotate(90.0F, -1.0F, 0.0F, 0.0F);
                 break;
             case WEST:
-                GlStateManager.rotate(90.0F, 0.0F, 90.0F, 1.0F);
+                GlStateManager.translate(-0.25, 0.25, 0);
+                GlStateManager.rotate(90.0F, 0.0F, 0, -1.0F);
                 break;
             case EAST:
-                GlStateManager.rotate(90.0F, 0.0F, 270.0F, 1.0F);
+                GlStateManager.translate(0.25f, 0.25, 0);
+                GlStateManager.rotate(90.0F, 0.0F, 0, 1.0F);
                 break;
         }
         super.render(model, animatable, partialTicks, red, green, blue, alpha);

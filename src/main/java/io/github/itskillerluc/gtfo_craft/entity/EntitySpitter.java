@@ -3,7 +3,10 @@ package io.github.itskillerluc.gtfo_craft.entity;
 import net.minecraft.block.BlockRedstoneDiode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -16,12 +19,19 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EntitySpitter extends EntityLiving implements IAnimatable {
-    private final DataParameter<EnumFacing> FACING = EntityDataManager.createKey(EntitySpitter.class, DataSerializers.FACING);
+    private static final DataParameter<EnumFacing> FACING = EntityDataManager.createKey(EntitySpitter.class, DataSerializers.FACING);
     public static final int RANGE = 4;
+    private int cooldown = 200;
     private final AnimationFactory factory = new AnimationFactory(this);
     public EntitySpitter(World worldIn) {
         super(worldIn);
-        this.dataManager.register(FACING, EnumFacing.UP);
+        setSize(0.5f, 0.5f);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(FACING, EnumFacing.UP);
     }
 
     public EnumFacing getFacing() {
@@ -69,33 +79,22 @@ public class EntitySpitter extends EntityLiving implements IAnimatable {
         return false;
     }
 
-    public boolean onValidSurface() {
-        if (!this.world.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty()) {
-            return false;
-        } else {
-            int i = Math.max(1, 4 / 16);
-            int j = Math.max(1, 4 / 16);
-            BlockPos blockpos = this.getPosition().offset(this.getFacing().getOpposite());
-            EnumFacing enumfacing = this.getFacing().rotateYCCW();
-            BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+    @Override
+    public void move(MoverType type, double x, double y, double z) {
+    }
 
-            for (int k = 0; k < i; ++k) {
-                for (int l = 0; l < j; ++l) {
-                    int i1 = (i - 1) / -2;
-                    int j1 = (j - 1) / -2;
-                    blockpos$mutableblockpos.setPos(blockpos).move(enumfacing, k + i1).move(EnumFacing.UP, l + j1);
-                    IBlockState iblockstate = this.world.getBlockState(blockpos$mutableblockpos);
-
-                    if (iblockstate.isSideSolid(this.world, blockpos$mutableblockpos, getFacing()))
-                        continue;
-
-                    if (!iblockstate.getMaterial().isSolid() && !BlockRedstoneDiode.isDiode(iblockstate)) {
-                        return false;
-                    }
-                }
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        EntityPlayer player = world.getClosestPlayerToEntity(this, RANGE * 1.5f);
+        if (player != null && cooldown <= 0) {
+            if (player.getDistance(this) > RANGE) {
+                playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1, 1);
+            } else {
+                world.createExplosion(this, this.posX, this.posY, this.posZ, 6, false);
+                cooldown = 200;
             }
-
-            return this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox(), entity -> entity instanceof EntitySpitter).isEmpty();
         }
+        cooldown--;
     }
 }
