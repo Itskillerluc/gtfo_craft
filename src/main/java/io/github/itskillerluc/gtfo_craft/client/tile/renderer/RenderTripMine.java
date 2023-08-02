@@ -25,7 +25,7 @@ public class RenderTripMine extends TileEntitySpecialRenderer<TileEntityTripMine
         createLine(new Vec3d(x, y, z), 0.1f, new Vector4f(1, .3f, .3f, 5f), new Vector4f(255, 255, 255, 255), partialTicks, te);
     }
 
-    private void createLine(Vec3d c1, float width, Vector4f color, Vector4f brightness, float partialTick, TileEntityTripMine te) {
+    public void createLine(Vec3d c1, float width, Vector4f color, Vector4f brightness, float partialTick, TileEntityTripMine te) {
         Tessellator tessellator = Tessellator.getInstance();
 
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);

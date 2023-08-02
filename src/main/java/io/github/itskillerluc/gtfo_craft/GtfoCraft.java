@@ -1,15 +1,19 @@
 package io.github.itskillerluc.gtfo_craft;
 
 import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
+import io.github.itskillerluc.gtfo_craft.command.ScanCommand;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTripMine;
+import net.minecraft.client.Minecraft;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = GtfoCraft.MODID, name = GtfoCraft.NAME, version = GtfoCraft.VERSION)
@@ -35,7 +39,11 @@ public class GtfoCraft
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+    }
 
+    @EventHandler
+    public void registerCommands(FMLServerStartingEvent event) {
+        event.registerServerCommand(new ScanCommand());
     }
 
     @Mod.EventHandler

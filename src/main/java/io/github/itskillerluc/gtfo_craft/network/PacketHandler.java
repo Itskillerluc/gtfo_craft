@@ -16,6 +16,7 @@ public class PacketHandler {
     public static void init() {
         int id = 0;
         HANDLER.registerMessage(BatteryPacket.Handler.class, BatteryPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(SyncScanPacket.Handler.class, SyncScanPacket.class, id++, Side.CLIENT);
     }
 
     /**
