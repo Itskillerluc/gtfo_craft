@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -92,10 +94,11 @@ public class ForgeEvents {
         World world = event.world;
         if (world == null) return;
         if (world.getWorldTime() % 5 == 0) {
+
             List<Scan> scanList = ScanWorldSavedData.get(world).scanList;
-            for (int i = 0; i < scanList.size(); i++) {
-                Scan scan = scanList.get(i);
-                if (scan.getTimer() >= scan.getTime()) {
+            scanList.removeIf(scan -> scan.getTimer() > scan.getTime());
+            for (Scan scan : scanList) {
+                if (scan.getTimer() == scan.getTime()) {
                     List<EntityPlayer> entitiesWithinAABB = event.world.getMinecraftServer().getPlayerList().getPlayers()
                             .stream().filter(entity -> scan.getAABB().contains(new Vec3d(entity.posX, entity.posY + 1, entity.posZ))).collect(Collectors.toList());
                     if (entitiesWithinAABB.size() >= scan.getPlayersNeeded()) {
@@ -109,15 +112,13 @@ public class ForgeEvents {
                             if (j < 1) {
                                 throw new CommandException("commands.execute.allInvocationsFailed", command);
                             }
-                        } catch (Throwable var23) {
+                        } catch (CommandException exception) {
+                            LogManager.getLogger().log(Level.ERROR, exception.getMessage());
                         }
                     }
-                    ScanWorldSavedData.get(world).scanList.set(i, null);
-                } else {
-                    scan.setTimer(scan.getTimer() + 1);
                 }
+                scan.setTimer(scan.getTimer() + 1);
             }
-            scanList.removeIf(Objects::isNull);
             ScanWorldSavedData.get(world).markDirty();
             for (EntityPlayer playerEntity : event.world.playerEntities) {
                 PacketHandler.sendTo((EntityPlayerMP) playerEntity, new SyncScanPacket(scanList));

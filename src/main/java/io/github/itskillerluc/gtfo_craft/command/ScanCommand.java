@@ -30,7 +30,7 @@ public class ScanCommand extends CommandBase {
             int commandIndex = 8;
             @Nullable BlockPos linkedPos = null;
             if (NumberUtils.isCreatable(args[8])) {
-                color = Integer.decode(args[4].substring(2));
+                color = Integer.decode(args[8]);
                 commandIndex = 9;
             }
 
@@ -69,5 +69,10 @@ public class ScanCommand extends CommandBase {
             return getTabCompletionCoordinate(args, 3, targetPos);
         }
         return super.getTabCompletions(server, sender, args, targetPos);
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 1;
     }
 }

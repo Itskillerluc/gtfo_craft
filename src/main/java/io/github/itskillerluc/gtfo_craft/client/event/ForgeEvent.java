@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.client.event;
 
+import com.google.common.collect.Lists;
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
 import io.github.itskillerluc.gtfo_craft.data.Scan;
@@ -37,6 +38,12 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Quaternion;
+import software.bernie.geckolib3.core.util.MathUtil;
+import software.bernie.shadowed.eliotlash.mclib.utils.MathUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = GtfoCraft.MODID, value = Side.CLIENT)
 public class ForgeEvent {
@@ -413,80 +420,98 @@ public class ForgeEvent {
 
     @SubscribeEvent
     public static void renderWorld(RenderWorldLastEvent event) {
+        synchronized (ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList) {
+            for (Scan scan : ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList) {
+                if (scan == null) {
+                    return;
+                }
 
-       // Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/laser.png"));
-        for (Scan scan : ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList.toArray(new Scan[]{})) {
+                Tessellator tessellator = Tessellator.getInstance();
 
-//            GlStateManager.pushMatrix();
-//
-//            Tessellator tessellator = Tessellator.getInstance();
-//
-//            tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-//            GlStateManager.enableBlend();
-//            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-//            GlStateManager.enableDepth();
-//            GlStateManager.depthMask(false);
-////            tessellator.getBuffer().pos(scan.getPos1().getX(), Math.min(scan.getPos1().getY(),scan.getPos2().getY()), scan.getPos1().getZ()).tex(0, 0).color(1, 1, 1, 1);
-////            tessellator.getBuffer().pos(scan.getPos1().getX(), Math.min(scan.getPos1().getY(),scan.getPos2().getY()), scan.getPos2().getZ()).tex(0, 1).color(1, 1, 1, 1);
-////            tessellator.getBuffer().pos(scan.getPos2().getX(), Math.min(scan.getPos1().getY(),scan.getPos2().getY()), scan.getPos1().getZ()).tex(1, 0).color(1, 1, 1, 1);
-////            tessellator.getBuffer().pos(scan.getPos2().getX(), Math.min(scan.getPos1().getY(),scan.getPos2().getY()), scan.getPos2().getZ()).tex(1, 1).color(1, 1, 1, 1);
-//
-//            tessellator.getBuffer().pos(0, 70, 0).tex(0, 0).color(1, 1, 1, 1);
-//            tessellator.getBuffer().pos(0, 70, 5).tex(0, 1).color(1, 1, 1, 1);
-//            tessellator.getBuffer().pos(5, 70, 0).tex(1, 0).color(1, 1, 1, 1);
-//            tessellator.getBuffer().pos(5, 70, 5).tex(1, 1).color(1, 1, 1, 1);
-//            tessellator.draw();
-//            GlStateManager.enableBlend();
-//            GlStateManager.depthMask(true);
-//
-//            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//
-//            GlStateManager.popMatrix();
-            Tessellator tessellator = Tessellator.getInstance();
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA);
+                GlStateManager.enableDepth();
+                GlStateManager.depthMask(false);
+                GlStateManager.pushMatrix();
+                Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/scan.png"));
+                EntityPlayerSP player = Minecraft.getMinecraft().player;
+                double doubleX = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.getPartialTicks();
+                double doubleY = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.getPartialTicks();
+                double doubleZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.getPartialTicks();
+                GlStateManager.rotate(0, 1, 0, 0);
+                GlStateManager.translate(-doubleX, -doubleY, -doubleZ);
+                tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                BufferBuilder buffer = tessellator.getBuffer();
+                int y1 = scan.getPos1().getY();
+                int y2 = scan.getPos2().getY();
+                int x1 = scan.getPos1().getX();
+                int x2 = scan.getPos2().getX();
+                int z1 = scan.getPos1().getZ();
+                int z2 = scan.getPos2().getZ();
+                double y = Math.min(y1, y2);
+                if (y1 > y2 && x1 < x2 && z1 < z2 || x1 > x2 && z1 > z2) {
+                    buffer.pos(x2, y + 0.005d, scan.getPos1().getZ()).tex(1, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x1, y + 0.005d, scan.getPos1().getZ()).tex(0, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x1, y + 0.005d, scan.getPos2().getZ()).tex(0f, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x2, y + 0.005d, scan.getPos2().getZ()).tex(1, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                } else {
+                    buffer.pos(x1, y + 0.005d, scan.getPos1().getZ()).tex(0, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x2, y + 0.005d, scan.getPos1().getZ()).tex(1, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x2, y + 0.005d, scan.getPos2().getZ()).tex(1, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x1, y + 0.005d, scan.getPos2().getZ()).tex(0f, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                }
+                tessellator.draw();
 
-            tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
-            GlStateManager.enableDepth();
-            GlStateManager.depthMask(false);
-            GlStateManager.pushMatrix();
-            Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/laser.png"));
+                tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/laser.png"));
+                    if ((y1 > y2) && (z1 < z2) && (x1 < x2 || x1 > x2)) {
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1f, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                } else {
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1f, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                }
+                tessellator.draw();
 
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayerSP p = mc.player;
-            double doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * event.getPartialTicks();
-            double doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * event.getPartialTicks();
-            double doubleZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * event.getPartialTicks();
-            GlStateManager.translate(-doubleX, -doubleY, -doubleZ);
-            double ex = 1;
-            double ey = 0;
-            double ez = 1;
-            Vec3d start = new Vec3d(scan.getPos1().getX() +  (ex < 0 ? 1 : ((ex == 0 ? 1 : 0) * 0.5f)), scan.getPos1().getY() + (ey < 0 ? 1 : ((ey == 0 ? 1 : 0) * 0.5f)), scan.getPos1().getZ() +  (ez < 0 ? 1 : ((ez == 0 ? 1 : 0) * 0.5f)));
-            Vec3d end = start.addVector(ex * 5, ey * 5, ez * 5);
-            Vec3d playerPos = new Vec3d(doubleX, doubleY + p.getEyeHeight(), doubleZ);
 
-            Vec3d PS = start.subtract(playerPos);
-            Vec3d SE = end.subtract(start);
 
-            Vec3d crossBeam = PS.crossProduct(SE).normalize();
-            Vec3d p1 = start.add(crossBeam.scale(1 * .5d));
-            Vec3d p2 = start.subtract(crossBeam.scale(1 * .5d));
-            Vec3d p3 = end.add(crossBeam.scale(1 * .5d));
-            Vec3d p4 = end.subtract(crossBeam.scale(1 * .5d));
+                if (scan.getLinkedPos() != null) {
+                    tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+                    Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/beam.png"));
 
-            BufferBuilder bufferBuilder = tessellator.getBuffer();
-            int b1 = 240 >> 16 & 65535;
-            int b2 = 240 & 65535;
-            //.color(color.x, color.y, color.z, color.w * 0.5f).lightmap(b1, b2)
-            bufferBuilder.pos(p1.x, p1.y, p1.z).tex(0.0D, 0.0D).lightmap(b1, b2).color(1, 1, 1, 1f).endVertex();
-            bufferBuilder.pos(p3.x, p3.y, p3.z).tex(1.0D, 0.0D).lightmap(b1, b2).color(1, 1, 1, 1f).endVertex();
-            bufferBuilder.pos(p4.x, p4.y, p4.z).tex(1.0D, 1.0D).lightmap(b1, b2).color(1, 1, 1, 1).endVertex();
-            bufferBuilder.pos(p2.x, p2.y, p2.z).tex(0.0D, 1.0D).lightmap(b1, b2).color(1, 1, 1, 1).endVertex();
-            tessellator.draw();
+                    Vec3d start = new Vec3d( (x1 + x2) / 2f, y + 2, (scan.getPos1().getZ() + scan.getPos2().getZ()) / 2f);
+                    Vec3d end = new Vec3d(scan.getLinkedPos().getX() + 0.5f, scan.getLinkedPos().getY() + 0.5f, scan.getLinkedPos().getZ() + 0.5f);
+                    Vec3d playerPos = new Vec3d(doubleX, doubleY + player.getEyeHeight(), doubleZ);
 
-            GlStateManager.popMatrix();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    Vec3d PS = start.subtract(playerPos);
+                    Vec3d SE = end.subtract(start);
+                    float width = 0.2f;
+
+                    Vec3d crossBeam = PS.crossProduct(SE).normalize();
+                    Vec3d p1 = start.add(crossBeam.scale(width * .5d));
+                    Vec3d p2 = start.subtract(crossBeam.scale(width * .5d));
+                    Vec3d p3 = end.add(crossBeam.scale(width * .5d));
+                    Vec3d p4 = end.subtract(crossBeam.scale(width * .5d));
+
+                    BufferBuilder bufferBuilder = tessellator.getBuffer();
+
+                    bufferBuilder.pos(p1.x, p1.y, p1.z).tex(0.0D, 0.0D).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    bufferBuilder.pos(p3.x, p3.y, p3.z).tex(1.0D, 0.0D).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    bufferBuilder.pos(p4.x, p4.y, p4.z).tex(1.0D, 1.0D).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    bufferBuilder.pos(p2.x, p2.y, p2.z).tex(0.0D, 1.0D).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    tessellator.draw();
+                }
+
+                GlStateManager.enableBlend();
+                GlStateManager.depthMask(true);
+
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.popMatrix();
+            }
         }
     }
 }

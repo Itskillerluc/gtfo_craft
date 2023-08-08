@@ -5,12 +5,14 @@ import io.github.itskillerluc.gtfo_craft.data.Scan;
 import io.github.itskillerluc.gtfo_craft.data.ScanWorldSavedData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SyncScanPacket implements IMessage {
@@ -23,10 +25,13 @@ public class SyncScanPacket implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        scans = new ArrayList<>();
+        scans = Collections.synchronizedList(new ArrayList<>());
         int size = buf.readInt();
         for (int i = 0; i < size; i++) {
-            scans.add(Scan.fromTag(ByteBufUtils.readTag(buf)));
+            NBTTagCompound tag = ByteBufUtils.readTag(buf);
+            Scan scan = Scan.fromTag(tag);
+            scan.setTimer(tag.getInteger("timer"));
+            scans.add(scan);
         }
     }
 

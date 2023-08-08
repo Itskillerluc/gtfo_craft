@@ -19,6 +19,7 @@ public class EntityAIRangedBurst extends EntityAIBase {
     private final float maxAttackDistance;
     private final int burst;
     private final int fullAttackDuration;
+    private int burstTime = 0;
     private boolean shouldAttackNextTick = false;
     private int bursted = 0;
 
@@ -102,7 +103,8 @@ public class EntityAIRangedBurst extends EntityAIBase {
 
         this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         rangedAttackTime--;
-        if (shouldAttackNextTick || this.rangedAttackTime == 0)
+        burstTime++;
+        if ((shouldAttackNextTick && (burstTime % (fullAttackDuration / burst)) == 0) || this.rangedAttackTime == 0)
         {
             if (!flag)
             {
@@ -117,11 +119,13 @@ public class EntityAIRangedBurst extends EntityAIBase {
             if (bursted > burst) {
                 bursted = 0;
                 shouldAttackNextTick = false;
+                burstTime = 0;
             }
         }
         else if (this.rangedAttackTime < 0)
         {
             float f2 = MathHelper.sqrt(d0) / this.attackRadius;
+            shouldAttackNextTick = true;
             this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
         }
     }

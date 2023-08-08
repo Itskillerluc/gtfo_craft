@@ -9,11 +9,12 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ScanWorldSavedData extends WorldSavedData {
     private static final String DATA_NAME = GtfoCraft.MODID + "_scans";
-    public final List<Scan> scanList = new ArrayList<>();
+    public final List<Scan> scanList = Collections.synchronizedList(new ArrayList<>());
 
     public ScanWorldSavedData() {
         super(DATA_NAME);
