@@ -29,6 +29,8 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BATTERY).setRegistryName(BlockRegistry.BATTERY.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.GENERATOR).setRegistryName(BlockRegistry.GENERATOR.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TRIP_MINE).setRegistryName(BlockRegistry.TRIP_MINE.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER.getRegistryName()));
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);
         registryEvent.getRegistry().register(AMMO);

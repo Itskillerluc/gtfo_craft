@@ -20,6 +20,8 @@ public class BlockRegistry {
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
     public static final BlockBattery BATTERY = new BlockBattery();
     public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
+    public static final BlockBulkheadDoorSmallController BULKHEAD_DOOR_SMALL_CONTROLLER = new BlockBulkheadDoorSmallController(Material.IRON, MapColor.IRON);
+    public static final BlockBulkheadDoorSmallHelper BULKHEAD_DOOR_SMALL_HELPER = new BlockBulkheadDoorSmallHelper(Material.IRON, MapColor.IRON);
 
     public static void registerBlocks(RegistryEvent.Register<Block> registryEvent) {
         registryEvent.getRegistry().register(FOG);
@@ -32,5 +34,7 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(GENERATOR);
         registryEvent.getRegistry().register(BATTERY);
         registryEvent.getRegistry().register(TRIP_MINE);
+        registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_CONTROLLER);
+        registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_HELPER);
     }
 }

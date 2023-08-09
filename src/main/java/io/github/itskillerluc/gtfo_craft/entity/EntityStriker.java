@@ -30,7 +30,7 @@ public class EntityStriker extends ModEntity implements IAnimatable {
 
     public EntityStriker(World worldIn) {
         super(worldIn);
-        setSize(1.2f, 3.5f);
+        setSize(0.6f, 2f);
     }
 
     @Override
