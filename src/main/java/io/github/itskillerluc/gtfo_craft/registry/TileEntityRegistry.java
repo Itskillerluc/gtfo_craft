@@ -15,6 +15,7 @@ public class TileEntityRegistry {
         registerTile(TileEntityTurret.class, "turret");
         registerTile(TileEntityTripMine.class, "trip_mine");
         registerTile(TileEntityBulkheadDoorSmall.class, "bulkhead_door_small");
+        registerTile(TileEntityCocoon.class, "cocoon");
     }
 
     private static void registerTile(Class<? extends TileEntity> clazz, String key) {

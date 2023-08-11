@@ -28,8 +28,7 @@ import javax.annotation.Nullable;
 public class BlockBulkheadDoorSmallController extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
-    public static final PropertyBool SLIDE_LEFT = PropertyBool.create("slide_left");
-    public static final PropertyBool OPENED = PropertyBool.create("opened");
+    public static final PropertyBool OPEN = PropertyBool.create("open");
 
     protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0D, 0.0D, 0D, 0.25D, 1.0D, 1D);
     protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.0D, 1, 1.0D, 0.25D);
@@ -59,17 +58,20 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     }
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing);
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
+                .withProperty(FACING, facing)
+                .withProperty(POWERED, false)
+                .withProperty(OPEN, false);
     }
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
+        return this.getDefaultState()
+                .withProperty(FACING, EnumFacing.getHorizontal(meta & 0b0011))
+                .withProperty(POWERED, (meta & 0b0100) != 0)
+                .withProperty(OPEN, (meta & 0b1000) != 0);
     }
-    public int getMetaFromState(IBlockState state)
-    {
-        int i = 0;
-        i = i | state.getValue(FACING).getIndex();
-        return i;
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getHorizontalIndex() | (state.getValue(POWERED) ? 0b100 : 0) | (state.getValue(OPEN) ? 0b1000 : 0);
     }
     public IBlockState withRotation(IBlockState state, Rotation rot)
     {
@@ -77,7 +79,7 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     }
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, POWERED, OPEN);
     }
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
