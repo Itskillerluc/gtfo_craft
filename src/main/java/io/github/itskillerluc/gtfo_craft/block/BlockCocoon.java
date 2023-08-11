@@ -13,12 +13,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemEgg;
 import net.minecraft.item.ItemMonsterPlacer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
@@ -62,9 +64,12 @@ public class BlockCocoon extends Block implements ITileEntityProvider {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        //TODO: do this
-        if (playerIn.getActiveItemStack().getItem() instanceof ItemMonsterPlacer) {
-
+        if (playerIn.getHeldItem(hand).getItem() instanceof ItemMonsterPlacer && worldIn.getTileEntity(pos) instanceof TileEntityCocoon) {
+            TileEntityCocoon cocoon = (TileEntityCocoon) worldIn.getTileEntity(pos);
+            if (cocoon == null) return false;
+            ItemStack placer = playerIn.getHeldItem(hand);
+            cocoon.setEntityFactory(ForgeRegistries.ENTITIES.getValue(ItemMonsterPlacer.getNamedIdFrom(placer)));
+            return true;
         }
         return false;
     }

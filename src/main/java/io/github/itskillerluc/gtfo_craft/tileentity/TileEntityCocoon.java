@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.GameData;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +28,10 @@ public class TileEntityCocoon extends TileEntity implements ITickable {
 
     public TileEntityCocoon(int range) {
         this.range = range;
+    }
+
+    public TileEntityCocoon(){
+        range = 16;
     }
 
     public int getRange() {
@@ -56,6 +61,7 @@ public class TileEntityCocoon extends TileEntity implements ITickable {
         if ((entity == null || !entity.isEntityAlive()) && ((WorldServer) world).getEntityFromUuid(uuid) == null && entityFactory != null && !world.isAnyPlayerWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), range)) {
             entity = entityFactory.newInstance(world);
             entity.setUniqueId(uuid);
+            entity.setPosition(pos.getX(), pos.getY() - 1, pos.getZ());
             world.spawnEntity(entity);
         }
     }
@@ -63,7 +69,7 @@ public class TileEntityCocoon extends TileEntity implements ITickable {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound.setTag("uuid", NBTUtil.createUUIDTag(uuid));
-        compound.setString("entity", ForgeRegistries.ENTITIES.getKey(GameData.getEntityClassMap().get(entityFactory)).toString());
+        compound.setString("entity", Objects.toString(ForgeRegistries.ENTITIES.getKey(entityFactory)));
         return super.writeToNBT(compound);
     }
 

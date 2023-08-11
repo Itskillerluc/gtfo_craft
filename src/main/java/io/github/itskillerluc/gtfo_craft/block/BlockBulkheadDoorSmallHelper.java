@@ -15,7 +15,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -27,7 +29,8 @@ public class BlockBulkheadDoorSmallHelper extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
-
+    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0D, 0.0D, 0D, 0.25D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.0D, 1, 1.0D, 0.25D);
     public BlockBulkheadDoorSmallHelper(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
@@ -35,10 +38,11 @@ public class BlockBulkheadDoorSmallHelper extends Block {
         setUnlocalizedName("bulkhead_door_small_helper");
     }
 
+
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
-                .withProperty(FACING, facing)
+                .withProperty(FACING, placer.getHorizontalFacing())
                 .withProperty(POWERED, false)
                 .withProperty(OPEN, false);
     }
@@ -56,5 +60,23 @@ public class BlockBulkheadDoorSmallHelper extends Block {
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, POWERED, OPEN);
+    }
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if (state.getValue(OPEN)) {
+            return NULL_AABB;
+        }
+        EnumFacing enumfacing = state.getValue(FACING);
+        switch (enumfacing) {
+            case WEST:
+            case EAST:
+                return EAST;
+            default:
+                return NORTH;
+        }
+    }
+
+    @Override
+    public boolean isCollidable() {
+        return false;
     }
 }

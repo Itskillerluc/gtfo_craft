@@ -59,7 +59,7 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
-                .withProperty(FACING, facing)
+                .withProperty(FACING, placer.getHorizontalFacing())
                 .withProperty(POWERED, false)
                 .withProperty(OPEN, false);
     }
@@ -81,8 +81,10 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     {
         return new BlockStateContainer(this, FACING, POWERED, OPEN);
     }
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-    {
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        if (state.getValue(OPEN)) {
+            return NULL_AABB;
+        }
         EnumFacing enumfacing = state.getValue(FACING);
         switch (enumfacing) {
             case WEST:
@@ -91,5 +93,11 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
             default:
                 return NORTH;
         }
+    }
+
+
+    @Override
+    public boolean isCollidable() {
+        return false;
     }
 }

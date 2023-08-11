@@ -1,20 +1,20 @@
 {
   "variants": {
-    "facing=north,open=false,powered=false":  { "model": "bulkhead_door" },
-    "facing=east,open=false,powered=false": { "model": "bulkhead_door", "y": 90 },
-    "facing=south,open=false,powered=false":  { "model": "bulkhead_door", "y": 180 },
-    "facing=west,open=false,powered=false": { "model": "bulkhead_door", "y": 270 },
-    "facing=east,open=true,powered=false":  { "model": "bulkhead_door", "y": 90 },
-    "facing=south,open=true,powered=false": { "model": "bulkhead_door", "y": 180 },
-    "facing=west,open=true,powered=false":  { "model": "bulkhead_door", "y": 270 },
-    "facing=north,open=true,powered=false": { "model": "bulkhead_door" },
-    "facing=east,open=false,powered=true":  { "model": "bulkhead_door" },
-    "facing=south,open=false,powered=true": { "model": "bulkhead_door", "y": 90 },
-    "facing=west,open=false,powered=true":  { "model": "bulkhead_door", "y": 180 },
-    "facing=north,open=false,powered=true": { "model": "bulkhead_door", "y": 270 },
-    "facing=east,open=true,powered=true":  { "model": "bulkhead_door", "y": 90 },
-    "facing=south,open=true,powered=true": { "model": "bulkhead_door", "y": 180 },
-    "facing=west,open=true,powered=true":  { "model": "bulkhead_door", "y": 270 },
-    "facing=north,open=true,powered=true": { "model": "bulkhead_door" }
+    "facing=north,open=false,powered=false":  { "model": "gtfo_craft:bulkhead_door" },
+    "facing=east,open=false,powered=false": { "model": "gtfo_craft:bulkhead_door", "y": 90 },
+    "facing=south,open=false,powered=false":  { "model": "gtfo_craft:bulkhead_door", "y": 180 },
+    "facing=west,open=false,powered=false": { "model": "gtfo_craft:bulkhead_door", "y": 270 },
+    "facing=east,open=true,powered=false":  { "model": "gtfo_craft:bulkhead_door", "y": 90 },
+    "facing=south,open=true,powered=false": { "model": "gtfo_craft:bulkhead_door", "y": 180 },
+    "facing=west,open=true,powered=false":  { "model": "gtfo_craft:bulkhead_door", "y": 270 },
+    "facing=north,open=true,powered=false": { "model": "gtfo_craft:bulkhead_door" },
+    "facing=east,open=false,powered=true":  { "model": "gtfo_craft:bulkhead_door" },
+    "facing=south,open=false,powered=true": { "model": "gtfo_craft:bulkhead_door", "y": 90 },
+    "facing=west,open=false,powered=true":  { "model": "gtfo_craft:bulkhead_door", "y": 180 },
+    "facing=north,open=false,powered=true": { "model": "gtfo_craft:bulkhead_door", "y": 270 },
+    "facing=east,open=true,powered=true":  { "model": "gtfo_craft:bulkhead_door", "y": 90 },
+    "facing=south,open=true,powered=true": { "model": "gtfo_craft:bulkhead_door", "y": 180 },
+    "facing=west,open=true,powered=true":  { "model": "gtfo_craft:bulkhead_door", "y": 270 },
+    "facing=north,open=true,powered=true": { "model": "gtfo_craft:bulkhead_door" }
   }
 }
