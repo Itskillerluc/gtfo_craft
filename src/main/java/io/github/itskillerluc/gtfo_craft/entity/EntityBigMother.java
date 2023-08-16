@@ -1,13 +1,14 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -25,9 +26,11 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
     private static final DataParameter<Boolean> ATTACKING =
             EntityDataManager.createKey(EntityBigMother.class, DataSerializers.BOOLEAN);
 
-    private static final int SUMMON_TIME = 400;
-    private static final int SUMMON_COUNT = 30;
+    private static final int SUMMON_TIME_START = 400;
+    private static final int SUMMON_TIME_FINISH = 500;
+    private static final int SUMMON_COOLDOWN = 15;
     private int time = 0;
+    private static final int SMOKE_RADIUS = 4;
 
     public EntityBigMother(World worldIn) {
         super(worldIn);
@@ -111,13 +114,26 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
         super.onUpdate();
         if (!world.isRemote && getAttackTarget() != null) {
             time++;
-            if (time >= SUMMON_TIME) {
-                for (int i = 0; i <= SUMMON_COUNT; i++) {
+            if (time == SUMMON_TIME_START) {
+                for (int x = -SMOKE_RADIUS; x < SMOKE_RADIUS; x++) {
+                    for (int y = -SMOKE_RADIUS; y < SMOKE_RADIUS; y++) {
+                        for (int z = -SMOKE_RADIUS; z < SMOKE_RADIUS; z++) {
+                            if (world.getBlockState(new BlockPos(new BlockPos(this.posX + x, this.posY + y, this.posZ + z))).getMaterial().isReplaceable()) {
+                                world.setBlockState(new BlockPos(new BlockPos(this.posX + x, this.posY + y, this.posZ + z)), BlockRegistry.FOG_TEMPORARY.getDefaultState());
+                            }
+                        }
+                    }
+                }
+            }
+            if (time >= SUMMON_TIME_START) {
+                if (time % SUMMON_COOLDOWN == 0) {
                     EntityBaby entity = new EntityBaby(world);
                     entity.setPosition(this.posX, this.posY, this.posZ);
                     world.spawnEntity(entity);
                 }
-                time = 0;
+                if (time >= SUMMON_TIME_FINISH) {
+                    time = 0;
+                }
             }
         }
     }

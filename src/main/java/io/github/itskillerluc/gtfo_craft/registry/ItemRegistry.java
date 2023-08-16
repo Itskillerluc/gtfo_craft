@@ -6,7 +6,6 @@ import io.github.itskillerluc.gtfo_craft.item.ItemFogRepeller;
 import io.github.itskillerluc.gtfo_craft.item.ItemGlowStick;
 import io.github.itskillerluc.gtfo_craft.item.ItemPellet;
 import io.github.itskillerluc.gtfo_craft.item.ItemSpitterSpawn;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDoor;
@@ -32,6 +31,7 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.COCOON).setRegistryName(BlockRegistry.COCOON.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG_TEMPORARY).setRegistryName(BlockRegistry.FOG_TEMPORARY.getRegistryName()));
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);
         registryEvent.getRegistry().register(AMMO);

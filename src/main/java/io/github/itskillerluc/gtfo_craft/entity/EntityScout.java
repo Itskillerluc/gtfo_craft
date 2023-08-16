@@ -1,16 +1,16 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import com.google.common.base.Optional;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigateFlying;
-import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -21,14 +21,18 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityStriker extends ModEntity implements IAnimatable {
+import java.util.Random;
 
+public class EntityScout extends ModEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private static final DataParameter<Boolean> ATTACKING =
-            EntityDataManager.createKey(EntityStriker.class, DataSerializers.BOOLEAN);
+            EntityDataManager.createKey(EntityScout.class, DataSerializers.BOOLEAN);
 
-    public EntityStriker(World worldIn) {
+    protected static final DataParameter<Optional<BlockPos>> SUMMON_POS =
+            EntityDataManager.createKey(EntityScout.class, DataSerializers.OPTIONAL_BLOCK_POS);
+
+    public EntityScout(World worldIn) {
         super(worldIn);
         setSize(0.6f, 2f);
     }
@@ -37,6 +41,7 @@ public class EntityStriker extends ModEntity implements IAnimatable {
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(SUMMON_POS, Optional.absent());
     }
 
     @Override
@@ -45,12 +50,22 @@ public class EntityStriker extends ModEntity implements IAnimatable {
         if (this.dataManager.get(ATTACKING)) {
             compound.setBoolean("attacking", true);
         }
+        if (dataManager.get(SUMMON_POS).isPresent()) {
+            compound.setTag("summonPos", NBTUtil.createPosTag(dataManager.get(SUMMON_POS).get()));
+        } else {
+            compound.setTag("summonPos", new NBTTagCompound());
+        }
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.dataManager.set(ATTACKING, compound.getBoolean("attacking"));
+        if (compound.getCompoundTag("summonPos").hasNoTags()) {
+            dataManager.set(SUMMON_POS, Optional.absent());
+        } else {
+            dataManager.set(SUMMON_POS, Optional.of(NBTUtil.getPosFromTag(compound.getCompoundTag("summonPos"))));
+        }
     }
 
     public boolean isAttacking(){
@@ -66,7 +81,6 @@ public class EntityStriker extends ModEntity implements IAnimatable {
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new StrikerAttackGoal(1, true));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false, false));
@@ -106,42 +120,55 @@ public class EntityStriker extends ModEntity implements IAnimatable {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
-    class StrikerAttackGoal extends EntityAIAttackMelee {
+    class ScoutTendrilGoal extends EntityAIBase {
         private int animCounter = 0;
         private int animTickLength = 20;
+        private final float chance;
+        private final float range;
 
-        public StrikerAttackGoal(double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(EntityStriker.this, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
+        ScoutTendrilGoal(float chance, float range) {
+            this.chance = chance;
+            this.range = range;
         }
 
         @Override
-        protected void checkAndPerformAttack(EntityLivingBase pEnemy, double pDistToEnemySqr) {
-            if (pDistToEnemySqr <= this.getAttackReachSqr(pEnemy) && this.attackTick <= 0) {
-                EntityStriker.this.dataManager.set(ATTACKING, true);
-                animCounter = 0;
-            }
-
-            super.checkAndPerformAttack(pEnemy, pDistToEnemySqr);
+        public void startExecuting() {
+            EntityScout.this.dataManager.set(ATTACKING, true);
         }
 
         @Override
         public void updateTask() {
             super.updateTask();
-            if(EntityStriker.this.isAttacking()) {
+            if (world.isAnyPlayerWithinRangeAt(posX, posY, posZ, range)) {
+                scream();
+            }
+            if(EntityScout.this.isAttacking()) {
                 animCounter++;
-
                 if(animCounter >= animTickLength) {
                     animCounter = 0;
-                    EntityStriker.this.dataManager.set(ATTACKING, false);
+                    EntityScout.this.dataManager.set(ATTACKING, false);
+                    resetTask();
                 }
             }
         }
 
+        public void scream() {
+            //TODO: SCREAAAAM and stop the animation
+            Entity entity = new EntityShooter(world);
+            entity.setPosition(posX, posY, posZ);
+            world.spawnEntity(entity);
+            despawnEntity();
+        }
+
+        @Override
+        public boolean shouldExecute() {
+            return new Random().nextFloat() <= chance;
+        }
 
         @Override
         public void resetTask() {
             animCounter = 0;
-            EntityStriker.this.dataManager.set(ATTACKING, false);
+            EntityScout.this.dataManager.set(ATTACKING, false);
             super.resetTask();
         }
     }

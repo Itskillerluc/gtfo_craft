@@ -2,7 +2,6 @@ package io.github.itskillerluc.gtfo_craft.registry;
 
 import io.github.itskillerluc.gtfo_craft.block.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialTransparent;
@@ -23,6 +22,7 @@ public class BlockRegistry {
     public static final BlockBulkheadDoorSmallController BULKHEAD_DOOR_SMALL_CONTROLLER = new BlockBulkheadDoorSmallController(Material.IRON, MapColor.IRON);
     public static final BlockBulkheadDoorSmallHelper BULKHEAD_DOOR_SMALL_HELPER = new BlockBulkheadDoorSmallHelper(Material.IRON, MapColor.IRON);
     public static final BlockCocoon COCOON = new BlockCocoon(Material.WEB, MapColor.WHITE_STAINED_HARDENED_CLAY);
+    public static final BlockFogTemporary FOG_TEMPORARY = new BlockFogTemporary();
 
     public static void registerBlocks(RegistryEvent.Register<Block> registryEvent) {
         registryEvent.getRegistry().register(FOG);
@@ -38,5 +38,6 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_CONTROLLER);
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_HELPER);
         registryEvent.getRegistry().register(COCOON);
+        registryEvent.getRegistry().register(FOG_TEMPORARY);
     }
 }

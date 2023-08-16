@@ -1,14 +1,14 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -26,9 +26,11 @@ public class EntityMother extends ModEntity implements IAnimatable {
     private static final DataParameter<Boolean> ATTACKING =
             EntityDataManager.createKey(EntityMother.class, DataSerializers.BOOLEAN);
 
-    private static final int SUMMON_TIME = 600;
-    private static final int SUMMON_COUNT = 20;
+    private static final int SUMMON_TIME_START = 600;
+    private static final int SUMMON_TIME_FINISH = 800;
+    private static final int SUMMON_COOLDOWN = 20;
     private int time = 0;
+    private static final int SMOKE_RADIUS = 4;
 
     public EntityMother(World worldIn) {
         super(worldIn);
@@ -68,7 +70,7 @@ public class EntityMother extends ModEntity implements IAnimatable {
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(6, new EntityAIAvoidEntity<>(this, EntityPlayer.class, entity -> getAttackTarget() != null && getAttackTarget().isEntityEqual(entity), 17, 1.3, 1.5));
+        this.tasks.addTask(6, new EntityAIAvoidEntity<>(this, EntityPlayer.class, entity -> getAttackTarget() != null && getAttackTarget().isEntityEqual(entity), 40, 1.3, 1.5));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -112,13 +114,26 @@ public class EntityMother extends ModEntity implements IAnimatable {
         super.onUpdate();
         if (!world.isRemote && getAttackTarget() != null) {
             time++;
-            if (time >= SUMMON_TIME) {
-                for (int i = 0; i <= SUMMON_COUNT; i++) {
+            if (time == SUMMON_TIME_START) {
+                for (int x = -SMOKE_RADIUS; x < SMOKE_RADIUS; x++) {
+                    for (int y = -SMOKE_RADIUS; y < SMOKE_RADIUS; y++) {
+                        for (int z = -SMOKE_RADIUS; z < SMOKE_RADIUS; z++) {
+                            if (world.getBlockState(new BlockPos(this.posX + x, this.posY + y, this.posZ + z)).getMaterial().isReplaceable()) {
+                                world.setBlockState(new BlockPos(this.posX + x, this.posY + y, this.posZ + z), BlockRegistry.FOG_TEMPORARY.getDefaultState());
+                            }
+                        }
+                    }
+                }
+            }
+            if (time >= SUMMON_TIME_START) {
+                if (time % SUMMON_COOLDOWN == 0) {
                     EntityBaby entity = new EntityBaby(world);
                     entity.setPosition(this.posX, this.posY, this.posZ);
                     world.spawnEntity(entity);
                 }
-                time = 0;
+                if (time >= SUMMON_TIME_FINISH) {
+                    time = 0;
+                }
             }
         }
     }
