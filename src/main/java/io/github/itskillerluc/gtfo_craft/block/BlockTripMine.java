@@ -37,10 +37,12 @@ import javax.annotation.Nullable;
 public class BlockTripMine extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
 
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.125D, 1.0D, 1.0D, 0.875D);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
-    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.125D, 0.0D, 0.0D, 0.875D, 1.0D, 1.0D);
+    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.1875D, 0.1875D, 0.5D, 0.8125D, 0.8125D, 1);
+    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0, 0.1875D, 0.1875D , 0.5, 0.8125D, 0.8125D);
+    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.1875D, 0.1875D, 0, 0.8125D, 0.8125D, 0.5D);
+    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.5, 0.1875D, 0.1875D, 1, 0.8125D, 0.8125D);
+    protected static final AxisAlignedBB UP = new AxisAlignedBB(0.1875, 0.0D, 0.1875, 0.8125D, 0.5D, 0.8125D);
+    protected static final AxisAlignedBB DOWN = new AxisAlignedBB(0.1875, 0.5D, 0.1875, 0.8125D, 1.0D, 0.8125);
 
     public BlockTripMine(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
@@ -113,8 +115,13 @@ public class BlockTripMine extends Block implements ITileEntityProvider {
                 return WEST;
             case EAST:
                 return EAST;
-            default:
+            case UP:
+                return UP;
+            case DOWN:
+                return DOWN;
+            case NORTH:
                 return NORTH;
         }
+        return NULL_AABB;
     }
 }

@@ -1,7 +1,9 @@
 {
   "variants": {
-    "normal": {
-      "model": "minecraft:redstone_block"
-    }
+    "facing=wes": { "model": "gtfo_craft:battery_held", "y": 90 },
+    "facing=north": { "model": "gtfo_craft:battery", "y": 180 },
+    "facing=east": { "model": "gtfo_craft:battery", "y": 270 },
+    "facing=south": { "model": "gtfo_craft:battery" },
+    "facing=west": { "model": "gtfo_craft:battery", "y": 90 }
   }
 }

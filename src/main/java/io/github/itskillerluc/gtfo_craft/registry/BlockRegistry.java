@@ -17,7 +17,7 @@ public class BlockRegistry {
     public static final BlockBreakableDoor BREAKABLE_DOOR = new BlockBreakableDoor(Material.WOOD);
     public static final BlockGlowStick GLOW_STICK_BLOCK = new BlockGlowStick();
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
-    public static final BlockBattery BATTERY = new BlockBattery();
+    public static final Block BATTERY = new BlockBattery().setBlockUnbreakable();
     public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
     public static final BlockBulkheadDoorSmallController BULKHEAD_DOOR_SMALL_CONTROLLER = new BlockBulkheadDoorSmallController(Material.IRON, MapColor.IRON);
     public static final BlockBulkheadDoorSmallHelper BULKHEAD_DOOR_SMALL_HELPER = new BlockBulkheadDoorSmallHelper(Material.IRON, MapColor.IRON);

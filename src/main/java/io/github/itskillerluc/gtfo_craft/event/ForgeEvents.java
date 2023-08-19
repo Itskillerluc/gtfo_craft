@@ -57,17 +57,22 @@ public class ForgeEvents {
         if (event.getEntityPlayer().getEntityData().getBoolean("hasBattery")) {
             if (event.getWorld().getBlockState(event.getPos()).getBlock().equals(BlockRegistry.GENERATOR)) {
                 if (!event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.POWERED)) {
+                    //todo
                     event.getWorld().setBlockState(event.getPos(), BlockRegistry.GENERATOR.getDefaultState().withProperty(BlockGenerator.POWERED, true).withProperty(BlockGenerator.FACING, event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.FACING)));
                     event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
                 }
             } else if (event.getEntityPlayer().isSneaking()) {
                 if (event.getWorld().getBlockState(event.getPos()).getMaterial().isReplaceable()) {
-                    event.getWorld().setBlockToAir(event.getPos());
-                    event.getWorld().setBlockState(event.getPos(), BlockRegistry.BATTERY.getDefaultState());
-                    event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
+                    if (BlockRegistry.BATTERY.canPlaceBlockAt(event.getWorld(), event.getPos().offset(event.getFace()))) {
+                        event.getWorld().setBlockToAir(event.getPos());
+                        event.getWorld().setBlockState(event.getPos(), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, 0,event.getEntityLiving(), event.getHand()));
+                        event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
+                    }
                 } else if (event.getFace() != null) {
-                    event.getWorld().setBlockState(event.getPos().offset(event.getFace()), BlockRegistry.BATTERY.getDefaultState());
-                    event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
+                    if (BlockRegistry.BATTERY.canPlaceBlockAt(event.getWorld(), event.getPos().offset(event.getFace()))) {
+                        event.getWorld().setBlockState(event.getPos().offset(event.getFace()), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos().offset(event.getFace()), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z,0, event.getEntityLiving(), event.getHand()));
+                        event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
+                    }
                 }
             } else {
                 event.setCanceled(true);

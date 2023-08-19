@@ -5,6 +5,7 @@ import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmall;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmallHelper;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmallHelper.Location;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -117,6 +118,21 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
                         .withProperty(BlockBulkheadDoorSmallHelper.FACING, placer.getHorizontalFacing().rotateY()), 3);
                 if ( worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())) instanceof TileEntityBulkheadDoorSmallHelper) {
                     ((TileEntityBulkheadDoorSmallHelper) worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()))).master = pos;
+                    Location location;
+                    if (i == 3 && j == 3) {
+                        location = Location.CORNERR;
+                    } else if (i == 3) {
+                        location = Location.RIGHT;
+                    } else if (i == 0 && j == 3) {
+                        location = Location.CORNERL;
+                    } else if (i == 0) {
+                        location = Location.LEFT;
+                    } else if (j == 3) {
+                        location = Location.TOP;
+                    } else {
+                        location = Location.CENTER;
+                    }
+                    ((TileEntityBulkheadDoorSmallHelper) worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()))).setLocation(location);
                 }
             }
         }

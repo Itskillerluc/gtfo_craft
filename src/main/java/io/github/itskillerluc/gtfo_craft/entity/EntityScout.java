@@ -12,6 +12,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -32,6 +33,9 @@ public class EntityScout extends ModEntity implements IAnimatable {
     protected static final DataParameter<Optional<BlockPos>> SUMMON_POS =
             EntityDataManager.createKey(EntityScout.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
+    protected static final DataParameter<String> COMMAND =
+            EntityDataManager.createKey(EntityScout.class, DataSerializers.STRING);
+
     public EntityScout(World worldIn) {
         super(worldIn);
         setSize(0.6f, 2f);
@@ -42,6 +46,7 @@ public class EntityScout extends ModEntity implements IAnimatable {
         super.entityInit();
         this.dataManager.register(ATTACKING, true);
         this.dataManager.register(SUMMON_POS, Optional.absent());
+        this.dataManager.register(COMMAND, "");
     }
 
     @Override
@@ -55,6 +60,7 @@ public class EntityScout extends ModEntity implements IAnimatable {
         } else {
             compound.setTag("summonPos", new NBTTagCompound());
         }
+        compound.setString("command", dataManager.get(COMMAND));
     }
 
     @Override
@@ -66,6 +72,7 @@ public class EntityScout extends ModEntity implements IAnimatable {
         } else {
             dataManager.set(SUMMON_POS, Optional.of(NBTUtil.getPosFromTag(compound.getCompoundTag("summonPos"))));
         }
+        this.dataManager.set(COMMAND, compound.getString("command"));
     }
 
     public boolean isAttacking(){
@@ -154,6 +161,9 @@ public class EntityScout extends ModEntity implements IAnimatable {
 
         public void scream() {
             //TODO: SCREAAAAM and stop the animation
+            if (!EntityScout.this.world.isRemote) {
+                world.getMinecraftServer().getCommandManager().executeCommand(EntityScout.this,dataManager.get(COMMAND));
+            }
             Entity entity = new EntityShooter(world);
             entity.setPosition(posX, posY, posZ);
             world.spawnEntity(entity);

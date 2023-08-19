@@ -14,10 +14,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,8 +28,18 @@ public class BlockBulkheadDoorSmallHelper extends Block implements ITileEntityPr
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_CENTER = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CENTER = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_CORNERL = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CORNERL = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_CORNERR = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CORNERR = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_TOP = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_TOP = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_LEFT = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_LEFT = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+    protected static final AxisAlignedBB NORTH_RIGHT = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_RIGHT = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
     public BlockBulkheadDoorSmallHelper(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
@@ -65,16 +72,30 @@ public class BlockBulkheadDoorSmallHelper extends Block implements ITileEntityPr
         return new BlockStateContainer(this, FACING, POWERED, OPEN);
     }
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (state.getValue(OPEN)) {
+        if (state.getValue(OPEN) || source.getTileEntity(pos) == null) {
             return NULL_AABB;
         }
         EnumFacing enumfacing = state.getValue(FACING);
-        switch (enumfacing) {
-            case WEST:
-            case EAST:
-                return EAST;
+        boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
+        TileEntityBulkheadDoorSmallHelper tile = ((TileEntityBulkheadDoorSmallHelper) source.getTileEntity(pos));
+        if (tile == null) {
+            return isEastWest ? EAST_CENTER : NORTH_CENTER;
+        }
+        switch (tile.getLocation()) {
+            case CORNERL:
+                return isEastWest ? EAST_CORNERL : NORTH_CORNERL;
+            case CORNERR:
+                return isEastWest ? EAST_CORNERR : NORTH_CORNERR;
+            case CENTER:
+                return isEastWest ? EAST_CENTER : NORTH_CENTER;
+            case TOP:
+                return isEastWest ? EAST_TOP : NORTH_TOP;
+            case LEFT:
+                return isEastWest ? EAST_LEFT : NORTH_LEFT;
+            case RIGHT:
+                return isEastWest ? EAST_RIGHT : NORTH_RIGHT;
             default:
-                return NORTH;
+                throw new IllegalStateException("Unexpected value: " + ((TileEntityBulkheadDoorSmallHelper) source.getTileEntity(pos)).getLocation());
         }
     }
 

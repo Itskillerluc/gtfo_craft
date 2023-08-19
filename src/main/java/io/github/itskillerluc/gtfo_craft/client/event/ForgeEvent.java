@@ -61,8 +61,10 @@ public class ForgeEvent {
             renderArmFirstPerson(0, 0, EnumHandSide.RIGHT);
             GlStateManager.pushMatrix();
             ItemStack heldItem = new ItemStack(BlockRegistry.BATTERY);
-            GlStateManager.translate(0, -0.4, -0.72F);
+            GlStateManager.translate(0, -0.3, -1);
             GlStateManager.scale(1.2, 1.2, 1.2);
+            GlStateManager.rotate(180, 0, 1, 0);
+            GlStateManager.rotate(90, 0, 0, 1);
             Minecraft.getMinecraft().getRenderItem().renderItem(heldItem, ItemCameraTransforms.TransformType.FIXED);
             GlStateManager.popMatrix();
         }
@@ -177,8 +179,14 @@ public class ForgeEvent {
             render(f6, f5, entity.ticksExisted, f2, f7, f4, entity, mainModel);
             ItemStack heldItem = new ItemStack(BlockRegistry.BATTERY);
             GlStateManager.pushMatrix();
-            GlStateManager.translate(0, entity.isSneaking() ? 0.7 : 0.4, -0.5);
-            GlStateManager.scale(0.5f, 0.5f, 0.5f);
+
+            GlStateManager.rotate(50, 1, 0, 0);
+            GlStateManager.rotate(180, 0, 1, 0);
+            GlStateManager.rotate(90, 0, 0, 1);
+
+            GlStateManager.translate(entity.isSneaking() ? 0.1 : -0.1, -0.15, entity.isSneaking() ? 0.2 : 0);
+            GlStateManager.scale(1.5f, 1.5f, 1.5f);
+
             Minecraft.getMinecraft().getItemRenderer().renderItem(entity, heldItem, ItemCameraTransforms.TransformType.NONE);
             GlStateManager.popMatrix();
             GlStateManager.disableRescaleNormal();
