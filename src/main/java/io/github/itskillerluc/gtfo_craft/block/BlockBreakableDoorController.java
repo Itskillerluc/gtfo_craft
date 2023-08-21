@@ -2,12 +2,10 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
-import io.github.itskillerluc.gtfo_craft.network.SmallDoorPacket;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorLarge;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBreakableDoor;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmall;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper.Location;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -20,7 +18,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -33,18 +30,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockBulkheadDoorSmallController extends Block implements ITileEntityProvider {
+public class BlockBreakableDoorController extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
 
     protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
     protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
-    public BlockBulkheadDoorSmallController(Material blockMaterialIn, MapColor blockMapColorIn) {
+    public BlockBreakableDoorController(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-        setRegistryName(new ResourceLocation(GtfoCraft.MODID, "bulkhead_door_small_controller"));
-        setUnlocalizedName("bulkhead_door_small");
+        setRegistryName(new ResourceLocation(GtfoCraft.MODID, "breakable_door_controller"));
+        setUnlocalizedName("breakable_door");
         setDefaultState(super.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false).withProperty(OPEN, false));
     }
 
@@ -56,7 +53,7 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityBulkheadDoorSmall();
+        return new TileEntityBreakableDoor();
     }
     public boolean isFullCube(IBlockState state)
     {
@@ -100,7 +97,7 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     }
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getValue(OPEN)) {
-            return new AxisAlignedBB(0.125, 0.0D, 0D, 0.875, 1.0D, 0.25D);
+            return NULL_AABB;
         }
         EnumFacing enumfacing = state.getValue(FACING);
         switch (enumfacing) {
@@ -121,20 +118,20 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
                 BlockPos y = pos.offset(EnumFacing.UP, i);
                 boolean eastWest = state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST;
                 if (!worldIn.getBlockState(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())).getMaterial().isReplaceable()) continue;
-                worldIn.setBlockState(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()), BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER.getDefaultState()
-                        .withProperty(BlockBulkheadDoorSmallHelper.FACING, placer.getHorizontalFacing().rotateY()), 3);
+                worldIn.setBlockState(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()), BlockRegistry.BREAKABLE_DOOR_HELPER.getDefaultState()
+                        .withProperty(BlockBreakableDoorHelper.FACING, placer.getHorizontalFacing().rotateY()), 3);
                 if ( worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())) instanceof TileEntityBulkheadDoorHelper) {
                     ((TileEntityBulkheadDoorHelper) worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()))).master = pos;
                     Location location;
-                    if (j == 2 && i == 2) {
+                    if (i == 2 && j == 2) {
                         location = Location.CORNERR;
-                    } else if (j == 2) {
-                        location = Location.RIGHT;
-                    } else if (j == 0 && i == 2) {
-                        location = Location.CORNERL;
-                    } else if (j == 0) {
-                        location = Location.LEFT;
                     } else if (i == 2) {
+                        location = Location.RIGHT;
+                    } else if (i == 0 && j == 2) {
+                        location = Location.CORNERL;
+                    } else if (i == 0) {
+                        location = Location.LEFT;
+                    } else if (j == 2) {
                         location = Location.TOP;
                     } else {
                         location = Location.CENTER;
@@ -158,10 +155,10 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
     public static void breakDoor(World world, BlockPos pos, EnumFacing facing) {
         for (int i = 2; i >= 0; i--) {
             for (int j = 0; j <= 2; j++) {
-                boolean eastWest = facing == EnumFacing.EAST || facing == EnumFacing.WEST;
                 BlockPos xz = pos.offset(facing, -j);
                 BlockPos y = pos.offset(EnumFacing.UP, i);
-                if (world.getBlockState(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())).getBlock().equals(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER)) continue;
+                boolean eastWest = facing == EnumFacing.EAST || facing == EnumFacing.WEST;
+                if (world.getBlockState(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())).getBlock().equals(BlockRegistry.BREAKABLE_DOOR_CONTROLLER)) continue;
                 world.setBlockToAir(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()));
             }
         }
@@ -187,15 +184,11 @@ public class BlockBulkheadDoorSmallController extends Block implements ITileEnti
         if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != iblockstate1.getValue(POWERED))
         {
             worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, flag), 2);
-            worldIn.setBlockState(pos, state.withProperty(POWERED, flag), 2);
 
             if (flag != state.getValue(OPEN))
             {
-                if (worldIn.getTileEntity(pos) instanceof TileEntityBulkheadDoorSmall && worldIn.getTileEntity(pos) != null) {
-                    ((TileEntityBulkheadDoorSmall) worldIn.getTileEntity(pos)).open();
-                    for (EntityPlayerMP player : worldIn.getMinecraftServer().getPlayerList().getPlayers()) {
-                        PacketHandler.sendTo(player, new SmallDoorPacket(pos));
-                    }
+                if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoor && worldIn.getTileEntity(pos) != null) {
+                    ((TileEntityBreakableDoor) worldIn.getTileEntity(pos)).open();
                     worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 }
             }

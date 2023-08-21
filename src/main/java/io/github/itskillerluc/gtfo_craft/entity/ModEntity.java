@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIBlockBreak;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.ai.EntityAIBreakDoor;
 import net.minecraft.entity.monster.EntityMob;
@@ -14,11 +15,6 @@ public abstract class ModEntity extends EntityMob {
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        super.tasks.addTask(1, new EntityAIBreakDoor(this) {
-            @Override
-            public boolean shouldExecute() {
-                return super.shouldExecute() && this.doorBlock.equals(BlockRegistry.BREAKABLE_DOOR);
-            }
-        });
+        super.tasks.addTask(1, new EntityAIBlockBreak(this, goal -> goal.getBlock().equals(BlockRegistry.BREAKABLE_DOOR_HELPER) || goal.getBlock().equals(BlockRegistry.BREAKABLE_DOOR_CONTROLLER)));
     }
 }

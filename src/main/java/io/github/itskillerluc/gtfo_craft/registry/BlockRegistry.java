@@ -14,13 +14,16 @@ public class BlockRegistry {
     public static final Block TURRET_SLOW = new BlockTurret(Material.IRON, MapColor.IRON, "turret_slow", 8, 40, 10).setBlockUnbreakable();
     public static final Block TURRET_MEDIUM = new BlockTurret(Material.IRON, MapColor.IRON, "turret_medium", 5, 25, 10).setBlockUnbreakable();
     public static final Block TURRET_FAST = new BlockTurret(Material.IRON, MapColor.IRON, "turret_fast", 2, 10, 10).setBlockUnbreakable();
-    public static final BlockBreakableDoor BREAKABLE_DOOR = new BlockBreakableDoor(Material.WOOD);
     public static final BlockGlowStick GLOW_STICK_BLOCK = new BlockGlowStick();
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
     public static final Block BATTERY = new BlockBattery().setBlockUnbreakable();
     public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
     public static final BlockBulkheadDoorSmallController BULKHEAD_DOOR_SMALL_CONTROLLER = new BlockBulkheadDoorSmallController(Material.IRON, MapColor.IRON);
     public static final BlockBulkheadDoorSmallHelper BULKHEAD_DOOR_SMALL_HELPER = new BlockBulkheadDoorSmallHelper(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorController BREAKABLE_DOOR_CONTROLLER = new BlockBreakableDoorController(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorHelper BREAKABLE_DOOR_HELPER = new BlockBreakableDoorHelper(Material.IRON, MapColor.IRON);
+    public static final BlockBulkheadDoorLargeController BULKHEAD_DOOR_LARGE_CONTROLLER = new BlockBulkheadDoorLargeController(Material.IRON, MapColor.IRON);
+    public static final BlockBulkheadDoorLargeHelper BULKHEAD_DOOR_LARGE_HELPER = new BlockBulkheadDoorLargeHelper(Material.IRON, MapColor.IRON);
     public static final BlockCocoon COCOON = new BlockCocoon(Material.WEB, MapColor.WHITE_STAINED_HARDENED_CLAY);
     public static final BlockFogTemporary FOG_TEMPORARY = new BlockFogTemporary();
 
@@ -31,12 +34,15 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(TURRET_SLOW);
         registryEvent.getRegistry().register(TURRET_MEDIUM);
         registryEvent.getRegistry().register(TURRET_FAST);
-        registryEvent.getRegistry().register(BREAKABLE_DOOR);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_CONTROLLER);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_HELPER);
         registryEvent.getRegistry().register(GENERATOR);
         registryEvent.getRegistry().register(BATTERY);
         registryEvent.getRegistry().register(TRIP_MINE);
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_CONTROLLER);
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_HELPER);
+        registryEvent.getRegistry().register(BULKHEAD_DOOR_LARGE_CONTROLLER);
+        registryEvent.getRegistry().register(BULKHEAD_DOOR_LARGE_HELPER);
         registryEvent.getRegistry().register(COCOON);
         registryEvent.getRegistry().register(FOG_TEMPORARY);
     }

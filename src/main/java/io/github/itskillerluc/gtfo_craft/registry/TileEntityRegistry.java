@@ -1,11 +1,9 @@
 package io.github.itskillerluc.gtfo_craft.registry;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
-import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
 import io.github.itskillerluc.gtfo_craft.tileentity.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileEntityRegistry {
@@ -16,7 +14,9 @@ public class TileEntityRegistry {
         registerTile(TileEntityTripMine.class, "trip_mine");
         registerTile(TileEntityBulkheadDoorSmall.class, "bulkhead_door_small");
         registerTile(TileEntityCocoon.class, "cocoon");
-        registerTile(TileEntityBulkheadDoorSmallHelper.class, "bulkhead_door_small_helper");
+        registerTile(TileEntityBulkheadDoorHelper.class, "bulkhead_door_helper");
+        registerTile(TileEntityBulkheadDoorLarge.class, "bulkhead_door_large");
+        registerTile(TileEntityBreakableDoor.class, "breakable_door");
         registerTile(TileEntityFogTemporary.class, "fog_temporary");
     }
 

@@ -17,7 +17,6 @@ public class ItemRegistry {
     public static final Item PELLET = new ItemPellet().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "pellet"));
     public static final Item GLOW_STICK = new ItemGlowStick().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "glow_stick"));
     public static final Item AMMO = new Item().setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "ammo")).setUnlocalizedName("ammo");
-    public static final Item BREAKABLE_DOOR = new ItemDoor(BlockRegistry.BREAKABLE_DOOR).setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "breakable_door")).setUnlocalizedName("breakable_door");
     public static final Item SPITTER = new ItemSpitterSpawn().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "spitter")).setUnlocalizedName("spitter").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
 
     public static void registerItems(RegistryEvent.Register<Item> registryEvent) {
@@ -32,11 +31,15 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.COCOON).setRegistryName(BlockRegistry.COCOON.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG_TEMPORARY).setRegistryName(BlockRegistry.FOG_TEMPORARY.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_CONTROLLER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_HELPER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_HELPER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_HELPER.getRegistryName()));
+
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);
         registryEvent.getRegistry().register(AMMO);
         registryEvent.getRegistry().register(GLOW_STICK);
-        registryEvent.getRegistry().register(BREAKABLE_DOOR);
         registryEvent.getRegistry().register(SPITTER);
 
         TileEntityRegistry.registerTiles();

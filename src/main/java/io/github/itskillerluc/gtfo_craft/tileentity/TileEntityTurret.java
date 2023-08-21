@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.tileentity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,12 +13,19 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class TileEntityTurret extends TileEntity implements ITickable {
+public class TileEntityTurret extends TileEntity implements ITickable, IAnimatable {
     public int damage = 0;
     public int speed = 0;
     public int range = 0;
@@ -25,6 +33,10 @@ public class TileEntityTurret extends TileEntity implements ITickable {
     public static final int CAPACITY = 512;
     public int ammo = 0;
     private int timer = 0;
+    private boolean shouldShoot;
+    private final AnimationFactory manager = new AnimationFactory(this);
+
+
 
     public TileEntityTurret(){}
 
@@ -54,6 +66,7 @@ public class TileEntityTurret extends TileEntity implements ITickable {
                 entityLiving.attackEntityFrom(DamageSource.GENERIC, damage);
                 world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_NOTE_SNARE, SoundCategory.BLOCKS, 1, 1, false);
                 timer = 0;
+                shouldShoot = true;
                 ammo--;
             });
         }
@@ -91,6 +104,7 @@ public class TileEntityTurret extends TileEntity implements ITickable {
         tag.setInteger("damage", this.damage);
         tag.setInteger("speed", this.speed);
         tag.setInteger("range", this.range);
+        tag.setBoolean("shouldShoot", this.shouldShoot);
         tag.setString("direction", this.direction.getName2());
         return tag;
     }
@@ -103,6 +117,7 @@ public class TileEntityTurret extends TileEntity implements ITickable {
         this.damage = tag.getInteger("damage");
         this.speed = tag.getInteger("speed");
         this.range = tag.getInteger("range");
+        this.shouldShoot = tag.getBoolean("shouldShoot");
         this.direction = EnumFacing.byName(tag.getString("direction"));
     }
 
@@ -111,5 +126,30 @@ public class TileEntityTurret extends TileEntity implements ITickable {
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(pos, -1, getUpdateTag());
+    }
+
+    @Override
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+
+    private <E extends TileEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        AnimationBuilder builder = new AnimationBuilder();
+        if (shouldShoot) {
+            event.getController().clearAnimationCache();
+            builder.addAnimation("shoot");
+            shouldShoot = false;
+            event.getController().setAnimation(builder);
+
+        } else {
+            return PlayState.CONTINUE;
+        }
+        return PlayState.CONTINUE;
+
+    }
+    @Override
+    public AnimationFactory getFactory() {
+        return manager;
     }
 }

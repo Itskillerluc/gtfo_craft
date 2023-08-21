@@ -2,12 +2,10 @@ package io.github.itskillerluc.gtfo_craft.proxy;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import io.github.itskillerluc.gtfo_craft.client.entity.renderer.*;
-import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderBulkheadDoorSmall;
-import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
+import io.github.itskillerluc.gtfo_craft.client.tile.renderer.*;
 import io.github.itskillerluc.gtfo_craft.entity.*;
 import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmall;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTripMine;
+import io.github.itskillerluc.gtfo_craft.tileentity.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -64,6 +62,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityGlowStick.class, renderManager -> new RenderProjectile<>(renderManager, ItemRegistry.GLOW_STICK, Minecraft.getMinecraft().getRenderItem()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripMine.class, new RenderTripMine());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurret.class, new RenderTurret());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorSmall.class, new RenderBulkheadDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorLarge.class, new RenderBulkheadDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoor.class, new RenderBreakableDoor());
     }
 }
