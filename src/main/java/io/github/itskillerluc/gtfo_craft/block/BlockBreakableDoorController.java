@@ -2,8 +2,11 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
+import io.github.itskillerluc.gtfo_craft.network.BulkheadDoorPacket;
+import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBreakableDoor;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoor;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorSmall;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper.Location;
@@ -18,6 +21,8 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -30,13 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockBreakableDoorController extends Block implements ITileEntityProvider {
-    public static final PropertyDirection FACING = BlockHorizontal.FACING;
-    public static final PropertyBool POWERED = PropertyBool.create("powered");
-    public static final PropertyBool OPEN = PropertyBool.create("open");
-
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
+public class BlockBreakableDoorController extends BlockBulkheadDoorController implements ITileEntityProvider {
     public BlockBreakableDoorController(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
@@ -45,68 +44,11 @@ public class BlockBreakableDoorController extends Block implements ITileEntityPr
         setDefaultState(super.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false).withProperty(OPEN, false));
     }
 
-    public EnumBlockRenderType getRenderType(IBlockState state)
-    {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityBreakableDoor();
-    }
-    public boolean isFullCube(IBlockState state)
-    {
-        return false;
-    }
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return false;
-    }
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-    {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
-                .withProperty(FACING, placer.getHorizontalFacing().rotateYCCW())
-                .withProperty(POWERED, false)
-                .withProperty(OPEN, false);
-    }
-
-
-
-    public IBlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState()
-                .withProperty(FACING, EnumFacing.getHorizontal(meta & 0b0011))
-                .withProperty(POWERED, (meta & 0b0100) != 0)
-                .withProperty(OPEN, (meta & 0b1000) != 0);
-    }
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex() | (state.getValue(POWERED) ? 0b100 : 0) | (state.getValue(OPEN) ? 0b1000 : 0);
-    }
-    public IBlockState withRotation(IBlockState state, Rotation rot)
-    {
-        return state.getBlock() != this ? state : state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-    }
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, POWERED, OPEN);
-    }
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        if (state.getValue(OPEN)) {
-            return NULL_AABB;
-        }
-        EnumFacing enumfacing = state.getValue(FACING);
-        switch (enumfacing) {
-            case WEST:
-            case EAST:
-                return EAST;
-            default:
-                return NORTH;
-        }
     }
 
     @Override
@@ -141,17 +83,6 @@ public class BlockBreakableDoorController extends Block implements ITileEntityPr
             }
         }
     }
-
-    @Override
-    public boolean isCollidable() {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
     public static void breakDoor(World world, BlockPos pos, EnumFacing facing) {
         for (int i = 2; i >= 0; i--) {
             for (int j = 0; j <= 2; j++) {
@@ -166,32 +97,28 @@ public class BlockBreakableDoorController extends Block implements ITileEntityPr
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return true;
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         breakDoor(worldIn, pos, state.getValue(FACING));
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        BlockPos blockpos1 = pos.up();
-        IBlockState iblockstate1 = worldIn.getBlockState(blockpos1);
-        boolean flag = worldIn.isBlockPowered(pos) || worldIn.isBlockPowered(blockpos1);
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {}
 
-        if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != iblockstate1.getValue(POWERED))
-        {
-            worldIn.setBlockState(blockpos1, iblockstate1.withProperty(POWERED, flag), 2);
-
-            if (flag != state.getValue(OPEN))
-            {
-                if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoor && worldIn.getTileEntity(pos) != null) {
-                    ((TileEntityBreakableDoor) worldIn.getTileEntity(pos)).open();
-                    worldIn.markBlockRangeForRenderUpdate(pos, pos);
-                }
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (state.getValue(OPEN)) {
+            if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoor && worldIn.getTileEntity(pos) != null) {
+                ((TileEntityBreakableDoor) worldIn.getTileEntity(pos)).shouldClose = true;
+                worldIn.markBlockRangeForRenderUpdate(pos, pos);
+                return true;
+            }
+        } else {
+            if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoor && worldIn.getTileEntity(pos) != null) {
+                ((TileEntityBreakableDoor) worldIn.getTileEntity(pos)).shouldOpen = true;
+                worldIn.markBlockRangeForRenderUpdate(pos, pos);
+                return true;
             }
         }
+        return false;
     }
 }

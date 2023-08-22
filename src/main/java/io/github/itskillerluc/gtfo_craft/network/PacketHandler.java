@@ -17,7 +17,7 @@ public class PacketHandler {
         int id = 0;
         HANDLER.registerMessage(BatteryPacket.Handler.class, BatteryPacket.class, id++, Side.CLIENT);
         HANDLER.registerMessage(SyncScanPacket.Handler.class, SyncScanPacket.class, id++, Side.CLIENT);
-        HANDLER.registerMessage(SmallDoorPacket.Handler.class, SmallDoorPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(BulkheadDoorPacket.Handler.class, BulkheadDoorPacket.class, id++, Side.CLIENT);
     }
 
     /**

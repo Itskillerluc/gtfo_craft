@@ -1,12 +1,12 @@
 package io.github.itskillerluc.gtfo_craft.tileentity;
 
-import io.github.itskillerluc.gtfo_craft.block.BlockBulkheadDoorSmallController;
+import io.github.itskillerluc.gtfo_craft.block.BlockBulkheadDoorController;
 import io.github.itskillerluc.gtfo_craft.block.BlockBulkheadDoorSmallHelper;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -17,13 +17,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class TileEntityBulkheadDoorSmall extends TileEntity implements IAnimatable {
+public class TileEntityBulkheadDoorSmall extends TileEntityBulkheadDoor implements IAnimatable {
     private final AnimationFactory manager = new AnimationFactory(this);
 
     private <E extends TileEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (world.getBlockState(pos).getValue(BlockBulkheadDoorSmallController.OPEN) && event.getController().isJustStarting) {
+        if (world.getBlockState(pos).getValue(BlockBulkheadDoorController.OPEN) && event.getController().isJustStarting) {
             event.getController().setAnimation(new AnimationBuilder().playAndHold("open"));
-        } else if (world.getBlockState(pos).getValue(BlockBulkheadDoorSmallController.OPEN) && event.getController().getAnimationState() == AnimationState.Stopped) {
+        } else if (world.getBlockState(pos).getValue(BlockBulkheadDoorController.OPEN) && event.getController().getAnimationState() == AnimationState.Stopped) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle_open"));
         }
         return PlayState.CONTINUE;
@@ -36,17 +36,14 @@ public class TileEntityBulkheadDoorSmall extends TileEntity implements IAnimatab
 
     @Override
     public AnimationFactory getFactory() {
-        return this.manager;
+        return manager;
     }
+
 
     @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
-    }
-
     public void open() {
         IBlockState controller = world.getBlockState(pos);
-        EnumFacing facing = controller.getValue(BlockBulkheadDoorSmallController.FACING);
+        EnumFacing facing = controller.getValue(BlockBulkheadDoorController.FACING);
 
         for (int i = 2; i >= 0; i--) {
             for (int j = 0; j <= 2; j++) {
@@ -75,6 +72,6 @@ public class TileEntityBulkheadDoorSmall extends TileEntity implements IAnimatab
                 ((TileEntityBulkheadDoorHelper) world.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()))).setLocation(location);
             }
         }
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBulkheadDoorSmallController.OPEN, true));
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBulkheadDoorController.OPEN, true));
     }
 }
