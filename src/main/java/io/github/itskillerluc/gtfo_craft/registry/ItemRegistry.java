@@ -8,7 +8,6 @@ import io.github.itskillerluc.gtfo_craft.item.ItemPellet;
 import io.github.itskillerluc.gtfo_craft.item.ItemSpitterSpawn;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemDoor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 
@@ -27,14 +26,14 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BATTERY).setRegistryName(BlockRegistry.BATTERY.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.GENERATOR).setRegistryName(BlockRegistry.GENERATOR.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TRIP_MINE).setRegistryName(BlockRegistry.TRIP_MINE.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.SECURITY_DOOR_SMALL_HELPER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.COCOON).setRegistryName(BlockRegistry.COCOON.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG_TEMPORARY).setRegistryName(BlockRegistry.FOG_TEMPORARY.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_CONTROLLER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_CONTROLLER.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_HELPER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_HELPER.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER.getRegistryName()));
-        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_HELPER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_HELPER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER.getRegistryName()));
 
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);

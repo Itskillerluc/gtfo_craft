@@ -1,9 +1,9 @@
 package io.github.itskillerluc.gtfo_craft.block;
 
-import io.github.itskillerluc.gtfo_craft.network.BulkheadDoorPacket;
+import io.github.itskillerluc.gtfo_craft.network.DoorPacket;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoor;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoor;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.MapColor;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockBulkheadDoorHelper extends Block {
+public class BlockDoorHelper extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
@@ -58,52 +58,52 @@ public class BlockBulkheadDoorHelper extends Block {
                 .withProperty(OPEN, (meta & 0b1000) != 0);
     }
 
-    public BlockBulkheadDoorHelper(Material blockMaterialIn, MapColor blockMapColorIn) {
+    public BlockDoorHelper(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (source.getTileEntity(pos) == null) {
-            return BlockBulkheadDoorHelper.EAST_CENTER;
+            return BlockDoorHelper.EAST_CENTER;
         }
-        EnumFacing enumfacing = state.getValue(BlockBulkheadDoorHelper.FACING);
+        EnumFacing enumfacing = state.getValue(BlockDoorHelper.FACING);
         boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
         boolean isInversed = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.SOUTH;
-        TileEntityBulkheadDoorHelper tile = ((TileEntityBulkheadDoorHelper) source.getTileEntity(pos));
-        if (tile == null || !state.getValue(BlockBulkheadDoorHelper.OPEN)) {
-            return isEastWest ? BlockBulkheadDoorHelper.EAST_CENTER : BlockBulkheadDoorHelper.NORTH_CENTER;
+        TileEntityDoorHelper tile = ((TileEntityDoorHelper) source.getTileEntity(pos));
+        if (tile == null || !state.getValue(BlockDoorHelper.OPEN)) {
+            return isEastWest ? BlockDoorHelper.EAST_CENTER : BlockDoorHelper.NORTH_CENTER;
         }
         switch (tile.getLocation()) {
             case CORNERL:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERR : BlockBulkheadDoorHelper.NORTH_CORNERR;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERR : BlockDoorHelper.NORTH_CORNERR;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERL : BlockBulkheadDoorHelper.NORTH_CORNERL;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERL : BlockDoorHelper.NORTH_CORNERL;
                 }
             case CORNERR:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERL : BlockBulkheadDoorHelper.NORTH_CORNERL;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERL : BlockDoorHelper.NORTH_CORNERL;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERR : BlockBulkheadDoorHelper.NORTH_CORNERR;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERR : BlockDoorHelper.NORTH_CORNERR;
                 }
             case CENTER:
                 return isEastWest ? EAST_CENTER : NORTH_CENTER;
             case TOP:
-                return isEastWest ? BlockBulkheadDoorHelper.EAST_TOP : BlockBulkheadDoorHelper.NORTH_TOP;
+                return isEastWest ? BlockDoorHelper.EAST_TOP : BlockDoorHelper.NORTH_TOP;
             case LEFT:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_LEFT : BlockBulkheadDoorHelper.NORTH_RIGHT;
+                    return isEastWest ? BlockDoorHelper.EAST_LEFT : BlockDoorHelper.NORTH_RIGHT;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_RIGHT : BlockBulkheadDoorHelper.NORTH_LEFT;
+                    return isEastWest ? BlockDoorHelper.EAST_RIGHT : BlockDoorHelper.NORTH_LEFT;
                 }
             case RIGHT:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_RIGHT : BlockBulkheadDoorHelper.NORTH_LEFT;
+                    return isEastWest ? BlockDoorHelper.EAST_RIGHT : BlockDoorHelper.NORTH_LEFT;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_LEFT : BlockBulkheadDoorHelper.NORTH_RIGHT;
+                    return isEastWest ? BlockDoorHelper.EAST_LEFT : BlockDoorHelper.NORTH_RIGHT;
                 }
             default:
-                throw new IllegalStateException("Unexpected value: " + ((TileEntityBulkheadDoorHelper) source.getTileEntity(pos)).getLocation());
+                throw new IllegalStateException("Unexpected value: " + ((TileEntityDoorHelper) source.getTileEntity(pos)).getLocation());
         }
     }
 
@@ -112,28 +112,28 @@ public class BlockBulkheadDoorHelper extends Block {
         if (worldIn.getTileEntity(pos) == null) {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
         }
-        EnumFacing enumfacing = state.getValue(BlockBulkheadDoorHelper.FACING);
+        EnumFacing enumfacing = state.getValue(BlockDoorHelper.FACING);
         boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
         boolean isInversed = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.SOUTH;
-        TileEntityBulkheadDoorHelper tile = ((TileEntityBulkheadDoorHelper) worldIn.getTileEntity(pos));
-        if (tile == null || !state.getValue(BlockBulkheadDoorHelper.OPEN)) {
+        TileEntityDoorHelper tile = ((TileEntityDoorHelper) worldIn.getTileEntity(pos));
+        if (tile == null || !state.getValue(BlockDoorHelper.OPEN)) {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
         }
-        if (tile.getLocation() == TileEntityBulkheadDoorHelper.Location.CORNERL) {
+        if (tile.getLocation() == TileEntityDoorHelper.Location.CORNERL) {
             if (isEastWest) {
-                if (entityBox.intersects(BlockBulkheadDoorHelper.EAST_TOP.offset(pos))) {
-                    collidingBoxes.add(BlockBulkheadDoorHelper.EAST_TOP.offset(pos));
+                if (entityBox.intersects(BlockDoorHelper.EAST_TOP.offset(pos))) {
+                    collidingBoxes.add(BlockDoorHelper.EAST_TOP.offset(pos));
                 }
-            } else if (entityBox.intersects(BlockBulkheadDoorHelper.NORTH_TOP.offset(pos))) {
-                collidingBoxes.add(BlockBulkheadDoorHelper.NORTH_TOP.offset(pos));
+            } else if (entityBox.intersects(BlockDoorHelper.NORTH_TOP.offset(pos))) {
+                collidingBoxes.add(BlockDoorHelper.NORTH_TOP.offset(pos));
             }
-        } else if (tile.getLocation() == TileEntityBulkheadDoorHelper.Location.CORNERR) {
+        } else if (tile.getLocation() == TileEntityDoorHelper.Location.CORNERR) {
             if (isEastWest) {
-                if (entityBox.intersects(BlockBulkheadDoorHelper.EAST_TOP.offset(pos))) {
-                    collidingBoxes.add(BlockBulkheadDoorHelper.EAST_TOP.offset(pos));
+                if (entityBox.intersects(BlockDoorHelper.EAST_TOP.offset(pos))) {
+                    collidingBoxes.add(BlockDoorHelper.EAST_TOP.offset(pos));
                 }
-            } else if (entityBox.intersects(BlockBulkheadDoorHelper.NORTH_TOP.offset(pos))) {
-                collidingBoxes.add(BlockBulkheadDoorHelper.NORTH_TOP.offset(pos));
+            } else if (entityBox.intersects(BlockDoorHelper.NORTH_TOP.offset(pos))) {
+                collidingBoxes.add(BlockDoorHelper.NORTH_TOP.offset(pos));
             }
         } else {
             super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
@@ -146,44 +146,44 @@ public class BlockBulkheadDoorHelper extends Block {
         if (worldIn.getTileEntity(pos) == null) {
             return NULL_AABB;
         }
-        EnumFacing enumfacing = blockState.getValue(BlockBulkheadDoorHelper.FACING);
+        EnumFacing enumfacing = blockState.getValue(BlockDoorHelper.FACING);
         boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
         boolean isInversed = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.SOUTH;
-        TileEntityBulkheadDoorHelper tile = ((TileEntityBulkheadDoorHelper) worldIn.getTileEntity(pos));
-        if (tile == null || !blockState.getValue(BlockBulkheadDoorHelper.OPEN)) {
-            return isEastWest ? BlockBulkheadDoorHelper.EAST_CENTER : BlockBulkheadDoorHelper.NORTH_CENTER;
+        TileEntityDoorHelper tile = ((TileEntityDoorHelper) worldIn.getTileEntity(pos));
+        if (tile == null || !blockState.getValue(BlockDoorHelper.OPEN)) {
+            return isEastWest ? BlockDoorHelper.EAST_CENTER : BlockDoorHelper.NORTH_CENTER;
         }
         switch (tile.getLocation()) {
             case CORNERL:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERL : BlockBulkheadDoorHelper.NORTH_CORNERR;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERL : BlockDoorHelper.NORTH_CORNERR;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERR : BlockBulkheadDoorHelper.NORTH_CORNERL;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERR : BlockDoorHelper.NORTH_CORNERL;
                 }
             case CORNERR:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERR : BlockBulkheadDoorHelper.NORTH_CORNERL;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERR : BlockDoorHelper.NORTH_CORNERL;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_CORNERL : BlockBulkheadDoorHelper.NORTH_CORNERR;
+                    return isEastWest ? BlockDoorHelper.EAST_CORNERL : BlockDoorHelper.NORTH_CORNERR;
                 }
             case CENTER:
                 return NULL_AABB;
             case TOP:
-                return isEastWest ? BlockBulkheadDoorHelper.EAST_TOP : BlockBulkheadDoorHelper.NORTH_TOP;
+                return isEastWest ? BlockDoorHelper.EAST_TOP : BlockDoorHelper.NORTH_TOP;
             case LEFT:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_LEFT : BlockBulkheadDoorHelper.NORTH_RIGHT;
+                    return isEastWest ? BlockDoorHelper.EAST_LEFT : BlockDoorHelper.NORTH_RIGHT;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_RIGHT : BlockBulkheadDoorHelper.NORTH_LEFT;
+                    return isEastWest ? BlockDoorHelper.EAST_RIGHT : BlockDoorHelper.NORTH_LEFT;
                 }
             case RIGHT:
                 if (!isInversed) {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_RIGHT : BlockBulkheadDoorHelper.NORTH_LEFT;
+                    return isEastWest ? BlockDoorHelper.EAST_RIGHT : BlockDoorHelper.NORTH_LEFT;
                 } else {
-                    return isEastWest ? BlockBulkheadDoorHelper.EAST_LEFT : BlockBulkheadDoorHelper.NORTH_RIGHT;
+                    return isEastWest ? BlockDoorHelper.EAST_LEFT : BlockDoorHelper.NORTH_RIGHT;
                 }
             default:
-                throw new IllegalStateException("Unexpected value: " + ((TileEntityBulkheadDoorHelper) worldIn.getTileEntity(pos)).getLocation());
+                throw new IllegalStateException("Unexpected value: " + ((TileEntityDoorHelper) worldIn.getTileEntity(pos)).getLocation());
         }
     }
     public int getMetaFromState(IBlockState state) {
@@ -198,7 +198,7 @@ public class BlockBulkheadDoorHelper extends Block {
     }
     public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
@@ -224,12 +224,12 @@ public class BlockBulkheadDoorHelper extends Block {
 
         if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != iblockstate1.getValue(POWERED))
         {
-            if (flag != state.getValue(OPEN))
+            if (!state.getValue(OPEN))
             {
-                if (worldIn.getTileEntity(pos) instanceof TileEntityBulkheadDoorHelper && worldIn.getTileEntity(pos) != null) {
-                    ((TileEntityBulkheadDoor) worldIn.getTileEntity(((TileEntityBulkheadDoorHelper) worldIn.getTileEntity(pos)).master)).open();
+                if (worldIn.getTileEntity(pos) instanceof TileEntityDoorHelper && worldIn.getTileEntity(pos) != null) {
+                    ((TileEntityDoor) worldIn.getTileEntity(((TileEntityDoorHelper) worldIn.getTileEntity(pos)).master)).open();
                     for (EntityPlayerMP player : worldIn.getMinecraftServer().getPlayerList().getPlayers()) {
-                        PacketHandler.sendTo(player, new BulkheadDoorPacket(pos));
+                        PacketHandler.sendTo(player, new DoorPacket(pos));
                     }
                     worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 }

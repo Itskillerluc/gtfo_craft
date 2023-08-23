@@ -12,11 +12,11 @@ public class TileEntityRegistry {
         registerTile(TileEntityGlowStick.class, "glow_stick");
         registerTile(TileEntityTurret.class, "turret");
         registerTile(TileEntityTripMine.class, "trip_mine");
-        registerTile(TileEntityBulkheadDoorSmall.class, "bulkhead_door_small");
+        registerTile(TileEntitySecurityDoorSmall.class, "security_door_small");
         registerTile(TileEntityCocoon.class, "cocoon");
-        registerTile(TileEntityBulkheadDoorHelper.class, "bulkhead_door_helper");
-        registerTile(TileEntityBulkheadDoorLarge.class, "bulkhead_door_large");
-        registerTile(TileEntityBreakableDoor.class, "breakable_door");
+        registerTile(TileEntityDoorHelper.class, "door_helper");
+        registerTile(TileEntityBreakableDoorLarge.class, "breakable_door_large");
+        registerTile(TileEntityBreakableDoorSmall.class, "breakable_door_small");
         registerTile(TileEntityFogTemporary.class, "fog_temporary");
     }
 

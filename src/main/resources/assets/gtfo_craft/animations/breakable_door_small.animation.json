@@ -58,15 +58,15 @@
 				"door": {
 					"position": {
 						"0.0": {
-							"vector": [0, 40, 0],
+							"vector": [0, 0, 0],
 							"easing": "easeInOutQuad"
 						},
 						"0.5": {
-							"vector": [0, 40, 0],
+							"vector": [0, 0, 0],
 							"easing": "easeInOutQuad"
 						},
 						"2.0": {
-							"vector": [0, 0, 0],
+							"vector": [0, -40, 0],
 							"easing": "easeInBounce",
 							"easingArgs": [0.05]
 						}

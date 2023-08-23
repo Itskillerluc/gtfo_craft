@@ -1,8 +1,8 @@
 package io.github.itskillerluc.gtfo_craft.block;
 
-import io.github.itskillerluc.gtfo_craft.network.BulkheadDoorPacket;
+import io.github.itskillerluc.gtfo_craft.network.DoorPacket;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoor;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.MapColor;
@@ -25,14 +25,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockBulkheadDoorController extends Block {
+public abstract class BlockDoorController extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.3125D, 0.0D, 0D, 0.68750D, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0D, 0.0D, 0.3125D, 1, 1.0D, 0.68750D);
-
-    public BlockBulkheadDoorController(Material blockMaterialIn, MapColor blockMapColorIn) {
+    public BlockDoorController(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
     }
 
@@ -80,22 +77,22 @@ public abstract class BlockBulkheadDoorController extends Block {
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getValue(OPEN)) {
-            EnumFacing enumfacing = state.getValue(BlockBulkheadDoorLargeHelper.FACING);
+            EnumFacing enumfacing = state.getValue(BlockBreakableDoorLargeHelper.FACING);
             boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
             boolean isInversed = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.SOUTH;
             if (!isInversed) {
-                return isEastWest ? BlockBulkheadDoorLargeHelper.EAST_RIGHT : BlockBulkheadDoorLargeHelper.NORTH_LEFT;
+                return isEastWest ? BlockBreakableDoorLargeHelper.EAST_RIGHT : BlockBreakableDoorLargeHelper.NORTH_LEFT;
             } else {
-                return isEastWest ? BlockBulkheadDoorLargeHelper.EAST_LEFT : BlockBulkheadDoorLargeHelper.NORTH_RIGHT;
+                return isEastWest ? BlockBreakableDoorLargeHelper.EAST_LEFT : BlockBreakableDoorLargeHelper.NORTH_RIGHT;
             }
         }
         EnumFacing enumfacing = state.getValue(FACING);
         switch (enumfacing) {
             case WEST:
             case EAST:
-                return EAST;
+                return BlockDoorHelper.EAST_CENTER;
             default:
-                return NORTH;
+                return BlockDoorHelper.NORTH_CENTER;
         }
     }
 
@@ -123,11 +120,11 @@ public abstract class BlockBulkheadDoorController extends Block {
         if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != iblockstate1.getValue(POWERED)) {
 
 
-            if (flag != state.getValue(OPEN)) {
-                if (worldIn.getTileEntity(pos) instanceof TileEntityBulkheadDoor && worldIn.getTileEntity(pos) != null) {
-                    ((TileEntityBulkheadDoor) worldIn.getTileEntity(pos)).open();
+            if (!state.getValue(OPEN)) {
+                if (worldIn.getTileEntity(pos) instanceof TileEntityDoor && worldIn.getTileEntity(pos) != null) {
+                    ((TileEntityDoor) worldIn.getTileEntity(pos)).open();
                     for (EntityPlayerMP player : worldIn.getMinecraftServer().getPlayerList().getPlayers()) {
-                        PacketHandler.sendTo(player, new BulkheadDoorPacket(pos));
+                        PacketHandler.sendTo(player, new DoorPacket(pos));
                     }
                     worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 }

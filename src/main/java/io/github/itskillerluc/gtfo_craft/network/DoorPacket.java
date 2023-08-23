@@ -2,8 +2,8 @@ package io.github.itskillerluc.gtfo_craft.network;
 
 import com.google.common.collect.Lists;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoor;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBulkheadDoorHelper;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoor;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -16,15 +16,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-public class BulkheadDoorPacket implements IMessage {
-    public static final List<Block> CONTROLLERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_CONTROLLER, BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER, BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER);
-    public static final List<Block> HELPERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_HELPER, BlockRegistry.BULKHEAD_DOOR_SMALL_HELPER, BlockRegistry.BULKHEAD_DOOR_LARGE_HELPER);
+public class DoorPacket implements IMessage {
+    public static final List<Block> CONTROLLERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER, BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER, BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER);
+    public static final List<Block> HELPERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER, BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER, BlockRegistry.SECURITY_DOOR_SMALL_HELPER);
     public BlockPos pos;
 
-    public BulkheadDoorPacket() {}
-    public BulkheadDoorPacket(BlockPos pos) {
+    public DoorPacket() {}
+    public DoorPacket(BlockPos pos) {
         this.pos = pos;
     }
 
@@ -40,13 +39,13 @@ public class BulkheadDoorPacket implements IMessage {
         ByteBufUtils.writeTag(buf, compound);
     }
 
-    public static class Handler implements IMessageHandler<BulkheadDoorPacket, IMessage> {
+    public static class Handler implements IMessageHandler<DoorPacket, IMessage> {
         @Override
-        public IMessage onMessage(BulkheadDoorPacket message, MessageContext ctx) {
+        public IMessage onMessage(DoorPacket message, MessageContext ctx) {
             if (CONTROLLERS.contains(Minecraft.getMinecraft().world.getBlockState(message.pos).getBlock())) {
-                ((TileEntityBulkheadDoor) Minecraft.getMinecraft().world.getTileEntity(message.pos)).open();
+                ((TileEntityDoor) Minecraft.getMinecraft().world.getTileEntity(message.pos)).open();
             } else if (HELPERS.contains(Minecraft.getMinecraft().world.getBlockState(message.pos).getBlock())) {
-                ((TileEntityBulkheadDoor) Minecraft.getMinecraft().world.getTileEntity(((TileEntityBulkheadDoorHelper) Minecraft.getMinecraft().world.getTileEntity(message.pos)).master)).open();
+                ((TileEntityDoor) Minecraft.getMinecraft().world.getTileEntity(((TileEntityDoorHelper) Minecraft.getMinecraft().world.getTileEntity(message.pos)).master)).open();
             }
             return null;
         }

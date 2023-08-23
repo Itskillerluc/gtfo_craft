@@ -4,12 +4,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 
-public class TileEntityBulkheadDoorHelper extends TileEntity {
+public class TileEntityDoorHelper extends TileEntity {
     public Location getLocation() {
         return location;
     }
@@ -29,12 +28,12 @@ public class TileEntityBulkheadDoorHelper extends TileEntity {
     public BlockPos master;
     private Location location = Location.CENTER;
 
-    public TileEntityBulkheadDoorHelper(BlockPos master, Location location) {
+    public TileEntityDoorHelper(BlockPos master, Location location) {
         this.master = master;
         this.setLocation(location);
     }
 
-    public TileEntityBulkheadDoorHelper(){}
+    public TileEntityDoorHelper(){}
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {

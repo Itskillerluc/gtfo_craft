@@ -63,8 +63,8 @@ public class ClientProxy extends CommonProxy {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTripMine.class, new RenderTripMine());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurret.class, new RenderTurret());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorSmall.class, new RenderBulkheadDoorSmall());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorLarge.class, new RenderBulkheadDoorLarge());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoor.class, new RenderBreakableDoor());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityDoorSmall.class, new RenderSecurityDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoorLarge.class, new RenderBreakableDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoorSmall.class, new RenderBreakableDoorSmall());
     }
 }

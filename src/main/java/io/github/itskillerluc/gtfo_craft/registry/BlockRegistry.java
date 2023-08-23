@@ -18,12 +18,12 @@ public class BlockRegistry {
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
     public static final Block BATTERY = new BlockBattery().setBlockUnbreakable();
     public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
-    public static final BlockBulkheadDoorController BULKHEAD_DOOR_SMALL_CONTROLLER = new BlockBulkheadDoorSmallController(Material.IRON, MapColor.IRON);
-    public static final BlockBulkheadDoorSmallHelper BULKHEAD_DOOR_SMALL_HELPER = new BlockBulkheadDoorSmallHelper(Material.IRON, MapColor.IRON);
-    public static final BlockBreakableDoorController BREAKABLE_DOOR_CONTROLLER = new BlockBreakableDoorController(Material.IRON, MapColor.IRON);
-    public static final BlockBreakableDoorHelper BREAKABLE_DOOR_HELPER = new BlockBreakableDoorHelper(Material.IRON, MapColor.IRON);
-    public static final BlockBulkheadDoorLargeController BULKHEAD_DOOR_LARGE_CONTROLLER = new BlockBulkheadDoorLargeController(Material.IRON, MapColor.IRON);
-    public static final BlockBulkheadDoorLargeHelper BULKHEAD_DOOR_LARGE_HELPER = new BlockBulkheadDoorLargeHelper(Material.IRON, MapColor.IRON);
+    public static final BlockDoorController SECURITY_DOOR_SMALL_CONTROLLER = new BlockSecurityDoorSmallController(Material.IRON, MapColor.IRON);
+    public static final BlockSecurityDoorSmallHelper SECURITY_DOOR_SMALL_HELPER = new BlockSecurityDoorSmallHelper(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorSmallController BREAKABLE_DOOR_SMALL_CONTROLLER = new BlockBreakableDoorSmallController(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorSmallHelper BREAKABLE_DOOR_SMALL_HELPER = new BlockBreakableDoorSmallHelper(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorLargeController BREAKABLE_DOOR_LARGE_CONTROLLER = new BlockBreakableDoorLargeController(Material.IRON, MapColor.IRON);
+    public static final BlockBreakableDoorLargeHelper BREAKABLE_DOOR_LARGE_HELPER = new BlockBreakableDoorLargeHelper(Material.IRON, MapColor.IRON);
     public static final BlockCocoon COCOON = new BlockCocoon(Material.WEB, MapColor.WHITE_STAINED_HARDENED_CLAY);
     public static final BlockFogTemporary FOG_TEMPORARY = new BlockFogTemporary();
 
@@ -34,15 +34,15 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(TURRET_SLOW);
         registryEvent.getRegistry().register(TURRET_MEDIUM);
         registryEvent.getRegistry().register(TURRET_FAST);
-        registryEvent.getRegistry().register(BREAKABLE_DOOR_CONTROLLER);
-        registryEvent.getRegistry().register(BREAKABLE_DOOR_HELPER);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_SMALL_CONTROLLER);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_SMALL_HELPER);
         registryEvent.getRegistry().register(GENERATOR);
         registryEvent.getRegistry().register(BATTERY);
         registryEvent.getRegistry().register(TRIP_MINE);
-        registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_CONTROLLER);
-        registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_HELPER);
-        registryEvent.getRegistry().register(BULKHEAD_DOOR_LARGE_CONTROLLER);
-        registryEvent.getRegistry().register(BULKHEAD_DOOR_LARGE_HELPER);
+        registryEvent.getRegistry().register(SECURITY_DOOR_SMALL_CONTROLLER);
+        registryEvent.getRegistry().register(SECURITY_DOOR_SMALL_HELPER);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_LARGE_CONTROLLER);
+        registryEvent.getRegistry().register(BREAKABLE_DOOR_LARGE_HELPER);
         registryEvent.getRegistry().register(COCOON);
         registryEvent.getRegistry().register(FOG_TEMPORARY);
     }
