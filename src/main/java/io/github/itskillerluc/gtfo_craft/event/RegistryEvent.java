@@ -53,6 +53,7 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.AMMO, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.GLOW_STICK, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.SPITTER, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.KEY, 0, "inventory");
 
     }
 }

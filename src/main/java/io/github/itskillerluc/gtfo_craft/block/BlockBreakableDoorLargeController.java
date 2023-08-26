@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -96,12 +97,20 @@ public class BlockBreakableDoorLargeController extends BlockDoorController imple
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (state.getValue(OPEN)) {
             if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoorLarge && worldIn.getTileEntity(pos) != null) {
+                if (((TileEntityBreakableDoorLarge) worldIn.getTileEntity(pos)).isLocked()) {
+                    playerIn.sendStatusMessage(new TextComponentString("This door is locked!"), true);
+                    return true;
+                }
                 ((TileEntityBreakableDoorLarge) worldIn.getTileEntity(pos)).shouldClose = true;
                 worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 return true;
             }
         } else {
             if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoorLarge && worldIn.getTileEntity(pos) != null) {
+                if (((TileEntityBreakableDoorLarge) worldIn.getTileEntity(pos)).isLocked()) {
+                    playerIn.sendStatusMessage(new TextComponentString("This door is locked!"), true);
+                    return true;
+                }
                 ((TileEntityBreakableDoorLarge) worldIn.getTileEntity(pos)).shouldOpen = true;
                 worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 return true;

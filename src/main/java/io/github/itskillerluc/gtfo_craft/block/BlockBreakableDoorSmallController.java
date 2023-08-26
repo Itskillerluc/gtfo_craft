@@ -3,6 +3,7 @@ package io.github.itskillerluc.gtfo_craft.block;
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBreakableDoorLarge;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityBreakableDoorSmall;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper.Location;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -94,12 +96,20 @@ public class BlockBreakableDoorSmallController extends BlockDoorController imple
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (state.getValue(OPEN)) {
             if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoorSmall && worldIn.getTileEntity(pos) != null) {
+                if (((TileEntityBreakableDoorSmall) worldIn.getTileEntity(pos)).isLocked()) {
+                    playerIn.sendStatusMessage(new TextComponentString("This door is locked!"), true);
+                    return true;
+                }
                 ((TileEntityBreakableDoorSmall) worldIn.getTileEntity(pos)).shouldClose = true;
                 worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 return true;
             }
         } else {
             if (worldIn.getTileEntity(pos) instanceof TileEntityBreakableDoorSmall && worldIn.getTileEntity(pos) != null) {
+                if (((TileEntityBreakableDoorSmall) worldIn.getTileEntity(pos)).isLocked()) {
+                    playerIn.sendStatusMessage(new TextComponentString("This door is locked!"), true);
+                    return true;
+                }
                 ((TileEntityBreakableDoorSmall) worldIn.getTileEntity(pos)).shouldOpen = true;
                 worldIn.markBlockRangeForRenderUpdate(pos, pos);
                 return true;

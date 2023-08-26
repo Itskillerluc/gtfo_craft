@@ -20,6 +20,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -227,6 +228,9 @@ public class BlockDoorHelper extends Block {
             if (!state.getValue(OPEN))
             {
                 if (worldIn.getTileEntity(pos) instanceof TileEntityDoorHelper && worldIn.getTileEntity(pos) != null) {
+                    if (((TileEntityDoor) worldIn.getTileEntity(((TileEntityDoorHelper) worldIn.getTileEntity(pos)).master)).isLocked()) {
+                        return;
+                    }
                     ((TileEntityDoor) worldIn.getTileEntity(((TileEntityDoorHelper) worldIn.getTileEntity(pos)).master)).open();
                     for (EntityPlayerMP player : worldIn.getMinecraftServer().getPlayerList().getPlayers()) {
                         PacketHandler.sendTo(player, new DoorPacket(pos));

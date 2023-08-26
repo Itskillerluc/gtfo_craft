@@ -2,10 +2,7 @@ package io.github.itskillerluc.gtfo_craft.registry;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.item.ItemFogRepeller;
-import io.github.itskillerluc.gtfo_craft.item.ItemGlowStick;
-import io.github.itskillerluc.gtfo_craft.item.ItemPellet;
-import io.github.itskillerluc.gtfo_craft.item.ItemSpitterSpawn;
+import io.github.itskillerluc.gtfo_craft.item.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +14,7 @@ public class ItemRegistry {
     public static final Item GLOW_STICK = new ItemGlowStick().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "glow_stick"));
     public static final Item AMMO = new Item().setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "ammo")).setUnlocalizedName("ammo");
     public static final Item SPITTER = new ItemSpitterSpawn().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "spitter")).setUnlocalizedName("spitter").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
+    public static final Item KEY = new ItemKey();
 
     public static void registerItems(RegistryEvent.Register<Item> registryEvent) {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG).setRegistryName(BlockRegistry.FOG.getRegistryName()));
@@ -40,6 +38,7 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(AMMO);
         registryEvent.getRegistry().register(GLOW_STICK);
         registryEvent.getRegistry().register(SPITTER);
+        registryEvent.getRegistry().register(KEY);
 
         TileEntityRegistry.registerTiles();
     }

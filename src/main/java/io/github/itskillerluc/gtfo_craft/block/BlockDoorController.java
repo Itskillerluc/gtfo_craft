@@ -20,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -122,6 +123,9 @@ public abstract class BlockDoorController extends Block {
 
             if (!state.getValue(OPEN)) {
                 if (worldIn.getTileEntity(pos) instanceof TileEntityDoor && worldIn.getTileEntity(pos) != null) {
+                    if (((TileEntityDoor)worldIn.getTileEntity(pos)).isLocked()) {
+                        return;
+                    }
                     ((TileEntityDoor) worldIn.getTileEntity(pos)).open();
                     for (EntityPlayerMP player : worldIn.getMinecraftServer().getPlayerList().getPlayers()) {
                         PacketHandler.sendTo(player, new DoorPacket(pos));
