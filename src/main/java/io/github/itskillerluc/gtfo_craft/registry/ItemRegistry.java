@@ -8,6 +8,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 
+import java.util.TreeMap;
+
 public class ItemRegistry {
     public static final Item FOG_REPELLER = new ItemFogRepeller().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "fog_repeller"));
     public static final Item PELLET = new ItemPellet().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "pellet"));
@@ -25,7 +27,9 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.GENERATOR).setRegistryName(BlockRegistry.GENERATOR.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TRIP_MINE).setRegistryName(BlockRegistry.TRIP_MINE.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.SECURITY_DOOR_LARGE_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_SMALL_HELPER).setRegistryName(BlockRegistry.SECURITY_DOOR_SMALL_HELPER.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SECURITY_DOOR_LARGE_HELPER).setRegistryName(BlockRegistry.SECURITY_DOOR_LARGE_HELPER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.COCOON).setRegistryName(BlockRegistry.COCOON.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG_TEMPORARY).setRegistryName(BlockRegistry.FOG_TEMPORARY.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER.getRegistryName()));

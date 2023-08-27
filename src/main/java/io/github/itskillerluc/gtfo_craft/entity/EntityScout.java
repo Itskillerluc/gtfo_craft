@@ -26,6 +26,7 @@ import java.util.Random;
 
 public class EntityScout extends ModEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private boolean isScreaming = false;
 
     private static final DataParameter<Boolean> ATTACKING =
             EntityDataManager.createKey(EntityScout.class, DataSerializers.BOOLEAN);
@@ -61,6 +62,16 @@ public class EntityScout extends ModEntity implements IAnimatable {
             compound.setTag("summonPos", new NBTTagCompound());
         }
         compound.setString("command", dataManager.get(COMMAND));
+    }
+
+    @Override
+    public boolean hitByEntity(Entity entityIn) {
+        if (isScreaming) {
+            return false;
+        } else {
+            isScreaming = true;
+            return super.hitByEntity(entityIn);
+        }
     }
 
     @Override
@@ -164,6 +175,7 @@ public class EntityScout extends ModEntity implements IAnimatable {
             if (!EntityScout.this.world.isRemote) {
                 world.getMinecraftServer().getCommandManager().executeCommand(EntityScout.this,dataManager.get(COMMAND));
             }
+            isScreaming = true;
             Entity entity = new EntityShooter(world);
             entity.setPosition(posX, posY, posZ);
             world.spawnEntity(entity);

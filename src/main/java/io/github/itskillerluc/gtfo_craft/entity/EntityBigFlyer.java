@@ -103,7 +103,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 40, 10, 10, 195));
+        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 80, 10, 10, 60));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
@@ -197,7 +197,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;
         double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-        entityPellet.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        entityPellet.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.8F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.world.spawnEntity(entityPellet);
     }

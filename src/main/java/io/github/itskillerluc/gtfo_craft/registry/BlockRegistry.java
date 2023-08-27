@@ -20,6 +20,8 @@ public class BlockRegistry {
     public static final BlockTripMine TRIP_MINE = new BlockTripMine(Material.IRON, MapColor.IRON);
     public static final BlockDoorController SECURITY_DOOR_SMALL_CONTROLLER = new BlockSecurityDoorSmallController(Material.IRON, MapColor.IRON);
     public static final BlockSecurityDoorSmallHelper SECURITY_DOOR_SMALL_HELPER = new BlockSecurityDoorSmallHelper(Material.IRON, MapColor.IRON);
+    public static final BlockSecurityDoorLargeController SECURITY_DOOR_LARGE_CONTROLLER = new BlockSecurityDoorLargeController(Material.IRON, MapColor.IRON);
+    public static final BlockSecurityDoorLargeHelper SECURITY_DOOR_LARGE_HELPER = new BlockSecurityDoorLargeHelper(Material.IRON, MapColor.IRON);
     public static final BlockBreakableDoorSmallController BREAKABLE_DOOR_SMALL_CONTROLLER = new BlockBreakableDoorSmallController(Material.IRON, MapColor.IRON);
     public static final BlockBreakableDoorSmallHelper BREAKABLE_DOOR_SMALL_HELPER = new BlockBreakableDoorSmallHelper(Material.IRON, MapColor.IRON);
     public static final BlockBreakableDoorLargeController BREAKABLE_DOOR_LARGE_CONTROLLER = new BlockBreakableDoorLargeController(Material.IRON, MapColor.IRON);
@@ -41,6 +43,8 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(TRIP_MINE);
         registryEvent.getRegistry().register(SECURITY_DOOR_SMALL_CONTROLLER);
         registryEvent.getRegistry().register(SECURITY_DOOR_SMALL_HELPER);
+        registryEvent.getRegistry().register(SECURITY_DOOR_LARGE_CONTROLLER);
+        registryEvent.getRegistry().register(SECURITY_DOOR_LARGE_HELPER);
         registryEvent.getRegistry().register(BREAKABLE_DOOR_LARGE_CONTROLLER);
         registryEvent.getRegistry().register(BREAKABLE_DOOR_LARGE_HELPER);
         registryEvent.getRegistry().register(COCOON);

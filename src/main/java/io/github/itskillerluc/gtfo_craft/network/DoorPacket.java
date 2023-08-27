@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import java.util.List;
 
 public class DoorPacket implements IMessage {
-    public static final List<Block> CONTROLLERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER, BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER, BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER);
-    public static final List<Block> HELPERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER, BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER, BlockRegistry.SECURITY_DOOR_SMALL_HELPER);
+    public static final List<Block> CONTROLLERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER, BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER, BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER, BlockRegistry.SECURITY_DOOR_LARGE_CONTROLLER);
+    public static final List<Block> HELPERS = Lists.newArrayList(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER, BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER, BlockRegistry.SECURITY_DOOR_SMALL_HELPER, BlockRegistry.SECURITY_DOOR_LARGE_HELPER);
     public BlockPos pos;
 
     public DoorPacket() {}

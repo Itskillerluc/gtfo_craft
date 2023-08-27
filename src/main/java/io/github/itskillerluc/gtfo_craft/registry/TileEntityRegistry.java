@@ -13,6 +13,7 @@ public class TileEntityRegistry {
         registerTile(TileEntityTurret.class, "turret");
         registerTile(TileEntityTripMine.class, "trip_mine");
         registerTile(TileEntitySecurityDoorSmall.class, "security_door_small");
+        registerTile(TileEntitySecurityDoorLarge.class, "security_door_large");
         registerTile(TileEntityCocoon.class, "cocoon");
         registerTile(TileEntityDoorHelper.class, "door_helper");
         registerTile(TileEntityBreakableDoorLarge.class, "breakable_door_large");

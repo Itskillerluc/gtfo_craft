@@ -65,7 +65,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 15, 20, 15, 260) {
+        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 100, 20, 15, 50) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) > 6;
@@ -118,7 +118,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 1);
+        EntityPellet entityPellet = new EntityPellet(world, this, 3);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;
