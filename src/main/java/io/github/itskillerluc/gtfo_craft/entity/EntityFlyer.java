@@ -28,11 +28,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttackMob, EntityFlying {
-
+    private static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
-
-    private static final DataParameter<Boolean> ATTACKING =
-            EntityDataManager.createKey(EntityFlyer.class, DataSerializers.BOOLEAN);
 
     public EntityFlyer(World worldIn) {
         super(worldIn);
@@ -71,15 +68,11 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
     }
 
     @Override
@@ -90,11 +83,6 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
-        this.dataManager.set(ATTACKING, compound.getBoolean("attacking"));
-    }
-
-    public boolean isAttacking(){
-        return this.dataManager.get(ATTACKING);
     }
 
     @Override
@@ -127,67 +115,12 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
-        }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
-        }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        event.getController().setAnimation(FLY);
+        return PlayState.CONTINUE;
     }
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    class StrikerAttackGoal extends EntityAIAttackMelee {
-        private EntityFlyer entity;
-        private int animCounter = 0;
-        private int animTickLength = 20;
-
-        public StrikerAttackGoal(EntityFlyer pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            entity = pMob;
-        }
-
-        @Override
-        protected void checkAndPerformAttack(EntityLivingBase pEnemy, double pDistToEnemySqr) {
-            if (pDistToEnemySqr <= this.getAttackReachSqr(pEnemy) && this.attackTick <= 0) {
-                if(entity != null) {
-                    entity.dataManager.set(ATTACKING, true);
-                    animCounter = 0;
-                }
-            }
-
-            super.checkAndPerformAttack(pEnemy, pDistToEnemySqr);
-        }
-
-        @Override
-        public void updateTask() {
-            super.updateTask();
-            if(entity.isAttacking()) {
-                animCounter++;
-
-                if(animCounter >= animTickLength) {
-                    animCounter = 0;
-                    entity.dataManager.set(ATTACKING, false);
-                }
-            }
-        }
-
-
-        @Override
-        public void resetTask() {
-            animCounter = 0;
-            entity.dataManager.set(ATTACKING, false);
-            super.resetTask();
-        }
     }
 
     @Override

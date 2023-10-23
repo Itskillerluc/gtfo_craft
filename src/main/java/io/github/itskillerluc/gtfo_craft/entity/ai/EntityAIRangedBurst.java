@@ -73,6 +73,7 @@ public class EntityAIRangedBurst extends EntityAIBase {
 
     public void resetTask()
     {
+        ((IRangedAttackMob)entityHost).setSwingingArms(false);
         this.attackTarget = null;
         this.seeTime = 0;
         this.rangedAttackTime = -1;
@@ -110,6 +111,7 @@ public class EntityAIRangedBurst extends EntityAIBase {
             {
                 return;
             }
+            ((IRangedAttackMob)entityHost).setSwingingArms(true);
 
             float f = MathHelper.sqrt(d0) / this.attackRadius;
             float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
@@ -127,6 +129,8 @@ public class EntityAIRangedBurst extends EntityAIBase {
             float f2 = MathHelper.sqrt(d0) / this.attackRadius;
             shouldAttackNextTick = true;
             this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.attackIntervalMin) + (float)this.attackIntervalMin);
+        } else if (!shouldAttackNextTick) {
+            ((IRangedAttackMob)entityHost).setSwingingArms(false);
         }
     }
 }

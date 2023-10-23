@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -19,7 +20,11 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityBigMother extends ModEntity implements IAnimatable {
+public class EntityBigMother extends ModEntity implements IAnimatable, gtfoEntity {
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -34,13 +39,13 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
 
     public EntityBigMother(World worldIn) {
         super(worldIn);
-        setSize(1.2f, 3.5f);
+        setSize(2f, 2f);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(ATTACKING, false);
     }
 
     @Override
@@ -61,6 +66,11 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
 
     public boolean isAttacking(){
         return this.dataManager.get(ATTACKING);
+    }
+
+    @Override
+    public void setAttacking(boolean attacking) {
+        this.dataManager.set(ATTACKING, attacking);
     }
 
     @Override
@@ -90,23 +100,24 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.big_mother.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
+        if (event.isMoving()) {
+            event.getController().setAnimation(RUN);
+            return PlayState.CONTINUE;
         }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.big_mother.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
-        }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        return PlayState.STOP;
     }
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (isAttacking()) {
+            event.getController().setAnimation(ATTACK);
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override
@@ -129,9 +140,11 @@ public class EntityBigMother extends ModEntity implements IAnimatable {
                 if (time % SUMMON_COOLDOWN == 0) {
                     EntityBaby entity = new EntityBaby(world);
                     entity.setPosition(this.posX, this.posY, this.posZ);
+                    setAttacking(true);
                     world.spawnEntity(entity);
                 }
                 if (time >= SUMMON_TIME_FINISH) {
+                    setAttacking(false);
                     time = 0;
                 }
             }

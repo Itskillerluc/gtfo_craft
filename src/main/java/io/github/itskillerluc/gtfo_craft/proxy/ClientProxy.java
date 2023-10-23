@@ -43,7 +43,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBigStriker.class, RenderBigStriker::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShooter.class, RenderShooter::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigShooter.class, RenderBigShooter::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntitySmallCharger.class, RenderSmallCharger::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCharger.class, RenderCharger::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigCharger.class, RenderBigCharger::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHybrid.class, RenderHybrid::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigShadow.class, RenderBigShadow::new);

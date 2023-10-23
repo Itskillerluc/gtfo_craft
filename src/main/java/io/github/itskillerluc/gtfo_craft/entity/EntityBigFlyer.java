@@ -1,6 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
+import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -27,8 +28,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAttackMob, EntityFlying {
-
+public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAttackMob, EntityFlying, gtfoEntity {
+    private static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private static final DataParameter<Boolean> ATTACKING =
@@ -36,7 +38,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
     public EntityBigFlyer(World worldIn) {
         super(worldIn);
-        setSize(1.2f, 1.2f);
+        setSize(2.5f, 2.5f);
         this.moveHelper = new EntityFlyHelper(this);
     }
 
@@ -71,7 +73,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(ATTACKING, false);
     }
 
     @Override
@@ -95,6 +97,11 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
     public boolean isAttacking(){
         return this.dataManager.get(ATTACKING);
+    }
+
+    @Override
+    public void setAttacking(boolean attacking) {
+        dataManager.set(ATTACKING, attacking);
     }
 
     @Override
@@ -127,67 +134,22 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
-        }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
-        }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        event.getController().setAnimation(FLY);
+        return PlayState.CONTINUE;
     }
+
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (isAttacking()) {
+            event.getController().setAnimation(ATTACK);
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    class StrikerAttackGoal extends EntityAIAttackMelee {
-        private EntityBigFlyer entity;
-        private int animCounter = 0;
-        private int animTickLength = 20;
-
-        public StrikerAttackGoal(EntityBigFlyer pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            entity = pMob;
-        }
-
-        @Override
-        protected void checkAndPerformAttack(EntityLivingBase pEnemy, double pDistToEnemySqr) {
-            if (pDistToEnemySqr <= this.getAttackReachSqr(pEnemy) && this.attackTick <= 0) {
-                if(entity != null) {
-                    entity.dataManager.set(ATTACKING, true);
-                    animCounter = 0;
-                }
-            }
-
-            super.checkAndPerformAttack(pEnemy, pDistToEnemySqr);
-        }
-
-        @Override
-        public void updateTask() {
-            super.updateTask();
-            if(entity.isAttacking()) {
-                animCounter++;
-
-                if(animCounter >= animTickLength) {
-                    animCounter = 0;
-                    entity.dataManager.set(ATTACKING, false);
-                }
-            }
-        }
-
-
-        @Override
-        public void resetTask() {
-            animCounter = 0;
-            entity.dataManager.set(ATTACKING, false);
-            super.resetTask();
-        }
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override
@@ -204,6 +166,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
     @Override
     public void setSwingingArms(boolean swingingArms) {
+        setAttacking(swingingArms);
         this.isSwingInProgress = swingingArms;
     }
 }

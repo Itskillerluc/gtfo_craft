@@ -1,6 +1,8 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.entity.ai.AnimatedAttackGoal;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
+import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,8 +24,15 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttackMob {
-
+public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttackMob, gtfoEntity {
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP3 = new AnimationBuilder().addAnimation("sleep3", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM1 = new AnimationBuilder().addAnimation("scream1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM2 = new AnimationBuilder().addAnimation("scream2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM3 = new AnimationBuilder().addAnimation("scream3", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private static final DataParameter<Boolean> ATTACKING =
@@ -31,13 +40,13 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     public EntityHybrid(World worldIn) {
         super(worldIn);
-        setSize(1.2f, 3.5f);
+        setSize(.8f, 2);
     }
 
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(ATTACKING, false);
     }
 
     @Override
@@ -59,6 +68,11 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     }
 
     @Override
+    public void setAttacking(boolean attacking) {
+        dataManager.set(ATTACKING, attacking);
+    }
+
+    @Override
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -71,7 +85,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) > 6;
             }
         });
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1, false) {
+        this.tasks.addTask(4, new AnimatedAttackGoal<EntityHybrid>(this, 1, false, 50) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) <= 6;
@@ -97,23 +111,24 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.shooter.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
+        if (event.isMoving()) {
+            event.getController().setAnimation(RUN);
+            return PlayState.CONTINUE;
         }
+        return PlayState.STOP;
+    }
 
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.shooter.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (isAttacking()) {
+            event.getController().setAnimation(ATTACK);
+            return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        return PlayState.STOP;
     }
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override
@@ -130,6 +145,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     @Override
     public void setSwingingArms(boolean swingingArms) {
+        setAttacking(swingingArms);
         dataManager.set(ATTACKING, swingingArms);
     }
 }

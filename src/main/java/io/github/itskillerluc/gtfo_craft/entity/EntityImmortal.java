@@ -21,6 +21,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EntityImmortal extends ModEntity implements IAnimatable {
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP3 = new AnimationBuilder().addAnimation("sleep3", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM1 = new AnimationBuilder().addAnimation("scream1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM2 = new AnimationBuilder().addAnimation("scream2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM3 = new AnimationBuilder().addAnimation("scream3", ILoopType.EDefaultLoopTypes.LOOP);
 
     private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -68,7 +75,7 @@ public class EntityImmortal extends ModEntity implements IAnimatable {
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new StrikerAttackGoal(this, 1, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1, true));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -90,66 +97,14 @@ public class EntityImmortal extends ModEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.immortal.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
+        if (event.isMoving()) {
+            event.getController().setAnimation(RUN);
+            return PlayState.CONTINUE;
         }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.immortal.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
-        }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        return PlayState.STOP;
     }
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    class StrikerAttackGoal extends EntityAIAttackMelee {
-        private EntityImmortal entity;
-        private int animCounter = 0;
-        private int animTickLength = 20;
-
-        public StrikerAttackGoal(EntityImmortal pMob, double pSpeedModifier, boolean pFollowingTargetEvenIfNotSeen) {
-            super(pMob, pSpeedModifier, pFollowingTargetEvenIfNotSeen);
-            entity = pMob;
-        }
-
-        @Override
-        protected void checkAndPerformAttack(EntityLivingBase pEnemy, double pDistToEnemySqr) {
-            if (pDistToEnemySqr <= this.getAttackReachSqr(pEnemy) && this.attackTick <= 0) {
-                if(entity != null) {
-                    entity.dataManager.set(ATTACKING, true);
-                    animCounter = 0;
-                }
-            }
-
-            super.checkAndPerformAttack(pEnemy, pDistToEnemySqr);
-        }
-
-        @Override
-        public void updateTask() {
-            super.updateTask();
-            if(entity.isAttacking()) {
-                animCounter++;
-
-                if(animCounter >= animTickLength) {
-                    animCounter = 0;
-                    entity.dataManager.set(ATTACKING, false);
-                }
-            }
-        }
-
-
-        @Override
-        public void resetTask() {
-            animCounter = 0;
-            entity.dataManager.set(ATTACKING, false);
-            super.resetTask();
-        }
     }
 }

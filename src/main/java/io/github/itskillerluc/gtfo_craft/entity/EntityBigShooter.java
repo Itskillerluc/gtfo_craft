@@ -1,6 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
+import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,8 +23,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedAttackMob {
-
+public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedAttackMob, gtfoEntity {
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP3 = new AnimationBuilder().addAnimation("sleep3", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM = new AnimationBuilder().addAnimation("scream", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     private final AnimationFactory factory = new AnimationFactory(this);
 
     private static final DataParameter<Boolean> ATTACKING =
@@ -37,7 +43,7 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(ATTACKING, false);
     }
 
     @Override
@@ -56,6 +62,11 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
 
     public boolean isAttacking(){
         return this.dataManager.get(ATTACKING);
+    }
+
+    @Override
+    public void setAttacking(boolean attacking) {
+        dataManager.set(ATTACKING, attacking);
     }
 
     @Override
@@ -86,23 +97,24 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.big_shooter.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
+        if (event.isMoving()) {
+            event.getController().setAnimation(RUN);
+            return PlayState.CONTINUE;
         }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.big_shooter.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
-        }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        return PlayState.STOP;
     }
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (isAttacking()) {
+            event.getController().setAnimation(ATTACK);
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
     }
 
     @Override

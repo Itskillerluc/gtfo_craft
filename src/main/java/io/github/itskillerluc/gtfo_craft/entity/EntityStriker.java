@@ -36,7 +36,7 @@ public class EntityStriker extends ModEntity implements IAnimatable {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
+        this.dataManager.register(ATTACKING, false);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class EntityRegistry {
         registryEvent.getRegistry().register(getEntityEntry(id++, "Big Striker", "big_striker", EntityBigStriker.class, 0x00FF00, 0xFF0000, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Shooter", "shooter", EntityShooter.class, 0x00FF00, 0xF0F0F0, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Big Shooter", "big_shooter", EntityBigShooter.class, 0x000000, 0xFFFFFF, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "Small Charger", "small_charger", EntitySmallCharger.class,0x076DF2 , 0x0fABDE, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "Charger", "charger", EntityCharger.class,0x076DF2 , 0x0fABDE, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Big Charger", "big_charger", EntityBigCharger.class, 0x0fABDE, 0x076DF2, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Hybrid", "hybrid", EntityHybrid.class, 0xa382dd, 0x123456, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "Small Shadow", "small_shadow", EntitySmallShadow.class, 0x1a1290, 0xed45fa, 160, 2, false));
