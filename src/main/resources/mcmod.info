@@ -1,7 +1,7 @@
 [
 {
   "modid": "gtfo_craft",
-  "name": "GTFO: Craft Protocol",
+  "name": "GTFO Craft Protocol",
   "description": "The game GTFO but in minecraft!",
   "version": "${version}",
   "mcversion": "${mcversion}",

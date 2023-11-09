@@ -18,7 +18,7 @@ apply plugin: 'maven-publish'
 
 version = '1.0'
 group = 'io.github.itskillerluc.gtfo_craft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'GTFO: Craft Protocol'
+archivesBaseName = 'GTFO Craft Protocol'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -51,7 +51,7 @@ minecraft {
     // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/client')
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
@@ -66,7 +66,7 @@ minecraft {
 
             // Recommended logging data for a userdev environment
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
+            workingDirectory project.file('run/server')
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
             arg '-torg.spongepowered.asm.launch.MixinTweaker'
@@ -123,11 +123,12 @@ jar {
     }
     manifest {
         attributes([
-            "Specification-Title": "gtfo_craft",
+                "ForceLoadAsMod": 'true',
+                'TweakOrder': '0',
+                        "Specification-Title": "gtfo_craft",
             "Specification-Vendor": "itskillerluc",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "MixinConfigs": mod_mixin_configs.replace('${mod_id}', mod_id),
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"itskillerluc",
             "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
