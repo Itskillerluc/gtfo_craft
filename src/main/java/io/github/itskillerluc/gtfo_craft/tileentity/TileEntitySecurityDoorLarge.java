@@ -19,7 +19,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class TileEntitySecurityDoorLarge extends TileEntityDoor implements IAnimatable, ITickable {
     private final AnimationFactory manager = new AnimationFactory(this);
-    private static final AnimationBuilder OPEN = new AnimationBuilder().playOnce("open_hinges").playOnce("idle_unhinged").playOnce("open").addAnimation("idle_open", ILoopType.EDefaultLoopTypes.LOOP);
+    //private static final AnimationBuilder OPEN = new AnimationBuilder().playOnce("open_hinges").playOnce("idle_unhinged").playOnce("open").addAnimation("idle_open", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder OPEN = new AnimationBuilder().addAnimation("open_hinges");
     private int progress = 0;
     public boolean shouldOpen;
     private <E extends TileEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {

@@ -491,7 +491,7 @@ public class ForgeEvent {
                     tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
                     Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/beam.png"));
 
-                    Vec3d start = new Vec3d( (x1 + x2) / 2f, y + 2, (scan.getPos1().getZ() + scan.getPos2().getZ()) / 2f);
+                    Vec3d start = new Vec3d( (x1 + x2) / 2f, y + 0.1f, (scan.getPos1().getZ() + scan.getPos2().getZ()) / 2f);
                     Vec3d end = new Vec3d(scan.getLinkedPos().getX() + 0.5f, scan.getLinkedPos().getY() + 0.5f, scan.getLinkedPos().getZ() + 0.5f);
                     Vec3d playerPos = new Vec3d(doubleX, doubleY + player.getEyeHeight(), doubleZ);
 

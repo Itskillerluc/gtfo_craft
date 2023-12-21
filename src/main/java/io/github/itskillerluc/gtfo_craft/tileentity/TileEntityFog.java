@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 
 public class TileEntityFog extends TileEntity implements ITickable {
-    public static final int TOTAL_TIME = 200;
+    public static final int TOTAL_TIME = 2400;
 
     public int time;
 

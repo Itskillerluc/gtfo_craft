@@ -2,6 +2,7 @@ package io.github.itskillerluc.gtfo_craft.entity;
 
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIBlockBreak;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.world.World;
 
@@ -14,5 +15,10 @@ public abstract class ModEntity extends EntityMob {
     protected void initEntityAI() {
         super.initEntityAI();
         super.tasks.addTask(1, new EntityAIBlockBreak(this, goal -> goal.getBlock().equals(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER) || goal.getBlock().equals(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER)));
+    }
+
+    @Override
+    public boolean isOnSameTeam(Entity entityIn) {
+        return entityIn instanceof ModEntity;
     }
 }

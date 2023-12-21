@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class ForgeEvents {
     @SubscribeEvent
     public static void playerClone(PlayerEvent.Clone event) {
-        if(!event.getOriginal().getEntityWorld().isRemote) {
+        if (!event.getOriginal().getEntityWorld().isRemote) {
             event.getEntityPlayer().getEntityData().setBoolean(GtfoCraft.MODID + "hasBattery",
                     event.getOriginal().getEntityData().getBoolean(GtfoCraft.MODID + "hasBattery"));
         }
@@ -65,12 +65,12 @@ public class ForgeEvents {
                 if (event.getWorld().getBlockState(event.getPos()).getMaterial().isReplaceable()) {
                     if (BlockRegistry.BATTERY.canPlaceBlockAt(event.getWorld(), event.getPos().offset(event.getFace()))) {
                         event.getWorld().setBlockToAir(event.getPos());
-                        event.getWorld().setBlockState(event.getPos(), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, 0,event.getEntityLiving(), event.getHand()));
+                        event.getWorld().setBlockState(event.getPos(), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, 0, event.getEntityLiving(), event.getHand()));
                         event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
                     }
                 } else if (event.getFace() != null) {
                     if (BlockRegistry.BATTERY.canPlaceBlockAt(event.getWorld(), event.getPos().offset(event.getFace()))) {
-                        event.getWorld().setBlockState(event.getPos().offset(event.getFace()), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos().offset(event.getFace()), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z,0, event.getEntityLiving(), event.getHand()));
+                        event.getWorld().setBlockState(event.getPos().offset(event.getFace()), BlockRegistry.BATTERY.getStateForPlacement(event.getWorld(), event.getPos().offset(event.getFace()), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, 0, event.getEntityLiving(), event.getHand()));
                         event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
                     }
                 }
@@ -103,10 +103,11 @@ public class ForgeEvents {
             List<Scan> scanList = ScanWorldSavedData.get(world).scanList;
             scanList.removeIf(scan -> scan.getTimer() > scan.getTime());
             for (Scan scan : scanList) {
-                if (scan.getTimer() == scan.getTime()) {
-                    List<EntityPlayer> entitiesWithinAABB = event.world.getMinecraftServer().getPlayerList().getPlayers()
-                            .stream().filter(entity -> scan.getAABB().contains(new Vec3d(entity.posX, entity.posY + 1, entity.posZ))).collect(Collectors.toList());
-                    if (entitiesWithinAABB.size() >= scan.getPlayersNeeded()) {
+                List<EntityPlayer> entitiesWithinAABB = event.world.getMinecraftServer().getPlayerList().getPlayers()
+                        .stream().filter(entity -> scan.getAABB().contains(new Vec3d(entity.posX, entity.posY + 1, entity.posZ))).collect(Collectors.toList());
+                if (entitiesWithinAABB.size() >= scan.getPlayersNeeded()) {
+                    if (scan.getTimer() == scan.getTime()) {
+
                         String command = scan.getCommand();
                         ICommandSender icommandsender = CommandSenderWrapper.create(entitiesWithinAABB.get(0)).withEntity(entitiesWithinAABB.get(0), new Vec3d(entitiesWithinAABB.get(0).posX, entitiesWithinAABB.get(0).posY, entitiesWithinAABB.get(0).posZ)).withSendCommandFeedback(world.getGameRules().getBoolean("commandBlockOutput"));
                         ICommandManager icommandmanager = world.getMinecraftServer().getCommandManager();
@@ -121,8 +122,8 @@ public class ForgeEvents {
                             LogManager.getLogger().log(Level.ERROR, exception.getMessage());
                         }
                     }
+                    scan.setTimer(scan.getTimer() + 1);
                 }
-                scan.setTimer(scan.getTimer() + 1);
             }
             ScanWorldSavedData.get(world).markDirty();
             for (EntityPlayer playerEntity : event.world.playerEntities) {

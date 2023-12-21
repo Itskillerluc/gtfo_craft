@@ -57,5 +57,11 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.SPITTER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.KEY, 0, "inventory");
 
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.C_FOAM_GRENADE, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.C_FOAM_TRIPMINE, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.I_2_LP_SYRINGE, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.IIX_SYRINGE, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.LOCK_MELTER, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.LONG_RANGE_FLASHLIGHT, 0, "inventory");
     }
 }

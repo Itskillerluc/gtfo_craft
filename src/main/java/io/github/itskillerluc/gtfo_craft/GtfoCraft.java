@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 @Mod(modid = GtfoCraft.MODID, name = GtfoCraft.NAME, version = GtfoCraft.VERSION, dependencies = "required-after:geckolib3")
 public class GtfoCraft
@@ -39,6 +40,7 @@ public class GtfoCraft
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        GeckoLib.initialize();
     }
 
     @EventHandler

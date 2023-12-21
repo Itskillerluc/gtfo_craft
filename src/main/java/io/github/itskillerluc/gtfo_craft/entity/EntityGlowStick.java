@@ -12,7 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityGlowStick extends EntityArrow {
-    public static final int TIME = 400;
+    public static final int TIME = 1200;
 
     public EntityGlowStick(World worldIn) {
         super(worldIn);
