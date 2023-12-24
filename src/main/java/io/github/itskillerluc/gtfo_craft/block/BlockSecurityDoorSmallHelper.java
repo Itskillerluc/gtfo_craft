@@ -26,12 +26,12 @@ public class BlockSecurityDoorSmallHelper extends BlockDoorHelper implements ITi
     protected static final AxisAlignedBB EAST_CORNERL = new AxisAlignedBB(0D, 0.0D, 0.125, 1, 1.0D, 0.875);
     protected static final AxisAlignedBB NORTH_CORNERR = new AxisAlignedBB(0.125, 0.0D, 0D, 0.875, 1.0D, 1D);
     protected static final AxisAlignedBB EAST_CORNERR = new AxisAlignedBB(0D, 0.0D, 0.125, 1, 1.0D, 0.875);
-    protected static final AxisAlignedBB NORTH_TOP = new AxisAlignedBB(0, 0.75, 0D, 1, 1, 1D);
-    protected static final AxisAlignedBB EAST_TOP = new AxisAlignedBB(0D, 0.75, 0.125, 1, 1, 0.875);
-    protected static final AxisAlignedBB NORTH_LEFT = new AxisAlignedBB(0, 0.0D, 0D, 1, 1.0D, 0.25D);
-    protected static final AxisAlignedBB EAST_LEFT = new AxisAlignedBB(0, 0.0D, 0, 0.25, 1.0D, 1);
-    protected static final AxisAlignedBB NORTH_RIGHT = new AxisAlignedBB(0, 0.0D, 0.75D, 1, 1.0D, 1);
-    protected static final AxisAlignedBB EAST_RIGHT = new AxisAlignedBB(0.75, 0.0D, 0, 1, 1.0, 1);
+    protected static final AxisAlignedBB NORTH_TOP = new AxisAlignedBB(0, 0.75 - 0.0625, 0D, 1, 1, 1D);
+    protected static final AxisAlignedBB EAST_TOP = new AxisAlignedBB(0D, 0.75 - 0.0625, 0.125, 1, 1, 0.875);
+    protected static final AxisAlignedBB NORTH_LEFT = new AxisAlignedBB(0, 0.0D, 0D, 1, 1.0D, 0.25D + 0.0625);
+    protected static final AxisAlignedBB EAST_LEFT = new AxisAlignedBB(0, 0.0D, 0, 0.25 + 0.0625, 1.0D, 1);
+    protected static final AxisAlignedBB NORTH_RIGHT = new AxisAlignedBB(0, 0.0D, 0.75D - 0.0625, 1, 1.0D, 1);
+    protected static final AxisAlignedBB EAST_RIGHT = new AxisAlignedBB(0.75 - 0.0625, 0.0D, 0, 1, 1.0, 1);
 
     public BlockSecurityDoorSmallHelper(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);

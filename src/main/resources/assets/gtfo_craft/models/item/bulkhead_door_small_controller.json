@@ -1,3 +1,6 @@
 {
-  "parent": "gtfo_craft:block/turret_fast"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gtfo_craft:items/small_bulkhead_door_icon"
+  }
 }

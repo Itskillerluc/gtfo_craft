@@ -16,9 +16,15 @@ public class TileEntityRegistry {
         registerTile(TileEntitySecurityDoorLarge.class, "security_door_large");
         registerTile(TileEntityCocoon.class, "cocoon");
         registerTile(TileEntityDoorHelper.class, "door_helper");
-        registerTile(TileEntityBreakableDoorLarge.class, "breakable_door_large");
-        registerTile(TileEntityBreakableDoorSmall.class, "breakable_door_small");
+        registerTile(TileEntityCommonDoorLarge.class, "common_door_large");
+        registerTile(TileEntityCommonDoorSmall.class, "common_door_small");
         registerTile(TileEntityFogTemporary.class, "fog_temporary");
+        registerTile(TileEntityPossessedSecurityDoorLarge.class, "possessed_security_door_large");
+        registerTile(TileEntityPossessedSecurityDoorSmall.class, "possessed_security_door_small");
+        registerTile(TileEntityApexDoorLarge.class, "apex_door_large");
+        registerTile(TileEntityApexDoorSmall.class, "apex_door_small");
+        registerTile(TileEntityBulkheadDoorLarge.class, "bulkhead_door_large");
+        registerTile(TileEntityBulkheadDoorSmall.class, "bulkhead_door_small");
     }
 
     private static void registerTile(Class<? extends TileEntity> clazz, String key) {

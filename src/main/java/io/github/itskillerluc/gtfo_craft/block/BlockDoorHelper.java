@@ -33,18 +33,18 @@ public class BlockDoorHelper extends Block {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool POWERED = PropertyBool.create("powered");
     public static final PropertyBool OPEN = PropertyBool.create("open");
-    protected static final AxisAlignedBB NORTH_CENTER = new AxisAlignedBB(0.375, 0.0D, 0D, 0.625, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST_CENTER = new AxisAlignedBB(0D, 0.0D, 0.375, 1, 1.0D, 0.625);
-    protected static final AxisAlignedBB NORTH_CORNERL = new AxisAlignedBB(0.375, 0.0D, 0D, 0.625, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST_CORNERL = new AxisAlignedBB(0D, 0.0D, 0.375, 1, 1.0D, 0.625);
-    protected static final AxisAlignedBB NORTH_CORNERR = new AxisAlignedBB(0.375, 0.0D, 0D, 0.625, 1.0D, 1D);
-    protected static final AxisAlignedBB EAST_CORNERR = new AxisAlignedBB(0D, 0.0D, 0.375, 1, 1.0D, 0.625);
-    protected static final AxisAlignedBB NORTH_TOP = new AxisAlignedBB(0.125, 0.4375, 0D, 0.875, 1, 1D);
-    protected static final AxisAlignedBB EAST_TOP = new AxisAlignedBB(0D, 0.4375, 0.125, 1, 1, 0.875);
-    protected static final AxisAlignedBB NORTH_LEFT = new AxisAlignedBB(0.125, 0.0D, 0D, 0.875, 1.0D, 0.25D);
-    protected static final AxisAlignedBB EAST_LEFT = new AxisAlignedBB(0, 0.0D, 0.125D, 0.25, 1.0D, 0.875);
-    protected static final AxisAlignedBB NORTH_RIGHT = new AxisAlignedBB(0.125, 0.0D, 0.75D, 0.875, 1.0D, 1);
-    protected static final AxisAlignedBB EAST_RIGHT = new AxisAlignedBB(0.75, 0.0D, 0.125, 1, 1.0, 0.875);
+    protected static final AxisAlignedBB NORTH_CENTER = new AxisAlignedBB(0.25, 0.0D, 0D, 0.75, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CENTER = new AxisAlignedBB(0D, 0.0D, 0.25, 1, 1.0D, 0.75);
+    protected static final AxisAlignedBB NORTH_CORNERL = new AxisAlignedBB(0.125, 0.0D, 0D, 0.875, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CORNERL = new AxisAlignedBB(0D, 0.0D, 0.125, 1, 1.0D, 0.875);
+    protected static final AxisAlignedBB NORTH_CORNERR = new AxisAlignedBB(0.125, 0.0D, 0D, 0.875, 1.0D, 1D);
+    protected static final AxisAlignedBB EAST_CORNERR = new AxisAlignedBB(0D, 0.0D, 0.125, 1, 1.0D, 0.875);
+    protected static final AxisAlignedBB NORTH_TOP = new AxisAlignedBB(0, 0.75 - 0.0625, 0D, 1, 1, 1D);
+    protected static final AxisAlignedBB EAST_TOP = new AxisAlignedBB(0D, 0.75 - 0.0625, 0.125, 1, 1, 0.875);
+    protected static final AxisAlignedBB NORTH_LEFT = new AxisAlignedBB(0, 0.0D, 0D, 1, 1.0D, 0.25D + 0.0625);
+    protected static final AxisAlignedBB EAST_LEFT = new AxisAlignedBB(0, 0.0D, 0, 0.25 + 0.0625, 1.0D, 1);
+    protected static final AxisAlignedBB NORTH_RIGHT = new AxisAlignedBB(0, 0.0D, 0.75D - 0.0625, 1, 1.0D, 1);
+    protected static final AxisAlignedBB EAST_RIGHT = new AxisAlignedBB(0.75 - 0.0625, 0.0D, 0, 1, 1.0, 1);
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
@@ -225,7 +225,7 @@ public class BlockDoorHelper extends Block {
 
         if (blockIn != this && (flag || blockIn.getDefaultState().canProvidePower()) && flag != iblockstate1.getValue(POWERED))
         {
-            if (!state.getValue(OPEN))
+            if (!state.getValue(OPEN) && !state.getValue(POWERED))
             {
                 if (worldIn.getTileEntity(pos) instanceof TileEntityDoorHelper && worldIn.getTileEntity(pos) != null) {
                     if (((TileEntityDoor) worldIn.getTileEntity(((TileEntityDoorHelper) worldIn.getTileEntity(pos)).master)).isLocked()) {

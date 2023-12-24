@@ -1,7 +1,11 @@
 package io.github.itskillerluc.gtfo_craft.entity.ai;
 
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityCommonDoorLarge;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityCommonDoorSmall;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumDifficulty;
 
 import java.util.function.Predicate;
@@ -60,7 +64,20 @@ public class EntityAIBlockBreak extends EntityAIInteractBlock {
 
         if (this.breakingTime == 240)
         {
-            this.entity.world.setBlockToAir(this.blockPosition);
+            TileEntity tile = this.entity.world.getTileEntity(blockPosition);
+            if (tile instanceof TileEntityCommonDoorLarge) {
+                ((TileEntityCommonDoorLarge) tile).breakDoor();
+            } else if (tile instanceof TileEntityCommonDoorSmall) {
+                ((TileEntityCommonDoorSmall) tile).breakDoor();
+            } else if (tile instanceof TileEntityDoorHelper) {
+                TileEntity master = this.entity.world.getTileEntity(((TileEntityDoorHelper) tile).master);
+                if (master instanceof TileEntityCommonDoorLarge) {
+                    ((TileEntityCommonDoorLarge) master).breakDoor();
+                } else if (master instanceof TileEntityCommonDoorSmall) {
+                    ((TileEntityCommonDoorSmall) master).breakDoor();
+                }
+            }
+
             this.entity.world.playEvent(1021, this.blockPosition, 0);
             this.entity.world.playEvent(2001, this.blockPosition, Block.getIdFromBlock(this.block));
         }

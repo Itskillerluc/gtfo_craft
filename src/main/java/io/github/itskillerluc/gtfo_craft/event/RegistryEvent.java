@@ -40,15 +40,17 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BATTERY), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.TRIP_MINE), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.SECURITY_DOOR_SMALL_HELPER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.SECURITY_DOOR_LARGE_CONTROLLER), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.SECURITY_DOOR_LARGE_HELPER), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BREAKABLE_DOOR_LARGE_CONTROLLER), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BREAKABLE_DOOR_LARGE_HELPER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.COMMON_DOOR_LARGE_CONTROLLER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.COCOON), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.FOG_TEMPORARY), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BREAKABLE_DOOR_SMALL_CONTROLLER), 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BREAKABLE_DOOR_SMALL_HELPER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.COMMON_DOOR_SMALL_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.POSSESSED_SECURITY_DOOR_LARGE_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.POSSESSED_SECURITY_DOOR_SMALL_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.APEX_DOOR_LARGE_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.APEX_DOOR_SMALL_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER), 0, "inventory");
 
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.FOG_REPELLER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.PELLET, 0, "inventory");

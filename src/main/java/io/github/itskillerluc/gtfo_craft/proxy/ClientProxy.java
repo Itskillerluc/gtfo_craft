@@ -65,7 +65,13 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurret.class, new RenderTurret());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityDoorSmall.class, new RenderSecurityDoorSmall());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityDoorLarge.class, new RenderSecurityDoorLarge());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoorLarge.class, new RenderBreakableDoorLarge());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBreakableDoorSmall.class, new RenderBreakableDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCommonDoorLarge.class, new RenderCommonDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCommonDoorSmall.class, new RenderCommonDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPossessedSecurityDoorLarge.class, new RenderPossessedSecurityDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPossessedSecurityDoorSmall.class, new RenderPossessedSecurityDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityApexDoorLarge.class, new RenderApexDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityApexDoorSmall.class, new RenderApexDoorSmall());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorLarge.class, new RenderBulkheadDoorLarge());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorSmall.class, new RenderBulkheadDoorSmall());
     }
 }

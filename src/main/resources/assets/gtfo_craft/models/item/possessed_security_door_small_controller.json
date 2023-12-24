@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gtfo_craft:items/possessed_small_security_door_icon"
+  }
+}

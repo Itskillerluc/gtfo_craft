@@ -1,2 +1,21 @@
 item.security_door_large_controller.name=Large Security Door
+item.security_door_small_controller.name=Small Security Door
+item.possessed_security_door_large_controller.name=Large Blood Door
+item.possessed_security_door_small_controller.name=Small Blood Door
+item.apex_door_large_controller.name=Large Apex Door
+item.apex_door_small_controller.name=Small Apex Door
+item.bulkhead_door_large_controller.name=Large Bulkhead Door
+item.bulkhead_door_small_controller.name=Small Bulkhead Door
+item.common_door_large_controller.name=Large Common Door
+item.common_door_small_controller.name=Small Common Door
+
 tile.security_door_large.name=Large Security Door
+tile.security_door_small.name=Small Security Door
+tile.possessed_security_door_large.name=Large Blood Door
+tile.possessed_security_door_small.name=Small Blood Door
+tile.apex_door_large.name=Large Apex Door
+tile.apex_door_small.name=Small Apex Door
+tile.bulkhead_door_large.name=Large Bulkhead Door
+tile.bulkhead_door_small.name=Small Bulkhead Door
+tile.common_door_large.name=Large Common Door
+tile.common_door_small.name=Small Common Door

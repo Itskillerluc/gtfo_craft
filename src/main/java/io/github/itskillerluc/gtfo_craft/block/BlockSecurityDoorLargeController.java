@@ -43,8 +43,8 @@ public class BlockSecurityDoorLargeController extends BlockDoorController implem
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        for (int i = 2; i >= 0; i--) {
-            for (int j = 0; j <= 4; j++) {
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 0; j <= 6; j++) {
                 BlockPos xz = pos.offset(placer.getHorizontalFacing().rotateY(), j);
                 BlockPos y = pos.offset(EnumFacing.UP, i);
                 boolean eastWest = state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST;
@@ -54,15 +54,15 @@ public class BlockSecurityDoorLargeController extends BlockDoorController implem
                 if ( worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ())) instanceof TileEntityDoorHelper) {
                     ((TileEntityDoorHelper) worldIn.getTileEntity(new BlockPos(eastWest ? xz.getX() : pos.getX(), y.getY(), eastWest ? pos.getZ() : xz.getZ()))).master = pos;
                     Location location;
-                    if (j == 4 && i == 2) {
+                    if (j == 6 && i == 3) {
                         location = Location.CORNERR;
-                    } else if (j == 4) {
+                    } else if (j == 6) {
                         location = Location.RIGHT;
-                    } else if (j == 0 && i == 2) {
+                    } else if (j == 0 && i == 3) {
                         location = Location.CORNERL;
                     } else if (j == 0) {
                         location = Location.LEFT;
-                    } else if (i == 2) {
+                    } else if (i == 3) {
                         location = Location.TOP;
                     } else {
                         location = Location.CENTER;
@@ -74,8 +74,8 @@ public class BlockSecurityDoorLargeController extends BlockDoorController implem
     }
 
     public static void breakDoor(World world, BlockPos pos, EnumFacing facing) {
-        for (int i = 2; i >= 0; i--) {
-            for (int j = 0; j <= 4; j++) {
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 0; j <= 6; j++) {
                 boolean eastWest = facing == EnumFacing.EAST || facing == EnumFacing.WEST;
                 BlockPos xz = pos.offset(facing, -j);
                 BlockPos y = pos.offset(EnumFacing.UP, i);

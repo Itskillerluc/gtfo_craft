@@ -20,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -78,13 +77,13 @@ public abstract class BlockDoorController extends Block {
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         if (state.getValue(OPEN)) {
-            EnumFacing enumfacing = state.getValue(BlockBreakableDoorLargeHelper.FACING);
+            EnumFacing enumfacing = state.getValue(BlockCommonDoorLargeHelper.FACING);
             boolean isEastWest = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.EAST;
             boolean isInversed = enumfacing == EnumFacing.WEST || enumfacing == EnumFacing.SOUTH;
             if (!isInversed) {
-                return isEastWest ? BlockBreakableDoorLargeHelper.EAST_RIGHT : BlockBreakableDoorLargeHelper.NORTH_LEFT;
+                return isEastWest ? BlockCommonDoorLargeHelper.EAST_RIGHT : BlockCommonDoorLargeHelper.NORTH_LEFT;
             } else {
-                return isEastWest ? BlockBreakableDoorLargeHelper.EAST_LEFT : BlockBreakableDoorLargeHelper.NORTH_RIGHT;
+                return isEastWest ? BlockCommonDoorLargeHelper.EAST_LEFT : BlockCommonDoorLargeHelper.NORTH_RIGHT;
             }
         }
         EnumFacing enumfacing = state.getValue(FACING);

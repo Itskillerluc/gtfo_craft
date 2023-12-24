@@ -49,8 +49,8 @@ public class TileEntitySecurityDoorSmall extends TileEntityDoor implements IAnim
         IBlockState controller = world.getBlockState(pos);
         EnumFacing facing = controller.getValue(BlockDoorController.FACING);
 
-        for (int i = 2; i >= 0; i--) {
-            for (int j = 0; j <= 2; j++) {
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 0; j <= 3; j++) {
                 BlockPos xz = pos.offset(facing, -j);
                 BlockPos y = pos.offset(EnumFacing.UP, i);
                 if (!world.getBlockState(pos).getBlock().equals(BlockRegistry.SECURITY_DOOR_SMALL_CONTROLLER)) continue;
@@ -60,15 +60,15 @@ public class TileEntitySecurityDoorSmall extends TileEntityDoor implements IAnim
                 TileEntityDoorHelper.Location location;
                 world.setBlockState(blockPos, world.getBlockState(blockPos).withProperty(BlockSecurityDoorSmallHelper.OPEN, true).withProperty(BlockSecurityDoorSmallHelper.POWERED, true));
                 ((TileEntityDoorHelper) world.getTileEntity(blockPos)).master = this.pos;
-                if (j == 2 && i == 2) {
+                if (j == 3 && i == 3) {
                     location = TileEntityDoorHelper.Location.CORNERR;
-                } else if (j == 2) {
+                } else if (j == 3) {
                     location = TileEntityDoorHelper.Location.RIGHT;
-                } else if (j == 0 && i == 2) {
+                } else if (j == 0 && i == 3) {
                     location = TileEntityDoorHelper.Location.CORNERL;
                 } else if (j == 0) {
                     location = TileEntityDoorHelper.Location.LEFT;
-                } else if (i == 2) {
+                } else if (i == 3) {
                     location = TileEntityDoorHelper.Location.TOP;
                 } else {
                     location = TileEntityDoorHelper.Location.CENTER;
