@@ -40,6 +40,7 @@ public class BlockRegistry {
     public static final Block COMMON_DOOR_LARGE_HELPER = new BlockCommonDoorLargeHelper(Material.IRON, MapColor.IRON).setBlockUnbreakable();
     public static final BlockCocoon COCOON = new BlockCocoon(Material.WEB, MapColor.WHITE_STAINED_HARDENED_CLAY);
     public static final BlockFogTemporary FOG_TEMPORARY = new BlockFogTemporary();
+    public static final Block TERMINAL = new BlockTerminal(Material.IRON).setBlockUnbreakable();
 
     public static void registerBlocks(RegistryEvent.Register<Block> registryEvent) {
         registryEvent.getRegistry().register(FOG);
@@ -73,5 +74,6 @@ public class BlockRegistry {
         registryEvent.getRegistry().register(BULKHEAD_DOOR_LARGE_HELPER);
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_CONTROLLER);
         registryEvent.getRegistry().register(BULKHEAD_DOOR_SMALL_HELPER);
+        registryEvent.getRegistry().register(TERMINAL);
     }
 }

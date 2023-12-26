@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,powered=false": { "model": "gtfo_craft:terminal", "y": 180 },
+    "facing=east,powered=false": { "model": "gtfo_craft:terminal", "y": 270 },
+    "facing=south,powered=false": { "model": "gtfo_craft:terminal" },
+    "facing=west,powered=false": { "model": "gtfo_craft:terminal", "y": 90 },
+    "facing=north,powered=true": { "model": "gtfo_craft:terminal", "y": 180 },
+    "facing=east,powered=true": { "model": "gtfo_craft:terminal", "y": 270 },
+    "facing=south,powered=true": { "model": "gtfo_craft:terminal" },
+    "facing=west,powered=true": { "model": "gtfo_craft:terminal", "y": 90 }
+  }
+}

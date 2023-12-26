@@ -42,7 +42,7 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.APEX_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.APEX_DOOR_SMALL_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER.getRegistryName()));
-
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TERMINAL).setRegistryName(BlockRegistry.TERMINAL.getRegistryName()));
 
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);

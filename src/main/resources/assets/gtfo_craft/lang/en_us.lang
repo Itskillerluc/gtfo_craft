@@ -27,5 +27,6 @@ tile.common_door_small.name=Small Common Door
 tile.turret_slow.name=Sniper Turret
 tile.turret_medium.name=Burst Turret
 tile.turret_fast.name=Auto Turret
+tile.terminal.name=Terminal
 
 itemGroup.gtfo_craft=GTFO Craft

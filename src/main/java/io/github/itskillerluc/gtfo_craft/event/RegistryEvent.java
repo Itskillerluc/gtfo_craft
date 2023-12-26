@@ -51,6 +51,7 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.APEX_DOOR_SMALL_CONTROLLER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.TERMINAL), 0, "inventory");
 
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.FOG_REPELLER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.PELLET, 0, "inventory");
