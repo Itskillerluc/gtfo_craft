@@ -1,6 +1,84 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gtfo_craft:items/ammo"
-  }
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "gtfo_craft:items/ammunition_pack",
+		"particle": "gtfo_craft:items/ammunition_pack"
+	},
+	"elements": [
+		{
+			"from": [0.5, 0, 2.5],
+			"to": [15.5, 5, 13.5],
+			"faces": {
+				"north": {"uv": [0, 6.75, 3.75, 8], "texture": "#0"},
+				"east": {"uv": [7.5, 2.5, 10.25, 3.75], "texture": "#0"},
+				"south": {"uv": [3.75, 6.75, 7.5, 8], "texture": "#0"},
+				"west": {"uv": [7.5, 3.75, 10.25, 5], "texture": "#0"},
+				"up": {"uv": [7.5, 2.75, 3.75, 0], "texture": "#0"},
+				"down": {"uv": [7.5, 2.75, 3.75, 5.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0.25, 0.5, 3],
+			"to": [0.25, 4.5, 13],
+			"faces": {
+				"north": {"uv": [0, 6.75, 3.75, 8], "texture": "#0"},
+				"east": {"uv": [13.25, 0, 16, 1.25], "texture": "#0"},
+				"south": {"uv": [3.75, 6.75, 7.5, 8], "texture": "#0"},
+				"west": {"uv": [13.5, 4.75, 16, 5.75], "texture": "#0"},
+				"up": {"uv": [7.5, 2.75, 3.75, 0], "texture": "#0"},
+				"down": {"uv": [7.5, 2.75, 3.75, 5.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0.25, -0.25, 2.25],
+			"to": [15.75, 5.25, 13.75],
+			"faces": {
+				"north": {"uv": [0, 5.5, 3.75, 6.75], "texture": "#0"},
+				"east": {"uv": [7.5, 0, 10.25, 1.25], "texture": "#0"},
+				"south": {"uv": [3.75, 5.5, 7.5, 6.75], "texture": "#0"},
+				"west": {"uv": [7.5, 1.25, 10.25, 2.5], "texture": "#0"},
+				"up": {"uv": [3.75, 2.75, 0, 0], "texture": "#0"},
+				"down": {"uv": [3.75, 2.75, 0, 5.5], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-74, -90, 0],
+			"translation": [0, 0, -1.25],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-74, -90, 0],
+			"translation": [0, 0, -1.25],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 30, 50],
+			"translation": [-6, 5, 5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 30, 50],
+			"translation": [-6, 5, 5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"translation": [0, 2, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"rotation": [45, 45, 0],
+			"translation": [0, 3, 0],
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"head": {
+			"rotation": [180, 0, 0]
+		},
+		"fixed": {
+			"rotation": [-90, -90, 0],
+			"translation": [0, 0, -4]
+		}
+	}
 }

@@ -59,7 +59,7 @@ public class TileEntityTurret extends TileEntity implements ITickable, IAnimatab
                 }
             }
             Vec3d expansion = new Vec3d(direction.getDirectionVec()).scale(scalar);
-            Optional<EntityLivingBase> target = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).expand(expansion.x, expansion.y, expansion.z))
+            Optional<EntityLivingBase> target = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().offset(direction)).expand(expansion.x, expansion.y, expansion.z).expand(direction.rotateY().getDirectionVec().getX(), direction.rotateY().getDirectionVec().getY(), direction.rotateY().getDirectionVec().getZ()))
                     .stream().min(Comparator.comparingInt(entity -> (int) entity.getDistanceSq(pos)));
 
             target.ifPresent(entityLiving -> {

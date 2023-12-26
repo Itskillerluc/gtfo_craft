@@ -11,9 +11,9 @@ public class BlockRegistry {
     public static final Material FOG_MATERIAL = new MaterialTransparent(MapColor.AIR);
     public static final BlockFog FOG = new BlockFog();
     public static final BlockFogEmpty EMPTY_FOG = new BlockFogEmpty();
-    public static final Block TURRET_SLOW = new BlockTurret(Material.IRON, MapColor.IRON, "turret_slow", 8, 40, 10).setBlockUnbreakable();
-    public static final Block TURRET_MEDIUM = new BlockTurret(Material.IRON, MapColor.IRON, "turret_medium", 5, 25, 10).setBlockUnbreakable();
-    public static final Block TURRET_FAST = new BlockTurret(Material.IRON, MapColor.IRON, "turret_fast", 2, 10, 10).setBlockUnbreakable();
+    public static final Block TURRET_SLOW = new BlockTurret(Material.CIRCUITS, MapColor.IRON, "turret_slow", 8, 40, 18);
+    public static final Block TURRET_MEDIUM = new BlockTurret(Material.CIRCUITS, MapColor.IRON, "turret_medium", 5, 25, 18);
+    public static final Block TURRET_FAST = new BlockTurret(Material.CIRCUITS, MapColor.IRON, "turret_fast", 2, 10, 18);
     public static final BlockGlowStick GLOW_STICK_BLOCK = new BlockGlowStick();
     public static final BlockGenerator GENERATOR = new BlockGenerator(Material.IRON);
     public static final Block BATTERY = new BlockBattery().setBlockUnbreakable();

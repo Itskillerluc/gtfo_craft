@@ -8,6 +8,11 @@ item.bulkhead_door_large_controller.name=Large Bulkhead Door
 item.bulkhead_door_small_controller.name=Small Bulkhead Door
 item.common_door_large_controller.name=Large Common Door
 item.common_door_small_controller.name=Small Common Door
+item.turret_slow.name=Sniper Turret
+item.turret_medium.name=Burst Turret
+item.turret_fast.name=Auto Turret
+item.ammo.name=Ammunition
+item.key.name=Key
 
 tile.security_door_large.name=Large Security Door
 tile.security_door_small.name=Small Security Door
@@ -19,3 +24,8 @@ tile.bulkhead_door_large.name=Large Bulkhead Door
 tile.bulkhead_door_small.name=Small Bulkhead Door
 tile.common_door_large.name=Large Common Door
 tile.common_door_small.name=Small Common Door
+tile.turret_slow.name=Sniper Turret
+tile.turret_medium.name=Burst Turret
+tile.turret_fast.name=Auto Turret
+
+itemGroup.gtfo_craft=GTFO Craft

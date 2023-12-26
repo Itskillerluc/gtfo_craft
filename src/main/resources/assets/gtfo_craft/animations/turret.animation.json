@@ -2,7 +2,29 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"idle": {
-			"loop": true
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"barrel": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 2.5, 0]
+						},
+						"0.5": {
+							"vector": [0, 25, 0],
+							"easing": "easeOutSine"
+						},
+						"1.5": {
+							"vector": [0, -25, 0],
+							"easing": "easeOutSine"
+						},
+						"2.0": {
+							"vector": [0, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
 		},
 		"shoot": {
 			"animation_length": 0.25,
@@ -13,7 +35,7 @@
 							"vector": [0, 0, 0]
 						},
 						"0.0833": {
-							"vector": [0, 0, 0.5],
+							"vector": [0, 0, 1.5],
 							"easing": "easeOutBack"
 						},
 						"0.25": {

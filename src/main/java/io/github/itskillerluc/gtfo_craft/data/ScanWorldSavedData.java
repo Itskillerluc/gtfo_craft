@@ -42,13 +42,17 @@ public class ScanWorldSavedData extends WorldSavedData {
     }
 
     public static ScanWorldSavedData get(World world) {
-        MapStorage storage = world.getPerWorldStorage();
-        ScanWorldSavedData instance = (ScanWorldSavedData) storage.getOrLoadData(ScanWorldSavedData.class, DATA_NAME);
+        try {
+            MapStorage storage = world.getPerWorldStorage();
+            ScanWorldSavedData instance = (ScanWorldSavedData) storage.getOrLoadData(ScanWorldSavedData.class, DATA_NAME);
 
-        if (instance == null) {
-            instance = new ScanWorldSavedData();
-            storage.setData(DATA_NAME, instance);
+            if (instance == null) {
+                instance = new ScanWorldSavedData();
+                storage.setData(DATA_NAME, instance);
+            }
+            return instance;
+        } catch (NullPointerException exception) {
+            return new ScanWorldSavedData();
         }
-        return instance;
     }
 }

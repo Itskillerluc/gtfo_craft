@@ -15,6 +15,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,6 +31,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Random;
 
 public class BlockTurret extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -46,6 +50,7 @@ public class BlockTurret extends Block implements ITileEntityProvider {
         setRegistryName(new ResourceLocation(GtfoCraft.MODID, name));
         setUnlocalizedName(name);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
+        setHardness(0.0f);
         this.damage = damage;
         this.speed = speed;
         this.range = range;
@@ -143,5 +148,11 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return null;
     }
 }
