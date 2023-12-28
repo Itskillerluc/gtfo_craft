@@ -13,6 +13,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -35,6 +36,8 @@ public class TileEntityTurret extends TileEntity implements ITickable, IAnimatab
     private int timer = 0;
     private boolean shouldShoot;
     private final AnimationFactory manager = new AnimationFactory(this);
+    private static final AnimationBuilder SHOOT = new AnimationBuilder().addAnimation("shoot");
+    private static final AnimationBuilder IDLE = new AnimationBuilder().loop("idle");
 
 
 
@@ -61,6 +64,8 @@ public class TileEntityTurret extends TileEntity implements ITickable, IAnimatab
             Vec3d expansion = new Vec3d(direction.getDirectionVec()).scale(scalar);
             Optional<EntityLivingBase> target = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos().offset(direction)).expand(expansion.x, expansion.y, expansion.z).expand(direction.rotateY().getDirectionVec().getX(), direction.rotateY().getDirectionVec().getY(), direction.rotateY().getDirectionVec().getZ()))
                     .stream().min(Comparator.comparingInt(entity -> (int) entity.getDistanceSq(pos)));
+
+            shouldShoot = false;
 
             target.ifPresent(entityLiving -> {
                 entityLiving.attackEntityFrom(DamageSource.GENERIC, damage);
@@ -135,18 +140,17 @@ public class TileEntityTurret extends TileEntity implements ITickable, IAnimatab
 
 
     private <E extends TileEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
         if (shouldShoot) {
             event.getController().clearAnimationCache();
-            builder.addAnimation("shoot");
+            event.getController().setAnimation(SHOOT);
             shouldShoot = false;
-            event.getController().setAnimation(builder);
-
-        } else {
+            return PlayState.CONTINUE;
+        } else if (event.getController().getAnimationState() == AnimationState.Stopped){
+            event.getController().clearAnimationCache();
+            event.getController().setAnimation(IDLE);
             return PlayState.CONTINUE;
         }
         return PlayState.CONTINUE;
-
     }
     @Override
     public AnimationFactory getFactory() {

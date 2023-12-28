@@ -2,12 +2,13 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTripMine;
+import io.github.itskillerluc.gtfo_craft.tileentity.TileEntitySpitter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,21 +27,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockTripMine extends Block implements ITileEntityProvider {
+public class BlockSpitter extends Block implements ITileEntityProvider {
     public static final PropertyDirection FACING = BlockDirectional.FACING;
+    public static final PropertyBool CHARGED = PropertyBool.create("charged");
 
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.1875D, 0.1875D, 0.5D, 0.8125D, 0.8125D, 1);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0, 0.1875D, 0.1875D , 0.5, 0.8125D, 0.8125D);
-    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.1875D, 0.1875D, 0, 0.8125D, 0.8125D, 0.5D);
-    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.5, 0.1875D, 0.1875D, 1, 0.8125D, 0.8125D);
-    protected static final AxisAlignedBB UP = new AxisAlignedBB(0.1875, 0.0D, 0.1875, 0.8125D, 0.5D, 0.8125D);
-    protected static final AxisAlignedBB DOWN = new AxisAlignedBB(0.1875, 0.5D, 0.1875, 0.8125D, 1.0D, 0.8125);
+    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.25, 0.25, 0.375, 0.75, 0.75, 1);
+    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0, 0.25, 0.25 , 0.625, 0.75, 0.75);
+    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.25, 0.25, 0, 0.75, 0.75, 0.625);
+    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.375, 0.25, 0.25, 1, 0.75, 0.75);
+    protected static final AxisAlignedBB UP = new AxisAlignedBB(0.25, 0.0D, 0.25, 0.75, 0.625, 0.75);
+    protected static final AxisAlignedBB DOWN = new AxisAlignedBB(0.25, 0.4375, 0.25, 0.75, 1.0D, 0.75);
 
-    public BlockTripMine(Material blockMaterialIn, MapColor blockMapColorIn) {
+    public BlockSpitter(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        setRegistryName(new ResourceLocation(GtfoCraft.MODID, "trip_mine"));
-        setUnlocalizedName("trip_mine");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(CHARGED, false));
+        setRegistryName(new ResourceLocation(GtfoCraft.MODID, "spitter"));
+        setUnlocalizedName("spitter");
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     }
     public boolean isFullCube(IBlockState state)
@@ -60,13 +62,13 @@ public class BlockTripMine extends Block implements ITileEntityProvider {
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing);
+        return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing).withProperty(CHARGED, false);
     }
 
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityTripMine(getStateFromMeta(meta).getValue(FACING));
+        return new TileEntitySpitter(600);
     }
 
     @SideOnly(Side.CLIENT)
@@ -77,13 +79,14 @@ public class BlockTripMine extends Block implements ITileEntityProvider {
 
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
+        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta & 7)).withProperty(CHARGED, (meta & 8) == 8);
     }
 
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | state.getValue(FACING).getIndex();
+        i |= state.getValue(FACING).getIndex();
+        i |= state.getValue(CHARGED) ? 0 : 8;
         return i;
     }
 
@@ -94,7 +97,7 @@ public class BlockTripMine extends Block implements ITileEntityProvider {
 
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, CHARGED);
     }
 
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)

@@ -1,13 +1,8 @@
 package io.github.itskillerluc.gtfo_craft;
 
-import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
 import io.github.itskillerluc.gtfo_craft.command.ScanCommand;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTripMine;
-import net.minecraft.client.Minecraft;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;

@@ -52,12 +52,12 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER), 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.TERMINAL), 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(Item.getItemFromBlock(BlockRegistry.SPITTER), 0, "inventory");
 
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.FOG_REPELLER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.PELLET, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.AMMO, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.GLOW_STICK, 0, "inventory");
-        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.SPITTER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.KEY, 0, "inventory");
 
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.C_FOAM_GRENADE, 0, "inventory");
@@ -66,5 +66,6 @@ public class RegistryEvent {
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.IIX_SYRINGE, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.LOCK_MELTER, 0, "inventory");
         GtfoCraft.proxy.registerItemRenderer(ItemRegistry.LONG_RANGE_FLASHLIGHT, 0, "inventory");
+        GtfoCraft.proxy.registerItemRenderer(ItemRegistry.DISINFECT_SUPPLY, 0, "inventory");
     }
 }

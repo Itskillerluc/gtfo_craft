@@ -1,82 +1,31 @@
 package io.github.itskillerluc.gtfo_craft.tileentity;
 
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.registries.GameData;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
-
-public class TileEntityCocoon extends TileEntity implements ITickable {
-    private final int range;
-    @Nullable
-    private Entity entity;
-    @Nullable
-    private EntityEntry entityFactory;
-    private UUID uuid = UUID.randomUUID();
-
-    public TileEntityCocoon(int range) {
-        this.range = range;
-    }
-
-    public TileEntityCocoon(){
-        range = 16;
-    }
-
-    public int getRange() {
-        return range;
-    }
-
-    public Optional<Entity> getEntity() {
-        return Optional.ofNullable(entity);
-    }
-
-    public void setEntity(@Nullable EntityLiving entity) {
-        this.entity = entity;
-    }
-
-    public void setEntityFactory(@Nullable EntityEntry entityFactory) {
-        this.entityFactory = entityFactory;
-    }
-
-    @Nullable
-    public EntityEntry getEntityFactory() {
-        return entityFactory;
-    }
+public class TileEntityCocoon extends TileEntity implements IAnimatable {
+    private static final AnimationBuilder IDLE = new AnimationBuilder().loop("idle");
+    private final AnimationFactory manager = new AnimationFactory(this);
 
     @Override
-    public void update() {
-        if (world.isRemote) return;
-        if ((entity == null || !entity.isEntityAlive()) && ((WorldServer) world).getEntityFromUuid(uuid) == null && entityFactory != null && !world.isAnyPlayerWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), range)) {
-            entity = entityFactory.newInstance(world);
-            entity.setUniqueId(uuid);
-            entity.setPosition(pos.getX(), pos.getY() - 1, pos.getZ());
-            world.spawnEntity(entity);
-        }
+    public void registerControllers(AnimationData data) {
+        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setTag("uuid", NBTUtil.createUUIDTag(uuid));
-        compound.setString("entity", Objects.toString(ForgeRegistries.ENTITIES.getKey(entityFactory)));
-        return super.writeToNBT(compound);
-    }
 
+    private <E extends TileEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        event.getController().setAnimation(IDLE);
+        return PlayState.CONTINUE;
+
+    }
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        this.uuid = NBTUtil.getUUIDFromTag(compound.getCompoundTag("uuid"));
-        this.entityFactory = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(compound.getString("entity")));
-        super.readFromNBT(compound);
+    public AnimationFactory getFactory() {
+        return manager;
     }
 }

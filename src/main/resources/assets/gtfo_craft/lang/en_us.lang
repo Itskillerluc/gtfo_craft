@@ -13,6 +13,7 @@ item.turret_medium.name=Burst Turret
 item.turret_fast.name=Auto Turret
 item.ammo.name=Ammunition
 item.key.name=Key
+item.disinfect_supply=Disinfect Supply
 
 tile.security_door_large.name=Large Security Door
 tile.security_door_small.name=Small Security Door
@@ -28,5 +29,9 @@ tile.turret_slow.name=Sniper Turret
 tile.turret_medium.name=Burst Turret
 tile.turret_fast.name=Auto Turret
 tile.terminal.name=Terminal
+tile.spitter.name=Spitter
+tile.cocoon.name=Cocoon
+tile.battery.name=Cell
+tile.generator.name=Generator
 
 itemGroup.gtfo_craft=GTFO Craft

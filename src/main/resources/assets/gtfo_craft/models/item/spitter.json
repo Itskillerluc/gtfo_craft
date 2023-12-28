@@ -1,6 +1,3 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "gtfo_craft:items/pellet"
-  }
+  "parent": "gtfo_craft:block/spitter"
 }

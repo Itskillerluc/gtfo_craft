@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "charged=false,facing=north": { "model": "gtfo_craft:spitter", "y": 0, "x": 90 },
+    "charged=false,facing=east": { "model": "gtfo_craft:spitter", "y": 90, "x": 90 },
+    "charged=false,facing=south": { "model": "gtfo_craft:spitter", "x": 90, "y": 180 },
+    "charged=false,facing=west": { "model": "gtfo_craft:spitter", "y": 270, "x": 90 },
+    "charged=false,facing=up": { "model": "gtfo_craft:spitter"},
+    "charged=false,facing=down": { "model": "gtfo_craft:spitter", "x": 180},
+    "charged=true,facing=north": { "model": "gtfo_craft:spitter_green", "y": 0, "x": 90 },
+    "charged=true,facing=east": { "model": "gtfo_craft:spitter_green", "y": 90, "x": 90 },
+    "charged=true,facing=south": { "model": "gtfo_craft:spitter_green", "x": 90, "y": 180 },
+    "charged=true,facing=west": { "model": "gtfo_craft:spitter_green", "y": 270, "x": 90 },
+    "charged=true,facing=up": { "model": "gtfo_craft:spitter_green"},
+    "charged=true,facing=down": { "model": "gtfo_craft:spitter_green", "x": 180}
+  }
+}

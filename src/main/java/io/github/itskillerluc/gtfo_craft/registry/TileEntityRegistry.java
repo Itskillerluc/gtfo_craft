@@ -14,7 +14,6 @@ public class TileEntityRegistry {
         registerTile(TileEntityTripMine.class, "trip_mine");
         registerTile(TileEntitySecurityDoorSmall.class, "security_door_small");
         registerTile(TileEntitySecurityDoorLarge.class, "security_door_large");
-        registerTile(TileEntityCocoon.class, "cocoon");
         registerTile(TileEntityDoorHelper.class, "door_helper");
         registerTile(TileEntityCommonDoorLarge.class, "common_door_large");
         registerTile(TileEntityCommonDoorSmall.class, "common_door_small");
@@ -25,6 +24,8 @@ public class TileEntityRegistry {
         registerTile(TileEntityApexDoorSmall.class, "apex_door_small");
         registerTile(TileEntityBulkheadDoorLarge.class, "bulkhead_door_large");
         registerTile(TileEntityBulkheadDoorSmall.class, "bulkhead_door_small");
+        registerTile(TileEntitySpitter.class, "spitter");
+        registerTile(TileEntityCocoon.class, "cocoon");
     }
 
     private static void registerTile(Class<? extends TileEntity> clazz, String key) {

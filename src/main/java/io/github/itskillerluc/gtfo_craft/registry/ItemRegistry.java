@@ -13,7 +13,6 @@ public class ItemRegistry {
     public static final Item PELLET = new ItemPellet().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "pellet"));
     public static final Item GLOW_STICK = new ItemGlowStick().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "glow_stick"));
     public static final Item AMMO = new Item().setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "ammo")).setUnlocalizedName("ammo");
-    public static final Item SPITTER = new ItemSpitterSpawn().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "spitter")).setUnlocalizedName("spitter").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     public static final Item KEY = new ItemKey();
     public static final Item C_FOAM_GRENADE = new Item().setRegistryName("c_foam_grenade").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     public static final Item C_FOAM_TRIPMINE = new Item().setRegistryName("c_foam_tripmine").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
@@ -21,6 +20,7 @@ public class ItemRegistry {
     public static final Item IIX_SYRINGE = new Item().setRegistryName("iix_syringe").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     public static final Item LOCK_MELTER = new Item().setRegistryName("lock_melter").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     public static final Item LONG_RANGE_FLASHLIGHT = new Item().setRegistryName("long_range_flashlight").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
+    public static final Item DISINFECT_SUPPLY = new Item().setRegistryName("disinfect_supply").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
 
     public static void registerItems(RegistryEvent.Register<Item> registryEvent) {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG).setRegistryName(BlockRegistry.FOG.getRegistryName()));
@@ -43,12 +43,12 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_LARGE_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER).setRegistryName(BlockRegistry.BULKHEAD_DOOR_SMALL_CONTROLLER.getRegistryName()));
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.TERMINAL).setRegistryName(BlockRegistry.TERMINAL.getRegistryName()));
+        registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.SPITTER).setRegistryName(BlockRegistry.SPITTER.getRegistryName()));
 
         registryEvent.getRegistry().register(FOG_REPELLER);
         registryEvent.getRegistry().register(PELLET);
         registryEvent.getRegistry().register(AMMO);
         registryEvent.getRegistry().register(GLOW_STICK);
-        registryEvent.getRegistry().register(SPITTER);
         registryEvent.getRegistry().register(KEY);
 
         registryEvent.getRegistry().register(C_FOAM_GRENADE);
@@ -57,6 +57,7 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(IIX_SYRINGE);
         registryEvent.getRegistry().register(LOCK_MELTER);
         registryEvent.getRegistry().register(LONG_RANGE_FLASHLIGHT);
+        registryEvent.getRegistry().register(DISINFECT_SUPPLY);
 
         TileEntityRegistry.registerTiles();
     }

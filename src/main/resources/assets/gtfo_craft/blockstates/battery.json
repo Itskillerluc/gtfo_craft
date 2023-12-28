@@ -1,9 +1,9 @@
 {
   "variants": {
-    "facing=wes": { "model": "gtfo_craft:battery_held", "y": 90 },
-    "facing=north": { "model": "gtfo_craft:battery", "y": 180 },
-    "facing=east": { "model": "gtfo_craft:battery", "y": 270 },
-    "facing=south": { "model": "gtfo_craft:battery" },
-    "facing=west": { "model": "gtfo_craft:battery", "y": 90 }
+    "facing=wes": { "model": "gtfo_craft:battery_held", "y": 90, "x": 270 },
+    "facing=north": { "model": "gtfo_craft:battery", "y": 180, "x": 270 },
+    "facing=east": { "model": "gtfo_craft:battery", "y": 270, "x": 270 },
+    "facing=south": { "model": "gtfo_craft:battery", "x": 270 },
+    "facing=west": { "model": "gtfo_craft:battery", "y": 90, "x": 270 }
   }
 }

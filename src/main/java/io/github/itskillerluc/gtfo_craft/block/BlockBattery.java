@@ -24,10 +24,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 
 public class BlockBattery extends BlockHorizontal {
-    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.3125D + 0.0625D, 0.3125, 0.875D, 0.6875D - 0.0625D, 0.875, 1.0D);
-    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.3125D + 0.0625D, 0.3125, 0.0D, 0.6875D - 0.0625D, 0.875, 0.125D);
-    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.875D, 0.3125, 0.3125D + 0.0625D, 1.0D, 0.875, 0.6875D - 0.0625D);
-    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0.0D, 0.3125, 0.3125D + 0.0625, 0.125D, 0.875, 0.6875D - 0.0625);
+    protected static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.375D, 0.0D, 0.125, 0.625D, 0.125D, 0.6875D);
+    protected static final AxisAlignedBB NORTH = new AxisAlignedBB(0.375D, 0.0D, 0.3125D, 0.625D, 0.125D, 0.875);
+    protected static final AxisAlignedBB EAST = new AxisAlignedBB(0.125, 0.0D, 0.375D, 0.6875D, 0.125D, 0.625D);
+    protected static final AxisAlignedBB WEST = new AxisAlignedBB(0.3125D, 0.0D, 0.375D, 0.875, 0.125D, 0.625D);
 
     public BlockBattery() {
         super(Material.IRON, MapColor.IRON);
@@ -65,41 +65,9 @@ public class BlockBattery extends BlockHorizontal {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
     }
 
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        for (EnumFacing horizontal : EnumFacing.HORIZONTALS) {
-            boolean any = canPlaceAt(worldIn, pos, horizontal);
-            if (any) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
-    {
-        IBlockState state = worldIn.getBlockState(pos.offset(facing.getOpposite()));
-        return state.getBlockFaceShape(worldIn, pos.offset(facing), facing.getOpposite()) == BlockFaceShape.SOLID;
-    }
-
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
-        if (this.canPlaceAt(worldIn, pos, facing))
-        {
-            return this.getDefaultState().withProperty(FACING, facing.getOpposite());
-        }
-        else
-        {
-            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
-            {
-                if (this.canPlaceAt(worldIn, pos, enumfacing))
-                {
-                    return this.getDefaultState().withProperty(FACING, enumfacing.getOpposite());
-                }
-            }
-
-            return this.getDefaultState();
-        }
+        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().rotateY());
     }
     public int getMetaFromState(IBlockState state)
     {
