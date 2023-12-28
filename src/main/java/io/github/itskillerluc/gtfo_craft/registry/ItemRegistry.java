@@ -5,22 +5,31 @@ import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
 import io.github.itskillerluc.gtfo_craft.item.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent;
 
 public class ItemRegistry {
     public static final Item FOG_REPELLER = new ItemFogRepeller().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "fog_repeller"));
     public static final Item PELLET = new ItemPellet().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "pellet"));
     public static final Item GLOW_STICK = new ItemGlowStick().setRegistryName(new ResourceLocation(GtfoCraft.MODID, "glow_stick"));
-    public static final Item AMMO = new Item().setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "ammo")).setUnlocalizedName("ammo");
+    public static final Item AMMO = basicItem("ammo");
     public static final Item KEY = new ItemKey();
-    public static final Item C_FOAM_GRENADE = new Item().setRegistryName("c_foam_grenade").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item C_FOAM_TRIPMINE = new Item().setRegistryName("c_foam_tripmine").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item I_2_LP_SYRINGE = new Item().setRegistryName("i2_lp_syringe").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item IIX_SYRINGE = new Item().setRegistryName("iix_syringe").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item LOCK_MELTER = new Item().setRegistryName("lock_melter").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item LONG_RANGE_FLASHLIGHT = new Item().setRegistryName("long_range_flashlight").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
-    public static final Item DISINFECT_SUPPLY = new Item().setRegistryName("disinfect_supply").setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
+    public static final Item C_FOAM_GRENADE = basicItem("c_foam_grenade");
+    public static final Item C_FOAM_TRIPMINE = basicItem("c_foam_tripmine");
+    public static final Item I_2_LP_SYRINGE = new ItemHealthSyringe();
+    public static final Item IIX_SYRINGE = new ItemStrengthSyringe();
+    public static final Item LOCK_MELTER = basicItem("lock_melter");
+    public static final Item LONG_RANGE_FLASHLIGHT = basicItem("long_range_flashlight");
+    public static final Item DISINFECT_SUPPLY = basicItem("disinfect_supply");
+    public static final Item TOOL_SUPPLY = new ItemToolSupply();
+    public static final Item AMMO_SUPPLY = basicItem("ammo_supply");
+    public static final Item MEDICAL_SUPPLY = new ItemMedicalSupply();
+    public static final Item.ToolMaterial HAMMER = EnumHelper.addToolMaterial("hammer", 0, 300, 0.1f, 10, 4);
+    public static final Item HAMMER_GAVAL = new ItemHammer(HAMMER).setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "hammer_gaval")).setUnlocalizedName("hammer_gaval");
+    public static final Item HAMMER_SLEDGE = new ItemHammer(HAMMER).setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "hammer_sledge")).setUnlocalizedName("hammer_sledge");
 
     public static void registerItems(RegistryEvent.Register<Item> registryEvent) {
         registryEvent.getRegistry().register(new ItemBlock(BlockRegistry.FOG).setRegistryName(BlockRegistry.FOG.getRegistryName()));
@@ -58,7 +67,16 @@ public class ItemRegistry {
         registryEvent.getRegistry().register(LOCK_MELTER);
         registryEvent.getRegistry().register(LONG_RANGE_FLASHLIGHT);
         registryEvent.getRegistry().register(DISINFECT_SUPPLY);
+        registryEvent.getRegistry().register(TOOL_SUPPLY);
+        registryEvent.getRegistry().register(AMMO_SUPPLY);
+        registryEvent.getRegistry().register(MEDICAL_SUPPLY);
+        registryEvent.getRegistry().register(HAMMER_GAVAL);
+        registryEvent.getRegistry().register(HAMMER_SLEDGE);
 
         TileEntityRegistry.registerTiles();
+    }
+
+    static Item basicItem(String name) {
+        return new Item().setRegistryName(new ResourceLocation(GtfoCraft.MODID, name)).setUnlocalizedName(name).setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
     }
 }
