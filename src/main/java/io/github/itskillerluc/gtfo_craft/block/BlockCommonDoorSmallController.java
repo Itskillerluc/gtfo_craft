@@ -11,6 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +26,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BlockCommonDoorSmallController extends BlockDoorController implements ITileEntityProvider {
+
     public BlockCommonDoorSmallController(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
@@ -31,7 +34,6 @@ public class BlockCommonDoorSmallController extends BlockDoorController implemen
         setUnlocalizedName("common_door_small");
         setDefaultState(super.getDefaultState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false).withProperty(OPEN, false));
     }
-
 
     @Nullable
     @Override
@@ -94,11 +96,7 @@ public class BlockCommonDoorSmallController extends BlockDoorController implemen
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.getTileEntity(pos) instanceof TileEntityCommonDoorSmall && worldIn.getTileEntity(pos) != null) {
-            if (((TileEntityCommonDoorSmall) worldIn.getTileEntity(pos)).isBroken()) {
-                return false;
-            }
-        }
+        if (state.getValue(POWERED)) return false;
         if (state.getValue(OPEN)) {
             if (worldIn.getTileEntity(pos) instanceof TileEntityCommonDoorSmall && worldIn.getTileEntity(pos) != null) {
                 if (((TileEntityCommonDoorSmall) worldIn.getTileEntity(pos)).isLocked()) {

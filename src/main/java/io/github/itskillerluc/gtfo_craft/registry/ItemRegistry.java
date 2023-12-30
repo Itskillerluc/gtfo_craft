@@ -23,9 +23,9 @@ public class ItemRegistry {
     public static final Item IIX_SYRINGE = new ItemStrengthSyringe();
     public static final Item LOCK_MELTER = basicItem("lock_melter");
     public static final Item LONG_RANGE_FLASHLIGHT = basicItem("long_range_flashlight");
-    public static final Item DISINFECT_SUPPLY = basicItem("disinfect_supply");
+    public static final Item DISINFECT_SUPPLY = basicItem("disinfect_supply").setMaxStackSize(1);
     public static final Item TOOL_SUPPLY = new ItemToolSupply();
-    public static final Item AMMO_SUPPLY = basicItem("ammo_supply");
+    public static final Item AMMO_SUPPLY = basicItem("ammo_supply").setMaxStackSize(1);
     public static final Item MEDICAL_SUPPLY = new ItemMedicalSupply();
     public static final Item.ToolMaterial HAMMER = EnumHelper.addToolMaterial("hammer", 0, 300, 0.1f, 10, 4);
     public static final Item HAMMER_GAVAL = new ItemHammer(HAMMER).setCreativeTab(GtfoCraftCreativeTab.INSTANCE).setRegistryName(new ResourceLocation(GtfoCraft.MODID, "hammer_gaval")).setUnlocalizedName("hammer_gaval");

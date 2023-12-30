@@ -1,11 +1,18 @@
 package io.github.itskillerluc.gtfo_craft.entity.ai;
 
+import io.github.itskillerluc.gtfo_craft.network.BreakDoorPacket;
+import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityCommonDoorLarge;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityCommonDoorSmall;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 
 import java.util.function.Predicate;
@@ -20,8 +27,44 @@ public class EntityAIBlockBreak extends EntityAIInteractBlock {
         this.predicate = predicate;
     }
 
-    public boolean shouldExecute() {
-        return super.shouldExecute() && predicate.test(this);
+    public boolean shouldExecute()
+    {
+        if (!this.entity.collidedHorizontally)
+        {
+            return false;
+        }
+        else
+        {
+            PathNavigateGround pathnavigateground = (PathNavigateGround)this.entity.getNavigator();
+            Path path = pathnavigateground.getPath();
+
+            if (path != null && !path.isFinished() && pathnavigateground.getEnterDoors())
+            {
+                for (int i = 0; i < Math.min(path.getCurrentPathIndex() + 2, path.getCurrentPathLength()); ++i)
+                {
+                    PathPoint pathpoint = path.getPathPointFromIndex(i);
+                    this.blockPosition = new BlockPos(pathpoint.x, pathpoint.y + 1, pathpoint.z).offset(entity.getHorizontalFacing());
+
+                    if (this.entity.getDistanceSq(this.blockPosition.getX(), this.entity.posY, (double)this.blockPosition.getZ()) <= 3D)
+                    {
+                        this.block = this.getBlock(this.blockPosition);
+
+                        if (predicate.test(this)) {
+                            return true;
+                        }
+                    }
+                }
+
+
+                this.blockPosition = (new BlockPos(this.entity)).up();
+                this.block = this.getBlock(this.blockPosition);
+                return predicate.test(this);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public void startExecuting() {
@@ -64,19 +107,9 @@ public class EntityAIBlockBreak extends EntityAIInteractBlock {
 
         if (this.breakingTime == 240)
         {
-            TileEntity tile = this.entity.world.getTileEntity(blockPosition);
-            if (tile instanceof TileEntityCommonDoorLarge) {
-                ((TileEntityCommonDoorLarge) tile).breakDoor();
-            } else if (tile instanceof TileEntityCommonDoorSmall) {
-                ((TileEntityCommonDoorSmall) tile).breakDoor();
-            } else if (tile instanceof TileEntityDoorHelper) {
-                TileEntity master = this.entity.world.getTileEntity(((TileEntityDoorHelper) tile).master);
-                if (master instanceof TileEntityCommonDoorLarge) {
-                    ((TileEntityCommonDoorLarge) master).breakDoor();
-                } else if (master instanceof TileEntityCommonDoorSmall) {
-                    ((TileEntityCommonDoorSmall) master).breakDoor();
-                }
-            }
+
+            PacketHandler.sendToServer(new BreakDoorPacket(blockPosition));
+
 
             this.entity.world.playEvent(1021, this.blockPosition, 0);
             this.entity.world.playEvent(2001, this.blockPosition, Block.getIdFromBlock(this.block));
@@ -85,5 +118,11 @@ public class EntityAIBlockBreak extends EntityAIInteractBlock {
 
     public Block getBlock() {
         return this.block;
+    }
+
+    private Block getBlock(BlockPos pos)
+    {
+        IBlockState iblockstate = this.entity.world.getBlockState(pos);
+        return iblockstate.getBlock();
     }
 }

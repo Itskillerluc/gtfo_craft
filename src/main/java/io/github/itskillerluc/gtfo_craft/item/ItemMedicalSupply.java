@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 public class ItemMedicalSupply extends Item {
     public ItemMedicalSupply() {
+        maxStackSize = 1;
         this.setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
         setRegistryName(new ResourceLocation(GtfoCraft.MODID, "medical_supply"));
         setUnlocalizedName("medical_supply");

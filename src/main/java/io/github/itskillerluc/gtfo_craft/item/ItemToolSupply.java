@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemToolSupply extends Item {
     public ItemToolSupply() {
+        maxStackSize = 1;
         this.setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
         setRegistryName(new ResourceLocation(GtfoCraft.MODID, "tool_supply"));
         setUnlocalizedName("tool_supply");

@@ -95,11 +95,7 @@ public class BlockCommonDoorLargeController extends BlockDoorController implemen
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.getTileEntity(pos) instanceof TileEntityCommonDoorLarge && worldIn.getTileEntity(pos) != null) {
-            if (((TileEntityCommonDoorLarge) worldIn.getTileEntity(pos)).isBroken()) {
-                return false;
-            }
-        }
+        if (state.getValue(POWERED)) return false;
         if (state.getValue(OPEN)) {
             if (worldIn.getTileEntity(pos) instanceof TileEntityCommonDoorLarge && worldIn.getTileEntity(pos) != null) {
                 if (((TileEntityCommonDoorLarge) worldIn.getTileEntity(pos)).isLocked()) {
