@@ -82,6 +82,21 @@ public class EntityImmortal extends ModEntity implements IAnimatable {
     }
 
     @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
+    }
+
+    @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);

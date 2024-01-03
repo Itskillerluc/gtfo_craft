@@ -66,6 +66,21 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     }
 
     @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
+    }
+
+    @Override
     protected void entityInit() {
         super.entityInit();
     }

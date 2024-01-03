@@ -73,6 +73,16 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     }
 
     @Override
+    public boolean isShootingTongue() {
+        return false;
+    }
+
+    @Override
+    public void setShootingTongue(boolean shooting) {
+
+    }
+
+    @Override
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -94,6 +104,21 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    }
+
+    @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
     }
 
     @Override

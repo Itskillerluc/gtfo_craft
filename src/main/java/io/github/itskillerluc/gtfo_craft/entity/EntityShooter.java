@@ -70,6 +70,16 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
     }
 
     @Override
+    public boolean isShootingTongue() {
+        return false;
+    }
+
+    @Override
+    public void setShootingTongue(boolean shooting) {
+
+    }
+
+    @Override
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -80,6 +90,21 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+    }
+
+    @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
     }
 
     @Override

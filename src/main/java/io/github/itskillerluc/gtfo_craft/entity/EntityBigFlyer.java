@@ -71,6 +71,21 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     }
 
     @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
+    }
+
+    @Override
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(ATTACKING, false);
@@ -105,12 +120,22 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     }
 
     @Override
+    public boolean isShootingTongue() {
+        return false;
+    }
+
+    @Override
+    public void setShootingTongue(boolean shooting) {
+
+    }
+
+    @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 80, 10, 10, 60));
+        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 100, 10, 10, 10));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;

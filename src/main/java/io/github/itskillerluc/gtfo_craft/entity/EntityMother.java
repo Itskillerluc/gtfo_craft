@@ -73,6 +73,16 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
     }
 
     @Override
+    public boolean isShootingTongue() {
+        return false;
+    }
+
+    @Override
+    public void setShootingTongue(boolean shooting) {
+
+    }
+
+    @Override
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
@@ -149,5 +159,20 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public AnimationBuilder getSleeping0() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping1() {
+        return null;
+    }
+
+    @Override
+    public AnimationBuilder getSleeping2() {
+        return null;
     }
 }

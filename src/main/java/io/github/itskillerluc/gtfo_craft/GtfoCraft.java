@@ -1,6 +1,7 @@
 package io.github.itskillerluc.gtfo_craft;
 
 import io.github.itskillerluc.gtfo_craft.command.ScanCommand;
+import io.github.itskillerluc.gtfo_craft.command.StopScanCommand;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.proxy.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
@@ -41,6 +42,7 @@ public class GtfoCraft
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
         event.registerServerCommand(new ScanCommand());
+        event.registerServerCommand(new StopScanCommand());
     }
 
     @Mod.EventHandler
