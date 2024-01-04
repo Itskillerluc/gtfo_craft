@@ -6,7 +6,7 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 128,
 				"texture_height": 128,
-				"visible_bounds_width": 8,
+				"visible_bounds_width": 7,
 				"visible_bounds_height": 2.5,
 				"visible_bounds_offset": [0, 0.75, 0]
 			},
@@ -156,6 +156,7 @@
 					"name": "left_tentacle",
 					"parent": "body",
 					"pivot": [7, 11, -2.5],
+					"rotation": [0, -52.5, 0],
 					"cubes": [
 						{
 							"origin": [7, 8, -5],
@@ -213,6 +214,7 @@
 					"name": "left_tentacle2",
 					"parent": "body",
 					"pivot": [7, 5, -2.5],
+					"rotation": [0, -22.5, 0],
 					"cubes": [
 						{
 							"origin": [7, 2, -5],
@@ -270,6 +272,7 @@
 					"name": "right_tentacle2",
 					"parent": "body",
 					"pivot": [-7, 5, -2.5],
+					"rotation": [0, 22.5, 0],
 					"cubes": [
 						{
 							"origin": [-19, 2, -5],
@@ -327,6 +330,7 @@
 					"name": "right_tentacle3",
 					"parent": "body",
 					"pivot": [-7, 8, 2.5],
+					"rotation": [0, 45, 0],
 					"cubes": [
 						{
 							"origin": [-19, 5, 0],
@@ -384,6 +388,7 @@
 					"name": "left_tentacle3",
 					"parent": "body",
 					"pivot": [7, 8, 2.5],
+					"rotation": [0, -45, 0],
 					"cubes": [
 						{
 							"origin": [7, 5, 0],
@@ -441,6 +446,7 @@
 					"name": "right_tentacle",
 					"parent": "body",
 					"pivot": [-7, 11, -2.5],
+					"rotation": [0, 52.5, 0],
 					"cubes": [
 						{
 							"origin": [-19, 8, -5],

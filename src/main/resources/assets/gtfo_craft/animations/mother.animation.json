@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"sleep1": {
+		"Default_Sleeping": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -147,7 +147,7 @@
 				}
 			}
 		},
-		"sleep2": {
+		"Sleeping_1": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -358,7 +358,7 @@
 				}
 			}
 		},
-		"attack": {
+		"Attack": {
 			"animation_length": 1.5,
 			"bones": {
 				"body": {
@@ -526,7 +526,7 @@
 				}
 			}
 		},
-		"run": {
+		"Run": {
 			"loop": true,
 			"animation_length": 0.5,
 			"bones": {

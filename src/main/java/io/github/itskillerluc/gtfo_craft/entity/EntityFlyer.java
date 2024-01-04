@@ -1,6 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
-import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
+import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIAttackRangedStrafe;
+import io.github.itskillerluc.gtfo_craft.entity.ai.EntityFlyHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -8,13 +9,13 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.passive.EntityFlying;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -30,11 +31,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttackMob, EntityFlying {
     private static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
+    int reloadTimer = 60;
 
     public EntityFlyer(World worldIn) {
         super(worldIn);
         setSize(1.2f, 1.2f);
         this.moveHelper = new EntityFlyHelper(this);
+        setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.BOW));
     }
 
     @Override
@@ -44,7 +47,8 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
 
     @Override
     protected void updateAITasks() {
-        if (this.moveHelper.action != EntityMoveHelper.Action.MOVE_TO) {
+        super.updateAITasks();
+        if (this.moveHelper.action != EntityMoveHelper.Action.MOVE_TO && this.moveHelper.action != EntityMoveHelper.Action.STRAFE) {
             this.motionY = (Math.sin(this.ticksExisted * 0.1) * 0.1) -  MathHelper.clamp((this.posY - (world.getHeight((int) this.posX, (int)this.posZ) + 2)), -0.1, 0.1);
         }
     }
@@ -53,6 +57,7 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     public void fall(float distance, float damageMultiplier) {
 
     }
+
 
     @Override
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
@@ -63,6 +68,7 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     public void onUpdate() {
         super.onUpdate();
         setNoGravity(true);
+        reloadTimer--;
     }
 
     @Override
@@ -106,11 +112,27 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 30, 10, 3, 10));
+        this.tasks.addTask(4, new EntityAIAttackRangedStrafe<>(this, 1, 60, 15));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false, false));
+    }
+
+    @Override
+    public boolean isHandActive() {
+        return reloadTimer <= 1;
+    }
+
+    @Override
+    public int getItemInUseMaxCount() {
+        return 21;
+    }
+
+    @Override
+    public void resetActiveHand() {
+        super.resetActiveHand();
+        reloadTimer = 60;
     }
 
     @Override
@@ -136,6 +158,10 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
     }
 
     @Override

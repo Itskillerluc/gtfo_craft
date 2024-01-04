@@ -1,14 +1,15 @@
 package io.github.itskillerluc.gtfo_craft.entity.ai;
 
+import io.github.itskillerluc.gtfo_craft.entity.ModEntity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIRangedBurst extends EntityAIBase {
+public class EntityAIRangedBurst <T extends ModEntity & IRangedAttackMob> extends EntityAIBase {
     private final EntityLiving entityHost;
-    private final IRangedAttackMob rangedAttackEntityHost;
+    private final T rangedAttackEntityHost;
     private EntityLivingBase attackTarget;
     private int rangedAttackTime;
     private final double entityMoveSpeed;
@@ -23,12 +24,12 @@ public class EntityAIRangedBurst extends EntityAIBase {
     private boolean shouldAttackNextTick = false;
     private int bursted = 0;
 
-    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
+    public EntityAIRangedBurst(T attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
     {
         this(attacker, movespeed, maxAttackTime, maxAttackTime, maxAttackDistanceIn, burst, fullAttackDuration);
     }
 
-    public EntityAIRangedBurst(IRangedAttackMob attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
+    public EntityAIRangedBurst(T attacker, double movespeed, int p_i1650_4_, int maxAttackTime, float maxAttackDistanceIn, int burst, int fullAttackDuration)
     {
         this.fullAttackDuration = fullAttackDuration;
         this.rangedAttackTime = -1;
@@ -62,6 +63,7 @@ public class EntityAIRangedBurst extends EntityAIBase {
         else
         {
             this.attackTarget = entitylivingbase;
+            rangedAttackEntityHost.freeze();
             return true;
         }
     }
@@ -77,6 +79,7 @@ public class EntityAIRangedBurst extends EntityAIBase {
         this.attackTarget = null;
         this.seeTime = 0;
         this.rangedAttackTime = -1;
+        rangedAttackEntityHost.unfreeze();
     }
 
     public void updateTask()

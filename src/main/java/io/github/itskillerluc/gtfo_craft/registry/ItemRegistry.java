@@ -3,6 +3,7 @@ package io.github.itskillerluc.gtfo_craft.registry;
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
 import io.github.itskillerluc.gtfo_craft.item.*;
+import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSword;
