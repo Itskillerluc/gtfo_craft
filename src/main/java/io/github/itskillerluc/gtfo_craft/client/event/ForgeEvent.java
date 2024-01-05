@@ -38,10 +38,15 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix;
+import org.lwjgl.util.vector.Matrix2f;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import software.bernie.geckolib3.core.util.MathUtil;
 import software.bernie.shadowed.eliotlash.mclib.utils.MathUtils;
 
+import javax.vecmath.Matrix3d;
+import javax.vecmath.Matrix4d;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -457,32 +462,35 @@ public class ForgeEvent {
                 int z1 = scan.getPos1().getZ();
                 int z2 = scan.getPos2().getZ();
                 double y = Math.min(y1, y2);
-                if (y1 > y2 && x1 < x2 && z1 < z2 || x1 > x2 && z1 > z2) {
-                    buffer.pos(x2, y + 0.005d, scan.getPos1().getZ()).tex(1, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+
+                if (x1 > x2 ^ z1 > z2) {
                     buffer.pos(x1, y + 0.005d, scan.getPos1().getZ()).tex(0, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
-                    buffer.pos(x1, y + 0.005d, scan.getPos2().getZ()).tex(0f, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x2, y + 0.005d, scan.getPos1().getZ()).tex(1, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(x2, y + 0.005d, scan.getPos2().getZ()).tex(1, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x1, y + 0.005d, scan.getPos2().getZ()).tex(0f, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                 } else {
-                    buffer.pos(x1, y + 0.005d, scan.getPos1().getZ()).tex(0, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(x2, y + 0.005d, scan.getPos1().getZ()).tex(1, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
-                    buffer.pos(x2, y + 0.005d, scan.getPos2().getZ()).tex(1, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x1, y + 0.005d, scan.getPos1().getZ()).tex(0, 0 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(x1, y + 0.005d, scan.getPos2().getZ()).tex(0f, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(x2, y + 0.005d, scan.getPos2().getZ()).tex(1, 1 + Minecraft.getMinecraft().world.getWorldTime() % 100 / 100d).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                 }
                 tessellator.draw();
 
                 tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
                 Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(GtfoCraft.MODID, "textures/effects/laser.png"));
-                    if ((y1 > y2) && (z1 < z2) && (x1 < x2 || x1 > x2)) {
-                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+
+                if (((x1 < x2) && (z1 > z2)) || ((x1 > x2) && (z1 > z2))) {
                     buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
-                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1f, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1f, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                 } else {
-                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
-                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos1().getZ()).tex(0, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                     buffer.pos(-0.3f + MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1f, 1).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
+                    buffer.pos(MathUtil.lerpValues((float) scan.getTimer() / (float) scan.getTime(), x1, x2), y + 0.001d, scan.getPos2().getZ()).tex(1, 0).color((scan.getColor() & 0xFF0000) >> 16, (scan.getColor() & 0x00FF00) >> 8, (scan.getColor() & 0x0000FF), 255).endVertex();
                 }
+
                 tessellator.draw();
 
 

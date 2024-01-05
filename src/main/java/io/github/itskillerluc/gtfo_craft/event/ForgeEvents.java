@@ -104,7 +104,7 @@ public class ForgeEvents {
             scanList.removeIf(scan -> scan.getTimer() > scan.getTime());
             for (Scan scan : scanList) {
                 List<EntityPlayer> entitiesWithinAABB = event.world.getMinecraftServer().getPlayerList().getPlayers()
-                        .stream().filter(entity -> scan.getAABB().contains(new Vec3d(entity.posX, entity.posY + 1, entity.posZ))).collect(Collectors.toList());
+                        .stream().filter(entity -> scan.getAABB().expand(0, 0.1, 0).expand(0, -0.1, 0).contains(new Vec3d(entity.posX, entity.posY, entity.posZ))).collect(Collectors.toList());
                 if (entitiesWithinAABB.size() >= scan.getPlayersNeeded()) {
                     if (scan.getTimer() == scan.getTime()) {
 
