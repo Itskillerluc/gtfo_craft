@@ -21,8 +21,8 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
-    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("default_sleeping", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleeping_1", ILoopType.EDefaultLoopTypes.LOOP);
     private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
     private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -31,10 +31,10 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
             EntityDataManager.createKey(EntityMother.class, DataSerializers.BOOLEAN);
 
     private static final int SUMMON_TIME_START = 600;
-    private static final int SUMMON_TIME_FINISH = 800;
+    private static final int SUMMON_TIME_FINISH = 1000;
     private static final int SUMMON_COOLDOWN = 20;
     private int time = 0;
-    private static final int SMOKE_RADIUS = 4;
+    private static final int SMOKE_RADIUS = 8;
 
     public EntityMother(World worldIn) {
         super(worldIn);
@@ -136,6 +136,7 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
         if (!world.isRemote && getAttackTarget() != null) {
             time++;
             if (time == SUMMON_TIME_START) {
+                freeze();
                 for (int x = -SMOKE_RADIUS; x < SMOKE_RADIUS; x++) {
                     for (int y = -SMOKE_RADIUS; y < SMOKE_RADIUS; y++) {
                         for (int z = -SMOKE_RADIUS; z < SMOKE_RADIUS; z++) {
@@ -154,6 +155,7 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
                     world.spawnEntity(entity);
                 }
                 if (time >= SUMMON_TIME_FINISH) {
+                    unfreeze();
                     setAttacking(false);
                     time = 0;
                 }
@@ -163,16 +165,16 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
 
     @Override
     public AnimationBuilder getSleeping0() {
-        return null;
+        return SLEEP1;
     }
 
     @Override
     public AnimationBuilder getSleeping1() {
-        return null;
+        return SLEEP2;
     }
 
     @Override
     public AnimationBuilder getSleeping2() {
-        return null;
+        return SLEEP2;
     }
 }

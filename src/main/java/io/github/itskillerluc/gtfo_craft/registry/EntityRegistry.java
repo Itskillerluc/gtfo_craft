@@ -21,8 +21,8 @@ public class EntityRegistry {
         registryEvent.getRegistry().register(getEntityEntry(id++, "small_shadow", "small_shadow", EntitySmallShadow.class, 0x1a1290, 0xed45fa, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "big_shadow", "big_shadow", EntityBigShadow.class, 0xf3930a, 0x389fad, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "baby", "baby", EntityBaby.class, 0x83720a, 0x330938, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "mother", "mother", EntityMother.class, 0x98fa30, 0xad39a0, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "big_mother", "big_mother", EntityBigMother.class, 0x931303, 0x0a9302, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "mother", "mother", EntityMother.class, 0x8d5524, 0x8D021F, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "big_mother", "big_mother", EntityBigMother.class, 0x8d5524, 0xBF0A30, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "tank", "tank", EntityTank.class, 0xfa987d, 0x149afe, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "immortal", "immortal", EntityImmortal.class, 0xaaa000, 0xa08939a, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "flyer", "flyer", EntityFlyer.class, 0x4a2511, 0x800000, 160, 2, false));
