@@ -13,14 +13,14 @@ public class EntityRegistry {
         int id = 0;
         registryEvent.getRegistry().register(getEntityEntry(id++, "striker", "striker", EntityStriker.class, 0xFF0000, 0x00FF00, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "big_striker", "big_striker", EntityBigStriker.class, 0x00FF00, 0xFF0000, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "shooter", "shooter", EntityShooter.class, 0x00FF00, 0xF0F0F0, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "shooter", "shooter", EntityShooter.class, 0xF0F0F0, 0xC68642, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "big_shooter", "big_shooter", EntityBigShooter.class, 0x000000, 0xFFFFFF, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "charger", "charger", EntityCharger.class,0x076DF2 , 0x0fABDE, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "big_charger", "big_charger", EntityBigCharger.class, 0x0fABDE, 0x076DF2, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "big_charger", "big_charger", EntityBigCharger.class, 0x1f1f1f, 0x0f0f0f, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "hybrid", "hybrid", EntityHybrid.class, 0xa382dd, 0x123456, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "small_shadow", "small_shadow", EntitySmallShadow.class, 0x1a1290, 0xed45fa, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "big_shadow", "big_shadow", EntityBigShadow.class, 0xf3930a, 0x389fad, 160, 2, false));
-        registryEvent.getRegistry().register(getEntityEntry(id++, "baby", "baby", EntityBaby.class, 0x83720a, 0x330938, 160, 2, false));
+        registryEvent.getRegistry().register(getEntityEntry(id++, "baby", "baby", EntityBaby.class, 0x210503, 0x000000, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "mother", "mother", EntityMother.class, 0x8d5524, 0x8D021F, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "big_mother", "big_mother", EntityBigMother.class, 0x8d5524, 0xBF0A30, 160, 2, false));
         registryEvent.getRegistry().register(getEntityEntry(id++, "tank", "tank", EntityTank.class, 0xfa987d, 0x149afe, 160, 2, false));

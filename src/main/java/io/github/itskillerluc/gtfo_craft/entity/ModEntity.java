@@ -129,6 +129,7 @@ public abstract class ModEntity extends EntityMob {
         if (sleepingCounter > 1000) {
             dataManager.set(SLEEPING, false);
             sleepingCounter = 0;
+            wakeUp();
         }
         setNoAI(dataManager.get(SLEEPING));
     }
@@ -148,6 +149,8 @@ public abstract class ModEntity extends EntityMob {
     public abstract AnimationBuilder getSleeping0();
     public abstract AnimationBuilder getSleeping1();
     public abstract AnimationBuilder getSleeping2();
+
+    public void wakeUp() {}
 
     public AnimationBuilder getSleepingAnimation() {
         if (sleepingCounter > 500) {

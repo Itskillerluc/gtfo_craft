@@ -209,4 +209,9 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
             isScreaming = true;
         }
     }
+
+    @Override
+    public void wakeUp() {
+        isScreaming = true;
+    }
 }

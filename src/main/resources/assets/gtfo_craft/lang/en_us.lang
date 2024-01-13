@@ -53,4 +53,7 @@ itemGroup.gtfo_craft=GTFO Craft
 entity.big_flyer.name=Big Flyer
 entity.flyer.name=Flyer
 entity.big_mother.name=Big Mother
+entity.big_charger.name=Big Charger
 entity.mother.name=Mother
+entity.shooter.name=Shooter
+entity.baby.name=Baby

@@ -6,9 +6,9 @@
 				"identifier": "geometry.unknown",
 				"texture_width": 128,
 				"texture_height": 128,
-				"visible_bounds_width": 4,
-				"visible_bounds_height": 5.5,
-				"visible_bounds_offset": [0, 2.25, 0]
+				"visible_bounds_width": 11,
+				"visible_bounds_height": 6,
+				"visible_bounds_offset": [0, 2, 0]
 			},
 			"bones": [
 				{
@@ -511,20 +511,20 @@
 				},
 				{
 					"name": "big_tongue",
-					"pivot": [0, 0, 0]
+					"pivot": [0, -10, 0]
 				},
 				{
 					"name": "body2",
 					"parent": "big_tongue",
-					"pivot": [0, 3, 2]
+					"pivot": [0, -7, 2]
 				},
 				{
 					"name": "seg1",
 					"parent": "body2",
-					"pivot": [0, 3, 2],
+					"pivot": [0, -7, 2],
 					"cubes": [
 						{
-							"origin": [-2.5, 0, -18],
+							"origin": [-2.5, -10, -18],
 							"size": [5, 6, 20],
 							"inflate": 0.25,
 							"uv": {
@@ -541,10 +541,10 @@
 				{
 					"name": "seg2",
 					"parent": "seg1",
-					"pivot": [0, 3, -18],
+					"pivot": [0, -7, -18],
 					"cubes": [
 						{
-							"origin": [-2, 0.5, -38],
+							"origin": [-2, -9.5, -38],
 							"size": [4, 5, 20],
 							"inflate": 0.25,
 							"uv": {
@@ -561,10 +561,10 @@
 				{
 					"name": "seg3",
 					"parent": "seg2",
-					"pivot": [0, 3, -38],
+					"pivot": [0, -7, -38],
 					"cubes": [
 						{
-							"origin": [-1.5, 1, -58],
+							"origin": [-1.5, -9, -58],
 							"size": [3, 4, 20],
 							"inflate": 0.25,
 							"uv": {
@@ -581,10 +581,10 @@
 				{
 					"name": "seg4",
 					"parent": "seg3",
-					"pivot": [0, 3, -58],
+					"pivot": [0, -7, -58],
 					"cubes": [
 						{
-							"origin": [-1, 1.5, -76],
+							"origin": [-1, -8.5, -76],
 							"size": [2, 3, 18],
 							"inflate": 0.25,
 							"uv": {
@@ -601,10 +601,10 @@
 				{
 					"name": "seg5",
 					"parent": "seg4",
-					"pivot": [0, 3, -76],
+					"pivot": [0, -7, -76],
 					"cubes": [
 						{
-							"origin": [0, 1.5, -94],
+							"origin": [0, -8.5, -94],
 							"size": [0, 3, 18],
 							"uv": {
 								"north": {"uv": [80, 80], "uv_size": [0, 3]},

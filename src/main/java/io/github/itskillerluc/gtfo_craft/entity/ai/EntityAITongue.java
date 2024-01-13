@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-public abstract class EntityAITongue<E extends ModEntity & gtfoEntity> extends EntityAIBase {
+public class EntityAITongue<E extends ModEntity & gtfoEntity> extends EntityAIBase {
     World world;
     protected E attacker;
     protected int attackTick;
@@ -29,8 +29,10 @@ public abstract class EntityAITongue<E extends ModEntity & gtfoEntity> extends E
     private final float animLength;
     private int animCounter = 0;
     private boolean attacking = false;
+    private int damageTiming;
+    private final int rangeSqr;
 
-    public EntityAITongue(E creature, double speedIn, boolean useLongMemory, float tongueLength, float animLength, int attackInterval)
+    public EntityAITongue(E creature, double speedIn, boolean useLongMemory, float tongueLength, float animLength, int attackInterval, int damageTiming, int rangeSqr)
     {
         this.attacker = creature;
         this.world = creature.world;
@@ -40,6 +42,8 @@ public abstract class EntityAITongue<E extends ModEntity & gtfoEntity> extends E
         this.tongueLength = tongueLength;
         this.animLength = animLength;
         this.attackInterval = attackInterval;
+        this.damageTiming = damageTiming;
+        this.rangeSqr = rangeSqr;
     }
 
     public boolean shouldExecute() {
@@ -125,9 +129,8 @@ public abstract class EntityAITongue<E extends ModEntity & gtfoEntity> extends E
 
         this.attacker.getNavigator().clearPath();
         attacking = false;
+        attacker.setShootingTongue(false);
     }
-
-    abstract int damageTiming();
 
     public void updateTask()
     {
@@ -141,9 +144,9 @@ public abstract class EntityAITongue<E extends ModEntity & gtfoEntity> extends E
             if (animCounter <= 1) {
                 attacker.setShootingTongue(true);
             }
-            if (animCounter == damageTiming()) {
-                Vec3d hitPosition = attacker.getLookVec().normalize().scale(tongueLength - 2);
-                if (attacker.getPosition().add(new Vec3i(hitPosition.x, hitPosition.y, hitPosition.z)).distanceSq(targetX, targetY, targetZ) <= 15) {
+            if (animCounter == damageTiming) {
+                Vec3d hitPosition = attacker.getLookVec().normalize().scale(tongueLength - 1);
+                if (attacker.getPosition().add(new Vec3i(hitPosition.x, hitPosition.y, hitPosition.z)).distanceSq(targetX, targetY, targetZ) <= rangeSqr) {
                     this.attacker.attackEntityAsMob(attacker.getAttackTarget());
                 }
             }
