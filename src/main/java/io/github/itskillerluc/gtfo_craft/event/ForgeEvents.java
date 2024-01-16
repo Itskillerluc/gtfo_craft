@@ -57,7 +57,6 @@ public class ForgeEvents {
         if (event.getEntityPlayer().getEntityData().getBoolean("hasBattery")) {
             if (event.getWorld().getBlockState(event.getPos()).getBlock().equals(BlockRegistry.GENERATOR)) {
                 if (!event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.POWERED)) {
-                    //todo
                     event.getWorld().setBlockState(event.getPos(), BlockRegistry.GENERATOR.getDefaultState().withProperty(BlockGenerator.POWERED, true).withProperty(BlockGenerator.FACING, event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.FACING)));
                     event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
                 }

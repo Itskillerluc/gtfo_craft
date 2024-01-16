@@ -1,7 +1,5 @@
 package io.github.itskillerluc.gtfo_craft.item;
 
-import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.entity.EntityFogRepeller;
 import io.github.itskillerluc.gtfo_craft.entity.EntityPellet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -17,7 +15,6 @@ import net.minecraft.world.World;
 public class ItemPellet extends Item {
     public ItemPellet() {
         this.maxStackSize = 16;
-        this.setCreativeTab(GtfoCraftCreativeTab.INSTANCE);
         setUnlocalizedName("pellet");
     }
 

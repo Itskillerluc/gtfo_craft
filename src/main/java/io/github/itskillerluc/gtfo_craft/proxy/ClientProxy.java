@@ -8,7 +8,6 @@ import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
@@ -39,15 +38,20 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderers(FMLPreInitializationEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(EntityStriker.class, RenderStriker::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityStrikerStanding.class, RenderStrikerStanding::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityStrikerCrawling.class, RenderStrikerCrawling::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityStrikerCrouching.class, RenderStrikerCrouching::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigStriker.class, RenderBigStriker::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityShooter.class, RenderShooter::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigShooter.class, RenderBigShooter::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityCharger.class, RenderCharger::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigCharger.class, RenderBigCharger::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityHybrid.class, RenderHybrid::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityBigShadow.class, RenderBigShadow::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntitySmallShadow.class, RenderSmallShadow::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigShadowCharger.class, RenderBigShadowCharger::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigShadowHybrid.class, RenderBigShadowHybrid::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityBigShadowShooter.class, RenderBigShadowShooter::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityShadowStanding.class, RenderShadowStanding::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityShadowCrouching.class, RenderShadowCrouching::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBaby.class, RenderBaby::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityMother.class, RenderMother::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigMother.class, RenderBigMother::new);
@@ -55,6 +59,11 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityImmortal.class, RenderImmortal::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFlyer.class, RenderFlyer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityBigFlyer.class, RenderBigFlyer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityScout.class, RenderScout::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityChargerScout.class, RenderChargerScout::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityScoutCharger.class, RenderScoutCharger::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityShadowScout.class, RenderShadowScout::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityScoutShadow.class, RenderScoutShadow::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityPellet.class, RenderPellet::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityFogRepeller.class, renderManager -> new RenderProjectile<>(renderManager, ItemRegistry.FOG_REPELLER, Minecraft.getMinecraft().getRenderItem()));

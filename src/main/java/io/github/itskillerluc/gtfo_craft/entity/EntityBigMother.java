@@ -113,6 +113,9 @@ public class EntityBigMother extends ModEntity implements IAnimatable, gtfoEntit
         if (event.isMoving()) {
             event.getController().setAnimation(RUN);
             return PlayState.CONTINUE;
+        } else if (dataManager.get(SLEEPING)) {
+            event.getController().setAnimation(getSleepingAnimation());
+            return PlayState.CONTINUE;
         }
         return PlayState.STOP;
     }

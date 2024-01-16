@@ -25,17 +25,26 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttackMob, gtfoEntity {
-    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("sleep1", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleep2", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SLEEP3 = new AnimationBuilder().addAnimation("sleep3", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP1 = new AnimationBuilder().addAnimation("default_sleeping", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP2 = new AnimationBuilder().addAnimation("sleeping_1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SLEEP3 = new AnimationBuilder().addAnimation("sleeping_2", ILoopType.EDefaultLoopTypes.LOOP);
     private static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SCREAM1 = new AnimationBuilder().addAnimation("scream1", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SCREAM2 = new AnimationBuilder().addAnimation("scream2", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder SCREAM3 = new AnimationBuilder().addAnimation("scream3", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder MELEE_ATTACK = new AnimationBuilder().addAnimation("melee_attack", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder RANGED_ATTACK = new AnimationBuilder().addAnimation("ranged_attack", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM1 = new AnimationBuilder().addAnimation("scream_1", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM2 = new AnimationBuilder().addAnimation("scream_2", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM3 = new AnimationBuilder().addAnimation("scream_3", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
-
+    private final int screamLength1 = 50;
+    private final int screamLength2 = 60;
+    private final int screamLength3 = 60;
+    private int isScreaming = 0;
+    private int screamCounter;
     private static final DataParameter<Boolean> ATTACKING =
+            EntityDataManager.createKey(EntityHybrid.class, DataSerializers.BOOLEAN);
+
+    private static final DataParameter<Boolean> RANGED_ATTACKING =
             EntityDataManager.createKey(EntityHybrid.class, DataSerializers.BOOLEAN);
 
     public EntityHybrid(World worldIn) {
@@ -47,20 +56,21 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(ATTACKING, false);
+        this.dataManager.register(RANGED_ATTACKING, false);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
+        compound.setBoolean("attacking", isAttacking());
+        compound.setBoolean("rangedAttacking", dataManager.get(RANGED_ATTACKING));
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.dataManager.set(ATTACKING, compound.getBoolean("attacking"));
+        this.dataManager.set(RANGED_ATTACKING, compound.getBoolean("rangedAttacking"));
     }
 
     public boolean isAttacking(){
@@ -89,7 +99,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 100, 20, 15, 50) {
+        this.tasks.addTask(4, new EntityAIRangedBurst<EntityHybrid>(this, 1, 100, 20, 12, 60) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) > 6;
@@ -108,17 +118,17 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     @Override
     public AnimationBuilder getSleeping0() {
-        return null;
+        return SLEEP1;
     }
 
     @Override
     public AnimationBuilder getSleeping1() {
-        return null;
+        return SLEEP2;
     }
 
     @Override
     public AnimationBuilder getSleeping2() {
-        return null;
+        return SLEEP3;
     }
 
     @Override
@@ -136,16 +146,42 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (isShootingTongue()) return PlayState.STOP;
         if (event.isMoving()) {
             event.getController().setAnimation(RUN);
+            return PlayState.CONTINUE;
+        } else if (dataManager.get(SLEEPING)) {
+            event.getController().setAnimation(getSleepingAnimation());
+            return PlayState.CONTINUE;
+        } else {
+            event.getController().setAnimation(IDLE);
+            return PlayState.CONTINUE;
+        }
+    }
+
+    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
+        if (!isShootingTongue() && isAttacking()) {
+            event.getController().setAnimation(MELEE_ATTACK);
+            return PlayState.CONTINUE;
+        }
+        if (dataManager.get(RANGED_ATTACKING)) {
+            event.getController().setAnimation(RANGED_ATTACK);
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
     }
 
-    private <E extends IAnimatable> PlayState attackPredicate(AnimationEvent<E> event) {
-        if (isAttacking()) {
-            event.getController().setAnimation(ATTACK);
+    private <E extends IAnimatable> PlayState screamPredicate(AnimationEvent<E> event) {
+        if (isScreaming == 1) {
+            event.getController().setAnimation(SCREAM1);
+            return PlayState.CONTINUE;
+        }
+        if (isScreaming == 2) {
+            event.getController().setAnimation(SCREAM2);
+            return PlayState.CONTINUE;
+        }
+        if (isScreaming == 3) {
+            event.getController().setAnimation(SCREAM3);
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
@@ -154,6 +190,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+        data.addAnimationController(new AnimationController<>(this, "screamController", 0, this::screamPredicate));
     }
 
     @Override
@@ -171,6 +208,45 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     @Override
     public void setSwingingArms(boolean swingingArms) {
         setAttacking(swingingArms);
-        dataManager.set(ATTACKING, swingingArms);
+        dataManager.set(RANGED_ATTACKING, swingingArms);
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if (isScreaming == 1) {
+            screamCounter++;
+
+            if (screamCounter >= screamLength1) {
+                screamCounter = 0;
+                isScreaming = 0;
+            }
+        }
+        if (isScreaming == 2) {
+            screamCounter++;
+
+            if (screamCounter >= screamLength2) {
+                screamCounter = 0;
+                isScreaming = 0;
+            }
+        }
+        if (isScreaming == 3) {
+            screamCounter++;
+
+            if (screamCounter >= screamLength3) {
+                screamCounter = 0;
+                isScreaming = 0;
+            }
+        }
+
+        if (rand.nextFloat() < 0.0015) {
+            isScreaming = 1;
+        }
+        if (rand.nextFloat() < 0.0015) {
+            isScreaming = 2;
+        }
+        if (rand.nextFloat() < 0.0015) {
+            isScreaming = 3;
+        }
     }
 }

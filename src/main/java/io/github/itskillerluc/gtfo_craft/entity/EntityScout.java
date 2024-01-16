@@ -10,7 +10,9 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -25,17 +27,28 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.Random;
 
 public class EntityScout extends ModEntity implements IAnimatable {
+    private static final AnimationBuilder FEEL = new AnimationBuilder().addAnimation("feelers", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder PATROL = new AnimationBuilder().addAnimation("patrol", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder SCREAM = new AnimationBuilder().addAnimation("scream", ILoopType.EDefaultLoopTypes.LOOP);
+
     private final AnimationFactory factory = new AnimationFactory(this);
     private boolean isScreaming = false;
+    private int screamCounter = 0;
+    private int screamMaxTime = 55;
+    private int counter;
+    private final int counterLimit = 200;
+    private final int feelingTime = 240;
+    private int feelingCounter = 0;
 
     private static final DataParameter<Boolean> ATTACKING =
             EntityDataManager.createKey(EntityScout.class, DataSerializers.BOOLEAN);
 
-    protected static final DataParameter<Optional<BlockPos>> SUMMON_POS =
-            EntityDataManager.createKey(EntityScout.class, DataSerializers.OPTIONAL_BLOCK_POS);
+    private static final DataParameter<Boolean> FEELING =
+            EntityDataManager.createKey(EntityScout.class, DataSerializers.BOOLEAN);
 
     protected static final DataParameter<String> COMMAND =
             EntityDataManager.createKey(EntityScout.class, DataSerializers.STRING);
+
 
     public EntityScout(World worldIn) {
         super(worldIn);
@@ -45,23 +58,24 @@ public class EntityScout extends ModEntity implements IAnimatable {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(ATTACKING, true);
-        this.dataManager.register(SUMMON_POS, Optional.absent());
+        this.dataManager.register(ATTACKING, false);
         this.dataManager.register(COMMAND, "");
+        this.dataManager.register(FEELING, false);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
-        if (dataManager.get(SUMMON_POS).isPresent()) {
-            compound.setTag("summonPos", NBTUtil.createPosTag(dataManager.get(SUMMON_POS).get()));
-        } else {
-            compound.setTag("summonPos", new NBTTagCompound());
-        }
+        compound.setBoolean("attacking", isAttacking());
         compound.setString("command", dataManager.get(COMMAND));
+        compound.setBoolean("feeling", dataManager.get(FEELING));
+        compound.setInteger("feelingCounter", feelingCounter);
+        compound.setInteger("counter", counter);
+    }
+
+    @Override
+    public boolean isEntityInvulnerable(DamageSource p_180431_1_) {
+        return super.isEntityInvulnerable(p_180431_1_) || isScreaming;
     }
 
     @Override
@@ -78,12 +92,10 @@ public class EntityScout extends ModEntity implements IAnimatable {
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.dataManager.set(ATTACKING, compound.getBoolean("attacking"));
-        if (compound.getCompoundTag("summonPos").hasNoTags()) {
-            dataManager.set(SUMMON_POS, Optional.absent());
-        } else {
-            dataManager.set(SUMMON_POS, Optional.of(NBTUtil.getPosFromTag(compound.getCompoundTag("summonPos"))));
-        }
         this.dataManager.set(COMMAND, compound.getString("command"));
+        this.dataManager.set(FEELING, compound.getBoolean("feeling"));
+        feelingCounter = compound.getInteger("feelingCounter");
+        counter = compound.getInteger("counter");
     }
 
     public boolean isAttacking(){
@@ -134,79 +146,83 @@ public class EntityScout extends ModEntity implements IAnimatable {
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationBuilder builder = new AnimationBuilder();
-        boolean cont = false;
-        if (event.isMoving() && !dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.walk", ILoopType.EDefaultLoopTypes.LOOP);
-            cont = true;
+        if (dataManager.get(FEELING)) {
+            event.getController().setAnimation(FEEL);
+            return PlayState.CONTINUE;
         }
-
-        if (dataManager.get(ATTACKING)) {
-            builder.addAnimation("animation.striker.attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-            cont = true;
+        if (isScreaming) {
+            event.getController().setAnimation(SCREAM);
+            return PlayState.CONTINUE;
         }
-        event.getController().setAnimation(builder);
-        return cont ? PlayState.CONTINUE : PlayState.STOP;
+        event.getController().setAnimation(PATROL);
+        return PlayState.CONTINUE;
     }
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
-    class ScoutTendrilGoal extends EntityAIBase {
-        private int animCounter = 0;
-        private int animTickLength = 20;
-        private final float chance;
-        private final float range;
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
 
-        ScoutTendrilGoal(float chance, float range) {
-            this.chance = chance;
-            this.range = range;
+        if (dataManager.get(FEELING) || isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
         }
 
-        @Override
-        public void startExecuting() {
-            EntityScout.this.dataManager.set(ATTACKING, true);
-        }
-
-        @Override
-        public void updateTask() {
-            super.updateTask();
-            if (world.isAnyPlayerWithinRangeAt(posX, posY, posZ, range)) {
-                scream();
+        if (navigator.noPath()) {
+            Vec3d pos = RandomPositionGenerator.getLandPos(this, 10, 7);
+            if (pos != null) {
+                navigator.tryMoveToXYZ(pos.x, pos.y, pos.z, 1);
             }
-            if(EntityScout.this.isAttacking()) {
-                animCounter++;
-                if(animCounter >= animTickLength) {
-                    animCounter = 0;
-                    EntityScout.this.dataManager.set(ATTACKING, false);
-                    resetTask();
+        }
+        if (counter > counterLimit) {
+            dataManager.set(FEELING, true);
+        } else {
+            counter++;
+        }
+
+        if (dataManager.get(FEELING)) {
+            feelingCounter++;
+            if (world.isAnyPlayerWithinRangeAt(posX, posY, posZ, 5)) {
+                dataManager.set(FEELING, false);
+                isScreaming = true;
+            }
+            if (feelingCounter > feelingTime) {
+                dataManager.set(FEELING, false);
+                counter = 0;
+                feelingCounter = 0;
+            }
+        }
+
+        if (isScreaming) {
+            if (screamCounter > screamMaxTime) {
+                isScreaming = false;
+                if (!EntityScout.this.world.isRemote) {
+                    world.getMinecraftServer().getCommandManager().executeCommand(EntityScout.this,dataManager.get(COMMAND));
+                }
+                Entity entity = new EntityShooter(world);
+                entity.setPosition(posX, posY, posZ);
+                if (!world.isRemote) {
+                    world.spawnEntity(entity);
+                    world.removeEntity(this);
                 }
             }
+            screamCounter++;
         }
+    }
 
-        public void scream() {
-            //TODO: SCREAAAAM and stop the animation
-            if (!EntityScout.this.world.isRemote) {
-                world.getMinecraftServer().getCommandManager().executeCommand(EntityScout.this,dataManager.get(COMMAND));
-            }
-            isScreaming = true;
-            Entity entity = new EntityShooter(world);
-            entity.setPosition(posX, posY, posZ);
-            world.spawnEntity(entity);
-            despawnEntity();
-        }
+    @Override
+    public void freeze() {
+        super.freeze();
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0);
+    }
 
-        @Override
-        public boolean shouldExecute() {
-            return new Random().nextFloat() <= chance;
-        }
-
-        @Override
-        public void resetTask() {
-            animCounter = 0;
-            EntityScout.this.dataManager.set(ATTACKING, false);
-            super.resetTask();
-        }
+    @Override
+    public void unfreeze() {
+        super.unfreeze();
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
     }
 }

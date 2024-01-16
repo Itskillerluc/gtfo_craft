@@ -30,7 +30,7 @@ public class EntityBigCharger extends ModEntity implements IAnimatable, gtfoEnti
     private static final AnimationBuilder SCREAM2 = new AnimationBuilder().addAnimation("scream_2", ILoopType.EDefaultLoopTypes.LOOP);
     private static final AnimationBuilder SCREAM3 = new AnimationBuilder().addAnimation("scream_3", ILoopType.EDefaultLoopTypes.LOOP);
     private static final AnimationBuilder TONGUE_ATTACK = new AnimationBuilder().addAnimation("tongue_attack", ILoopType.EDefaultLoopTypes.LOOP);
-    private static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("default_idle", ILoopType.EDefaultLoopTypes.LOOP);
+    private static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
 
     private final int screamLength1 = 50;
     private final int screamLength2 = 50;

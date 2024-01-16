@@ -2,7 +2,6 @@ package io.github.itskillerluc.gtfo_craft.client.entity.model;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.entity.EntityBaby;
-import io.github.itskillerluc.gtfo_craft.entity.EntityStriker;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

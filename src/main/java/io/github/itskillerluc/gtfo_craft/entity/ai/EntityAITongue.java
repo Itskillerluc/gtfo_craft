@@ -167,23 +167,6 @@ public class EntityAITongue<E extends ModEntity & gtfoEntity> extends EntityAIBa
             this.targetZ = entitylivingbase.posZ;
             this.delayCounter = 4 + this.attacker.getRNG().nextInt(7);
 
-            if (this.canPenalize)
-            {
-                this.delayCounter += failedPathFindingPenalty;
-                if (this.attacker.getNavigator().getPath() != null)
-                {
-                    net.minecraft.pathfinding.PathPoint finalPathPoint = this.attacker.getNavigator().getPath().getFinalPathPoint();
-                    if (finalPathPoint != null && entitylivingbase.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
-                        failedPathFindingPenalty = 0;
-                    else
-                        failedPathFindingPenalty += 10;
-                }
-                else
-                {
-                    failedPathFindingPenalty += 10;
-                }
-            }
-
             if (d0 > 1024.0D)
             {
                 this.delayCounter += 10;

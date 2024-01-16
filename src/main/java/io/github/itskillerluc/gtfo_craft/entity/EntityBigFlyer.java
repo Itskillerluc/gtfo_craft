@@ -135,7 +135,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst(this, 1, 100, 10, 10, 10));
+        this.tasks.addTask(4, new EntityAIRangedBurst<>(this, 1, 100, 10, 10, 10));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;

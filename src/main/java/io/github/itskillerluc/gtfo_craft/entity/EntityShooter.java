@@ -134,6 +134,9 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
         if (event.isMoving()) {
             event.getController().setAnimation(RUN);
             return PlayState.CONTINUE;
+        } else if (dataManager.get(SLEEPING)) {
+            event.getController().setAnimation(getSleepingAnimation());
+            return PlayState.CONTINUE;
         }
         return PlayState.STOP;
     }
@@ -156,7 +159,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
         data.addAnimationController(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
-        data.addAnimationController(new AnimationController(this, "screamController", 0, this::screamPredicate));
+        data.addAnimationController(new AnimationController<>(this, "screamController", 0, this::screamPredicate));
     }
 
     @Override
