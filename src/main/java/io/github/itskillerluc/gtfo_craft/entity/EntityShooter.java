@@ -1,7 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.AnimatedRangedAttack;
-import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -15,7 +15,6 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -58,9 +57,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
+        compound.setBoolean("attacking", isAttacking);
     }
 
     @Override
@@ -95,7 +92,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new AnimatedRangedAttack<>(this, 1, 60, 20));
+        this.tasks.addTask(4, new AnimatedRangedAttack<>(this, 1, ((int) EntityStatConfig.getAttackSpeed("shooter")), 20));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
@@ -119,10 +116,13 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("shooter"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("shooter"));
     }
 
     @Override
@@ -164,7 +164,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 2);
+        EntityPellet entityPellet = new EntityPellet(world, this, ((int) EntityStatConfig.getProjectileDamage("shooter")));
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;

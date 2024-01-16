@@ -1,12 +1,11 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.AnimatedAttackGoal;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAITongue;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -112,7 +111,7 @@ public class EntityImmortal extends ModEntity implements IAnimatable, gtfoEntity
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(5, new EntityAITongue<EntityImmortal>(this, 1, false, 11, 30, 20, 20, 25) {
+        this.tasks.addTask(5, new EntityAITongue<EntityImmortal>(this, 1, false, 11, 30, ((int) EntityStatConfig.getAttackSpeed("immortal")), 20, 25) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && getDistanceSq(getAttackTarget()) > 36;
@@ -152,11 +151,13 @@ public class EntityImmortal extends ModEntity implements IAnimatable, gtfoEntity
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("immortal"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("immortal"));
     }
 
     @Override

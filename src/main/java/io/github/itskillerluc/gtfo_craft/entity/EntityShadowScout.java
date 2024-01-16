@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -30,7 +31,7 @@ public class EntityShadowScout extends ModEntity implements IAnimatable {
     private int screamCounter = 0;
     private int screamMaxTime = 55;
     private int counter;
-    private final int counterLimit = 200;
+    private final int counterLimit = ((int) EntityStatConfig.getAttackSpeed("shadow_scout"));
     private final int feelingTime = 240;
     private int feelingCounter = 0;
 
@@ -128,10 +129,13 @@ public class EntityShadowScout extends ModEntity implements IAnimatable {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("shadow_scout"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("shadow_scout"));
     }
 
     @Override

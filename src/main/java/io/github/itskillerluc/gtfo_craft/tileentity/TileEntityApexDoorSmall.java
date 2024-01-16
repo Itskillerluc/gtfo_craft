@@ -1,7 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.tileentity;
 
-import io.github.itskillerluc.gtfo_craft.block.BlockDoorController;
 import io.github.itskillerluc.gtfo_craft.block.BlockApexDoorSmallHelper;
+import io.github.itskillerluc.gtfo_craft.block.BlockDoorController;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;

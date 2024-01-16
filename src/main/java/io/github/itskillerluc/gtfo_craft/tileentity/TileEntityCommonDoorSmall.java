@@ -4,10 +4,7 @@ import io.github.itskillerluc.gtfo_craft.block.BlockCommonDoorSmallController;
 import io.github.itskillerluc.gtfo_craft.block.BlockCommonDoorSmallHelper;
 import io.github.itskillerluc.gtfo_craft.block.BlockDoorController;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
-import io.github.itskillerluc.gtfo_craft.registry.TileEntityRegistry;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -20,8 +17,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
 
 public class TileEntityCommonDoorSmall extends TileEntityDoor implements IAnimatable, ITickable {
     private final AnimationFactory manager = new AnimationFactory(this);

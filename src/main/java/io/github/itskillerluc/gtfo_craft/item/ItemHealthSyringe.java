@@ -2,7 +2,6 @@ package io.github.itskillerluc.gtfo_craft.item;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;

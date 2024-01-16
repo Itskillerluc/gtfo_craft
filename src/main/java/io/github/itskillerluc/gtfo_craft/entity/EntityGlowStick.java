@@ -2,11 +2,9 @@ package io.github.itskillerluc.gtfo_craft.entity;
 
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityFog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;

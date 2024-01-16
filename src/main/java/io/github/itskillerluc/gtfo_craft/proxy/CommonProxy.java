@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 
 public class CommonProxy {
     public void registerItemRenderer(Item item, int meta, String id) {
@@ -27,6 +28,6 @@ public class CommonProxy {
     }
 
     public void registerRenderers(FMLPreInitializationEvent event) {
-        throw new IllegalStateException("THis should only be called from client side");
+        throw new IllegalStateException("This should only be called from client side");
     }
 }

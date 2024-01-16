@@ -1,9 +1,7 @@
 package io.github.itskillerluc.gtfo_craft.client.entity.renderer;
 
 import io.github.itskillerluc.gtfo_craft.client.entity.model.ModelScoutShadow;
-import io.github.itskillerluc.gtfo_craft.client.entity.model.ModelShadowCrouching;
 import io.github.itskillerluc.gtfo_craft.entity.EntityScoutShadow;
-import io.github.itskillerluc.gtfo_craft.entity.EntityShadowCrouching;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;

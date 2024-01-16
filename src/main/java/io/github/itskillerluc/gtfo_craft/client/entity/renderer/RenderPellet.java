@@ -4,10 +4,7 @@ import io.github.itskillerluc.gtfo_craft.client.entity.model.ModelPellet;
 import io.github.itskillerluc.gtfo_craft.entity.EntityPellet;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.Vector4f;
 import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
 
 import javax.vecmath.Vector2d;

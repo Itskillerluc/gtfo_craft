@@ -1,8 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.client.event;
 
-import com.google.common.collect.Lists;
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
-import io.github.itskillerluc.gtfo_craft.client.tile.renderer.RenderTripMine;
 import io.github.itskillerluc.gtfo_craft.data.Scan;
 import io.github.itskillerluc.gtfo_craft.data.ScanWorldSavedData;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
@@ -17,7 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,25 +27,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix;
-import org.lwjgl.util.vector.Matrix2f;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
 import software.bernie.geckolib3.core.util.MathUtil;
-import software.bernie.shadowed.eliotlash.mclib.utils.MathUtils;
-
-import javax.vecmath.Matrix3d;
-import javax.vecmath.Matrix4d;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod.EventBusSubscriber(modid = GtfoCraft.MODID, value = Side.CLIENT)
 public class ForgeEvent {

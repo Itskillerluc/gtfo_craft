@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIAttackRangedStrafe;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityFlyHelper;
 import net.minecraft.block.state.IBlockState;
@@ -31,7 +32,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttackMob, EntityFlying {
     private static final AnimationBuilder FLY = new AnimationBuilder().addAnimation("fly", ILoopType.EDefaultLoopTypes.LOOP);
     private final AnimationFactory factory = new AnimationFactory(this);
-    int reloadTimer = 60;
+    int reloadTimer = ((int) EntityStatConfig.getAttackSpeed("flyer"));
 
     public EntityFlyer(World worldIn) {
         super(worldIn);
@@ -112,7 +113,7 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIAttackRangedStrafe<>(this, 1, 60, 15));
+        this.tasks.addTask(4, new EntityAIAttackRangedStrafe<>(this, 1, ((int) EntityStatConfig.getAttackSpeed("flyer")), 15));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
@@ -132,18 +133,21 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
     @Override
     public void resetActiveHand() {
         super.resetActiveHand();
-        reloadTimer = 60;
+        reloadTimer = ((int) EntityStatConfig.getAttackSpeed("flyer"));
     }
 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4000000059604645D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(EntityStatConfig.getFlyingSpeed("flyer"));
     }
 
     @Override
@@ -166,7 +170,7 @@ public class EntityFlyer extends ModEntity implements IAnimatable, IRangedAttack
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 3);
+        EntityPellet entityPellet = new EntityPellet(world, this, ((int) EntityStatConfig.getProjectileDamage("flyer")));
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;

@@ -6,7 +6,6 @@ import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityDoorHelper.Location;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityPossessedSecurityDoorLarge;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntitySecurityDoorLarge;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

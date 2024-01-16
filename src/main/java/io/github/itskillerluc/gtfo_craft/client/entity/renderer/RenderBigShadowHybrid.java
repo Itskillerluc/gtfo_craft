@@ -1,7 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.client.entity.renderer;
 
 import io.github.itskillerluc.gtfo_craft.client.entity.model.ModelBigShadowHybrid;
-import io.github.itskillerluc.gtfo_craft.entity.EntityBigShadowCharger;
 import io.github.itskillerluc.gtfo_craft.entity.EntityBigShadowHybrid;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;

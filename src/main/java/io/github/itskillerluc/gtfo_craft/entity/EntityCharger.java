@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.AnimatedAttackGoal;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAITongue;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
@@ -96,7 +97,7 @@ public class EntityCharger extends ModEntity implements IAnimatable, gtfoEntity 
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(5, new EntityAITongue<EntityCharger>(this, 1, false, 6, 30, 100, 20, 9) {
+        this.tasks.addTask(5, new EntityAITongue<EntityCharger>(this, 1, false, 6, 30, ((int) EntityStatConfig.getAttackSpeed("charger")), 20, 9) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && getDistanceSq(getAttackTarget()) > 25 && getDistanceSq(getAttackTarget()) < 49;
@@ -131,10 +132,13 @@ public class EntityCharger extends ModEntity implements IAnimatable, gtfoEntity 
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("charger"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("charger"));
     }
 
     @Override

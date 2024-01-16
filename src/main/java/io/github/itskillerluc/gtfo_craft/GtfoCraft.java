@@ -9,9 +9,13 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+
+import java.io.File;
+import java.io.IOException;
 
 @Mod(modid = GtfoCraft.MODID, name = GtfoCraft.NAME, version = GtfoCraft.VERSION, dependencies = "required-after:geckolib3")
 public class GtfoCraft
@@ -48,5 +52,14 @@ public class GtfoCraft
     @Mod.EventHandler
     public void registerRenderers(FMLPreInitializationEvent event) {
         proxy.registerRenderers(event);
+    }
+
+    @EventHandler
+    public void registerConfig(FMLServerStartingEvent event) {
+        try {
+            EntityStatConfig.loadConfig(new File(event.getServer().getWorld(0).getSaveHandler().getWorldDirectory(), "gtfo_config.json"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -8,31 +8,24 @@ import io.github.itskillerluc.gtfo_craft.network.BatteryPacket;
 import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
 import io.github.itskillerluc.gtfo_craft.network.SyncScanPacket;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSenderWrapper;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = GtfoCraft.MODID)

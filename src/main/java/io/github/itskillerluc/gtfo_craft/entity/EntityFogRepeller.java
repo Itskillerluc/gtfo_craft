@@ -3,18 +3,13 @@ package io.github.itskillerluc.gtfo_craft.entity;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.registry.ItemRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityFog;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.LogManager;
 
 public class EntityFogRepeller extends EntityArrow {
     public static final int DIAMETER = 3;

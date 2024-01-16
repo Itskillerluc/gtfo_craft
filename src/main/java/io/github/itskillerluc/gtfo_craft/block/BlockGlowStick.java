@@ -2,7 +2,6 @@ package io.github.itskillerluc.gtfo_craft.block;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityGlowStick;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.ITileEntityProvider;

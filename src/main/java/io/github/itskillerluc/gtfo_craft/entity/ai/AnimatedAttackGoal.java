@@ -1,6 +1,5 @@
 package io.github.itskillerluc.gtfo_craft.entity.ai;
 
-import io.github.itskillerluc.gtfo_craft.entity.EntityBaby;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAttackMelee;

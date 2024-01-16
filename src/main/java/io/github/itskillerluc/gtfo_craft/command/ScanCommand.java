@@ -5,9 +5,7 @@ import io.github.itskillerluc.gtfo_craft.data.ScanWorldSavedData;
 import net.minecraft.command.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import org.apache.commons.lang3.math.NumberUtils;
-import scala.Int;
 
 import javax.annotation.Nullable;
 import java.util.List;

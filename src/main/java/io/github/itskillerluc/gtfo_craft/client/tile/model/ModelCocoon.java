@@ -2,7 +2,6 @@ package io.github.itskillerluc.gtfo_craft.client.tile.model;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityCocoon;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityTurret;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

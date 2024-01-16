@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.AnimatedAttackGoal;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
@@ -99,7 +100,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
         this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst<EntityHybrid>(this, 1, 100, 20, 12, 60) {
+        this.tasks.addTask(4, new EntityAIRangedBurst<EntityHybrid>(this, 1, ((int) EntityStatConfig.getAttackSpeed("hybrid")), 20, 12, 60) {
             @Override
             public boolean shouldExecute() {
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) > 6;
@@ -134,10 +135,13 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("hybrid"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("hybrid"));
     }
 
     @Override
@@ -195,7 +199,7 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 3);
+        EntityPellet entityPellet = new EntityPellet(world, this, ((int) EntityStatConfig.getProjectileDamage("hybrid")));
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;

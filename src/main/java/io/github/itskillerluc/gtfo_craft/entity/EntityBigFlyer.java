@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIRangedBurst;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import net.minecraft.block.state.IBlockState;
@@ -94,9 +95,8 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
+        compound.setBoolean("attacking", isAttacking());
+
     }
 
     @Override
@@ -135,7 +135,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
         this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(4, new EntityAIRangedBurst<>(this, 1, 100, 10, 10, 10));
+        this.tasks.addTask(4, new EntityAIRangedBurst<>(this, 1, (int) EntityStatConfig.getAttackSpeed("big_flyer"), 10, 10, 10));
         this.tasks.addTask(2, new EntityAIWanderAvoidWaterFlying(this, 1.0D));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
@@ -146,11 +146,14 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4700000059604645D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000000298023224D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("big_flyer"));
+        this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(EntityStatConfig.getFlyingSpeed("big_flyer"));
     }
 
     @Override
@@ -179,7 +182,7 @@ public class EntityBigFlyer extends ModEntity implements IAnimatable, IRangedAtt
 
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityPellet entityPellet = new EntityPellet(world, this, 1);
+        EntityPellet entityPellet = new EntityPellet(world, this, (int) EntityStatConfig.getProjectileDamage("big_flyer"));
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityPellet.posY;
         double d2 = target.posZ - this.posZ;

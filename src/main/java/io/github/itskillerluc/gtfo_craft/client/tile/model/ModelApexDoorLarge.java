@@ -2,9 +2,7 @@ package io.github.itskillerluc.gtfo_craft.client.tile.model;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
 import io.github.itskillerluc.gtfo_craft.block.BlockApexDoorLargeController;
-import io.github.itskillerluc.gtfo_craft.block.BlockSecurityDoorLargeController;
 import io.github.itskillerluc.gtfo_craft.tileentity.TileEntityApexDoorLarge;
-import io.github.itskillerluc.gtfo_craft.tileentity.TileEntitySecurityDoorLarge;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

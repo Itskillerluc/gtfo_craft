@@ -1,7 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.client.entity.model;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraft;
-import io.github.itskillerluc.gtfo_craft.entity.EntityChargerScout;
 import io.github.itskillerluc.gtfo_craft.entity.EntityShadowScout;
 import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

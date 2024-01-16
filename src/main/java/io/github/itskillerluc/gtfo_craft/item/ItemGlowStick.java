@@ -1,7 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.item;
 
 import io.github.itskillerluc.gtfo_craft.GtfoCraftCreativeTab;
-import io.github.itskillerluc.gtfo_craft.entity.EntityFogRepeller;
 import io.github.itskillerluc.gtfo_craft.entity.EntityGlowStick;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

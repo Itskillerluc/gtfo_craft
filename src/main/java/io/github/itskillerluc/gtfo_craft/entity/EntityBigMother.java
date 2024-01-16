@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.entity;
 
+import io.github.itskillerluc.gtfo_craft.EntityStatConfig;
 import io.github.itskillerluc.gtfo_craft.entity.ai.gtfoEntity;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -33,7 +34,7 @@ public class EntityBigMother extends ModEntity implements IAnimatable, gtfoEntit
 
     private static final int SUMMON_TIME_START = 400;
     private static final int SUMMON_TIME_FINISH = 600;
-    private static final int SUMMON_COOLDOWN = 15;
+    private static final int SUMMON_COOLDOWN = (int) EntityStatConfig.getAttackSpeed("big_mother");
     private int time = 0;
     private static final int SMOKE_RADIUS = 8;
 
@@ -51,9 +52,7 @@ public class EntityBigMother extends ModEntity implements IAnimatable, gtfoEntit
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
-        if (this.dataManager.get(ATTACKING)) {
-            compound.setBoolean("attacking", true);
-        }
+        compound.setBoolean("attacking", isAttacking());
         compound.setInteger("time", time);
     }
 
@@ -99,9 +98,13 @@ public class EntityBigMother extends ModEntity implements IAnimatable, gtfoEntit
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(100.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(75D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(EntityStatConfig.getMaxHealth("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(EntityStatConfig.getFollowRange("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(EntityStatConfig.getKnockBackResistance("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(EntityStatConfig.getMovementSpeed("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(EntityStatConfig.getAttackDamage("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(EntityStatConfig.getArmor("big_mother"));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).setBaseValue(EntityStatConfig.getArmorToughness("big_mother"));
     }
 
     @Override
