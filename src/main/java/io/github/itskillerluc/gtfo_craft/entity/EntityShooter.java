@@ -95,7 +95,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
         this.tasks.addTask(4, new AnimatedRangedAttack<>(this, 1, ((int) EntityStatConfig.getAttackSpeed("shooter")), 20));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -189,6 +189,11 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (isAttacking) {
             animCounter++;
 
@@ -208,7 +213,7 @@ public class EntityShooter extends ModEntity implements IAnimatable, IRangedAtta
             }
         }
 
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

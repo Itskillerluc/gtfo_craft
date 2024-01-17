@@ -96,7 +96,7 @@ public class EntityScoutShadow extends ModEntity implements IAnimatable, IRanged
         this.tasks.addTask(4, new AnimatedRangedAttack<>(this, 1, ((int) EntityStatConfig.getAttackSpeed("scout_shadow")), 20));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -192,6 +192,11 @@ public class EntityScoutShadow extends ModEntity implements IAnimatable, IRanged
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (isAttacking) {
             animCounter++;
 
@@ -211,7 +216,7 @@ public class EntityScoutShadow extends ModEntity implements IAnimatable, IRanged
             }
         }
 
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

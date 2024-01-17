@@ -114,7 +114,7 @@ public class EntityBigShadowHybrid extends ModEntity implements IAnimatable, gtf
         });
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -200,6 +200,11 @@ public class EntityBigShadowHybrid extends ModEntity implements IAnimatable, gtf
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (isScreaming != 0) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (isScreaming == 1) {
             screamCounter++;
 
@@ -225,13 +230,13 @@ public class EntityBigShadowHybrid extends ModEntity implements IAnimatable, gtf
             }
         }
 
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 1;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 2;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 3;
         }
     }

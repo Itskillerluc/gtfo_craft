@@ -111,7 +111,7 @@ public class EntityBigStriker extends ModEntity implements IAnimatable, gtfoEnti
         });
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -190,6 +190,11 @@ public class EntityBigStriker extends ModEntity implements IAnimatable, gtfoEnti
     public void onUpdate() {
         super.onUpdate();
         if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
+        if (isScreaming) {
             screamCounter++;
 
             if (screamCounter >= screamLength) {
@@ -197,7 +202,7 @@ public class EntityBigStriker extends ModEntity implements IAnimatable, gtfoEnti
                 isScreaming = false;
             }
         }
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

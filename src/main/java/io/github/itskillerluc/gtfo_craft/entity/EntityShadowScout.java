@@ -163,7 +163,11 @@ public class EntityShadowScout extends ModEntity implements IAnimatable {
     @Override
     public void onUpdate() {
         super.onUpdate();
-
+        if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (dataManager.get(FEELING) || isScreaming) {
             freeze();
         } else {

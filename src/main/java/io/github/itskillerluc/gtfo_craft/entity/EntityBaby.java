@@ -90,7 +90,7 @@ public class EntityBaby extends ModEntity implements IAnimatable, gtfoEntity {
         this.tasks.addTask(4, new EntityAITongue<>(this, 1, true, 4, 30, ((int) EntityStatConfig.getAttackSpeed("baby")), 20, 7));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -166,6 +166,13 @@ public class EntityBaby extends ModEntity implements IAnimatable, gtfoEntity {
     @Override
     public void onUpdate() {
         super.onUpdate();
+
+        if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
+
         if (isScreaming) {
             screamCounter++;
 
@@ -175,7 +182,7 @@ public class EntityBaby extends ModEntity implements IAnimatable, gtfoEntity {
             }
         }
 
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

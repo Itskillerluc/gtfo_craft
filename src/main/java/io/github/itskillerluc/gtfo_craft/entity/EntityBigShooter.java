@@ -93,7 +93,7 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
         this.tasks.addTask(4, new EntityAIRangedBurst<>(this, 1, ((int) EntityStatConfig.getAttackSpeed("big_shooter")), 20, 3, 20));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -179,6 +179,11 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
     public void onUpdate() {
         super.onUpdate();
         if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
+        if (isScreaming) {
             screamCounter++;
 
             if (screamCounter >= screamLength) {
@@ -187,7 +192,7 @@ public class EntityBigShooter extends ModEntity implements IAnimatable, IRangedA
             }
         }
 
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

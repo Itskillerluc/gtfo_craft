@@ -87,7 +87,7 @@ public class EntityStrikerCrawling extends ModEntity implements IAnimatable, gtf
         this.tasks.addTask(5, new EntityAITongue<>(this, 1, false, 4, 30, ((int) EntityStatConfig.getAttackSpeed("striker_crawling")), 20, 12));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -162,6 +162,11 @@ public class EntityStrikerCrawling extends ModEntity implements IAnimatable, gtf
     public void onUpdate() {
         super.onUpdate();
         if (isScreaming) {
+            freeze();
+        } else {
+            unfreeze();
+        }
+        if (isScreaming) {
             screamCounter++;
 
             if (screamCounter >= screamLength) {
@@ -169,7 +174,7 @@ public class EntityStrikerCrawling extends ModEntity implements IAnimatable, gtf
                 isScreaming = false;
             }
         }
-        if (rand.nextFloat() < 0.004) {
+        if (rand.nextFloat() < .00012) {
             isScreaming = true;
         }
     }

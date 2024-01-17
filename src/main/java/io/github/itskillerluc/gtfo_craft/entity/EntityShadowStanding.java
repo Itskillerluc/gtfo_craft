@@ -91,7 +91,7 @@ public class EntityShadowStanding extends ModEntity implements IAnimatable, gtfo
         this.tasks.addTask(5, new EntityAITongue<>(this, 1, false, 4, 30, ((int) EntityStatConfig.getAttackSpeed("shadow_standing")), 20, 12));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -173,6 +173,11 @@ public class EntityShadowStanding extends ModEntity implements IAnimatable, gtfo
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (isScreaming != 0) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (isScreaming == 1) {
             screamCounter++;
 
@@ -198,13 +203,13 @@ public class EntityShadowStanding extends ModEntity implements IAnimatable, gtfo
             }
         }
 
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 1;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 2;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 3;
         }
     }

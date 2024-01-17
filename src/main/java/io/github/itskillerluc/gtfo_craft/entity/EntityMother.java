@@ -91,7 +91,7 @@ public class EntityMother extends ModEntity implements IAnimatable, gtfoEntity {
         this.tasks.addTask(6, new EntityAIAvoidEntity<>(this, EntityPlayer.class, entity -> getAttackTarget() != null && getAttackTarget().isEntityEqual(entity), 40, 1.3, 1.5));
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override

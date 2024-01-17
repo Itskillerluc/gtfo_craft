@@ -93,7 +93,7 @@ public class EntityScoutCharger extends ModEntity implements IAnimatable, gtfoEn
         });
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false));
     }
 
     @Override
@@ -172,6 +172,11 @@ public class EntityScoutCharger extends ModEntity implements IAnimatable, gtfoEn
     @Override
     public void onUpdate() {
         super.onUpdate();
+        if (isScreaming != 0) {
+            freeze();
+        } else {
+            unfreeze();
+        }
         if (isScreaming == 1) {
             screamCounter++;
 
@@ -197,13 +202,13 @@ public class EntityScoutCharger extends ModEntity implements IAnimatable, gtfoEn
             }
         }
 
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 1;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 2;
         }
-        if (rand.nextFloat() < 0.0015) {
+        if (rand.nextFloat() < .00004) {
             isScreaming = 3;
         }
     }
