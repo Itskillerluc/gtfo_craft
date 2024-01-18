@@ -111,6 +111,11 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
             public boolean shouldExecute() {
                 return super.shouldExecute() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) <= 6;
             }
+
+            @Override
+            public boolean shouldContinueExecuting() {
+                return super.shouldContinueExecuting() && EntityHybrid.super.getAttackTarget().getDistance(EntityHybrid.this) <= 6;
+            }
         });
 
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));;
@@ -211,7 +216,6 @@ public class EntityHybrid extends ModEntity implements IAnimatable, IRangedAttac
 
     @Override
     public void setSwingingArms(boolean swingingArms) {
-        setAttacking(swingingArms);
         dataManager.set(RANGED_ATTACKING, swingingArms);
     }
 

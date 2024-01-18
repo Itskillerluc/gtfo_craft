@@ -138,21 +138,21 @@ public class EntityStatConfig {
 
         private final String entity;
 
-        private Double maxHealth;
-        private Double followRange;
-        private Double knockBackResistance;
-        private Double movementSpeed;
-        private Double flyingSpeed;
-        private Double attackDamage;
-        private Double attackSpeed;
-        private Double armor;
-        private Double armorToughness;
-        private Double projectileDamage;
+        private final Double maxHealth;
+        private final Double followRange;
+        private final Double knockBackResistance;
+        private final Double movementSpeed;
+        private final Double flyingSpeed;
+        private final Double attackDamage;
+        private final Double attackSpeed;
+        private final Double armor;
+        private final Double armorToughness;
+        private final Double projectileDamage;
     }
 
     static {
         defaultStats.put("baby", new EntityEntry("baby", 6D, 100D, 0D, 0.35D, 0.35D, 2D, 60D, 0D, 0D,0D));
-        defaultStats.put("big_charger", new EntityEntry("big_charger", 25D, 100D, 0D, 0.2D, 0.2D, 5D, 100D, 0D, 0D, 0D));
+        defaultStats.put("big_charger", new EntityEntry("big_charger", 25D, 100D, 0D, 0.4D, 0.4D, 5D, 100D, 0D, 0D, 0D));
         defaultStats.put("big_flyer", new EntityEntry("big_flyer", 30D, 100D, 0D, 0.2D, 0.47D, 2.5D, 100D, 0D, 0D,3D));
         defaultStats.put("big_mother", new EntityEntry("big_mother", 75D, 100D, 0D, 0.3D, 0.3D, 0D, 15D, 0D, 0D, 0D));
         defaultStats.put("big_shadow_charger", new EntityEntry("big_shadow_charger", 30D, 100D, 0D, 0.3D, 0.3D, 6D, 60D, 5D, 0D, 0D));

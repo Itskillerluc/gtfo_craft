@@ -2,6 +2,8 @@ package io.github.itskillerluc.gtfo_craft.entity;
 
 import com.google.common.base.Optional;
 import io.github.itskillerluc.gtfo_craft.entity.ai.EntityAIBlockBreak;
+import io.github.itskillerluc.gtfo_craft.network.PacketHandler;
+import io.github.itskillerluc.gtfo_craft.network.WakeUpPacket;
 import io.github.itskillerluc.gtfo_craft.registry.BlockRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -116,17 +118,18 @@ public abstract class ModEntity extends EntityMob {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        EntityPlayer nearestPlayerNotCreative = world.getNearestPlayerNotCreative(this, 15);
+        EntityPlayer nearestPlayerNotCreative = world.getNearestPlayerNotCreative(this, 7);
         if (dataManager.get(SLEEPING) && nearestPlayerNotCreative != null && !nearestPlayerNotCreative.isSneaking() && !(nearestPlayerNotCreative.motionX == 0 && Math.abs(nearestPlayerNotCreative.motionY) < 0.1 && nearestPlayerNotCreative.motionZ == 0)) {
             if (nearestPlayerNotCreative.isSprinting()) {
                 sleepingCounter = 0;
                 dataManager.set(SLEEPING, false);
+                wakeUp();
             }
             sleepingCounter++;
         } else if (sleepingCounter > 0){
             sleepingCounter--;
         }
-        if (sleepingCounter > 1000) {
+        if (sleepingCounter > 120) {
             dataManager.set(SLEEPING, false);
             sleepingCounter = 0;
             wakeUp();
@@ -150,10 +153,12 @@ public abstract class ModEntity extends EntityMob {
     public abstract AnimationBuilder getSleeping1();
     public abstract AnimationBuilder getSleeping2();
 
-    public void wakeUp() {}
+    public void wakeUp() {
+        PacketHandler.sendToServer(new WakeUpPacket(this.entityUniqueID));
+    }
 
     public AnimationBuilder getSleepingAnimation() {
-        if (sleepingCounter > 500) {
+        if (sleepingCounter > 60) {
             return getSleeping2();
         }
         if (sleepingCounter > 1) {
