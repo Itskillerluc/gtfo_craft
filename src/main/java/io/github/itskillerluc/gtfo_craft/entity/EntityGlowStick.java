@@ -32,6 +32,7 @@ public class EntityGlowStick extends EntityArrow {
 
     @Override
     protected void onHit(RayTraceResult result) {
+        if (!world.isAirBlock(getPosition())) return;
         world.setBlockState(getPosition(), BlockRegistry.GLOW_STICK_BLOCK.getDefaultState());
         this.motionX = result.hitVec.x - this.posX;
         this.motionY = result.hitVec.y - this.posY;

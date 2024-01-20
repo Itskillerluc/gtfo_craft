@@ -1,5 +1,6 @@
 package io.github.itskillerluc.gtfo_craft.network;
 
+import io.github.itskillerluc.gtfo_craft.entity.ModEntity;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -30,7 +31,8 @@ public class WakeUpPacket implements IMessage {
     public static class Handler implements IMessageHandler<WakeUpPacket, IMessage> {
         @Override
         public IMessage onMessage(WakeUpPacket message, MessageContext ctx) {
-            ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(message.uuid);
+            ModEntity entity = (ModEntity) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(message.uuid);
+            entity.getDataManager().set(ModEntity.SLEEPING, false);
             return null;
         }
     }

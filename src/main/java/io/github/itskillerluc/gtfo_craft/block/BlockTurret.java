@@ -15,6 +15,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -149,5 +151,16 @@ public class BlockTurret extends Block implements ITileEntityProvider {
     @Override
     public String getHarvestTool(IBlockState state) {
         return null;
+    }
+
+    @Override
+    public void breakBlock(World p_180663_1_, BlockPos p_180663_2_, IBlockState p_180663_3_) {
+        if (p_180663_1_.getTileEntity(p_180663_2_) instanceof TileEntityTurret) {
+            int ammo = ((TileEntityTurret) p_180663_1_.getTileEntity(p_180663_2_)).ammo;
+            if (ammo > 0) {
+                InventoryHelper.spawnItemStack(p_180663_1_, p_180663_2_.getX(), p_180663_2_.getY(), p_180663_2_.getZ(), new ItemStack(ItemRegistry.AMMO, ammo));
+            }
+        }
+        super.breakBlock(p_180663_1_, p_180663_2_, p_180663_3_);
     }
 }

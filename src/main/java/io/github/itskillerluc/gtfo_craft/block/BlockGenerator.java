@@ -77,10 +77,10 @@ public class BlockGenerator extends BlockHorizontal {
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (state.getValue(POWERED).booleanValue() && worldIn.isUpdateScheduled(pos, this))
-        {
-            this.updateNeighborsInFront(worldIn, pos, state.withProperty(POWERED, Boolean.valueOf(false)));
-        }
+        EnumFacing enumfacing = state.getValue(FACING);
+        BlockPos blockpos = pos.offset(enumfacing.getOpposite());
+        worldIn.neighborChanged(blockpos, this, pos);
+        worldIn.notifyNeighborsOfStateExcept(blockpos, this, enumfacing);
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
@@ -92,11 +92,11 @@ public class BlockGenerator extends BlockHorizontal {
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | state.getValue(FACING).getIndex();
+        i = i | state.getValue(FACING).getHorizontalIndex();
 
         if (state.getValue(POWERED).booleanValue())
         {
-            i |= 6;
+            i |= 4;
         }
 
         return i;

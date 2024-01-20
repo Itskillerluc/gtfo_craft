@@ -27,11 +27,8 @@ public abstract class ModEntity extends EntityMob {
     private static final DataParameter<Boolean> FROZEN =
             EntityDataManager.createKey(ModEntity.class, DataSerializers.BOOLEAN);
 
-    static final DataParameter<Boolean> SLEEPING =
+    public static final DataParameter<Boolean> SLEEPING =
             EntityDataManager.createKey(ModEntity.class, DataSerializers.BOOLEAN);
-
-    static final DataParameter<Optional<BlockPos>> TARGET_POSITION =
-            EntityDataManager.createKey(ModEntity.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
     protected int sleepingCounter = 0;
 
@@ -52,19 +49,6 @@ public abstract class ModEntity extends EntityMob {
         super.entityInit();
         this.dataManager.register(FROZEN, false);
         this.dataManager.register(SLEEPING, false);
-        this.dataManager.register(TARGET_POSITION, Optional.absent());
-    }
-
-    public Optional<BlockPos> getTargetPos() {
-        if (dataManager == null) return Optional.absent();
-        return dataManager.get(TARGET_POSITION);
-    }
-
-    @Override
-    public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
-        super.setAttackTarget(entitylivingbaseIn);
-        if (dataManager == null) return;
-        dataManager.set(TARGET_POSITION, Optional.fromNullable(entitylivingbaseIn).transform(Entity::getPosition));
     }
 
     @Override

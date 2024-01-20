@@ -122,11 +122,11 @@ public class BlockTerminal extends BlockHorizontal {
     public int getMetaFromState(IBlockState state)
     {
         int i = 0;
-        i = i | state.getValue(FACING).getIndex();
+        i = i | state.getValue(FACING).getHorizontalIndex();
 
         if (state.getValue(POWERED).booleanValue())
         {
-            i |= 6;
+            i |= 4;
         }
 
         return i;

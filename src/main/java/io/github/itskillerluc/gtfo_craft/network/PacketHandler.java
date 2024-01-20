@@ -19,7 +19,7 @@ public class PacketHandler {
         HANDLER.registerMessage(SyncScanPacket.Handler.class, SyncScanPacket.class, id++, Side.CLIENT);
         HANDLER.registerMessage(DoorPacket.Handler.class, DoorPacket.class, id++, Side.CLIENT);
         HANDLER.registerMessage(BreakDoorPacket.Handler.class, BreakDoorPacket.class, id++, Side.SERVER);
-        HANDLER.registerMessage(WakeUpPacket.Handler.class, WakeUpPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(WakeUpPacket.Handler.class, WakeUpPacket.class, id++, Side.SERVER);
     }
 
     /**
