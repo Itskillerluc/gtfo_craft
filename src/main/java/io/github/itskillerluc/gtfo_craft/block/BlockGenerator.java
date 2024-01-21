@@ -77,10 +77,11 @@ public class BlockGenerator extends BlockHorizontal {
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
+        worldIn.notifyNeighborsOfStateChange(pos, this, false);
         EnumFacing enumfacing = state.getValue(FACING);
-        BlockPos blockpos = pos.offset(enumfacing.getOpposite());
-        worldIn.neighborChanged(blockpos, this, pos);
-        worldIn.notifyNeighborsOfStateExcept(blockpos, this, enumfacing);
+        worldIn.neighborChanged(pos.offset(enumfacing), this, pos);
+        worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+        super.breakBlock(worldIn, pos, state);
     }
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)

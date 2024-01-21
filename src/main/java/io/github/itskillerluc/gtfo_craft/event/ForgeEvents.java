@@ -52,6 +52,9 @@ public class ForgeEvents {
                 if (!event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.POWERED)) {
                     event.getWorld().setBlockState(event.getPos(), BlockRegistry.GENERATOR.getDefaultState().withProperty(BlockGenerator.POWERED, true).withProperty(BlockGenerator.FACING, event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.FACING)));
                     event.getEntityPlayer().getEntityData().setBoolean("hasBattery", false);
+                    event.getWorld().notifyNeighborsOfStateChange(event.getPos(), event.getWorld().getBlockState(event.getPos()).getBlock(), false);
+                    event.getWorld().neighborChanged(event.getPos().offset(event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.FACING)), event.getWorld().getBlockState(event.getPos()).getBlock(), event.getPos());
+                    event.getWorld().notifyNeighborsOfStateChange(event.getPos().offset(event.getWorld().getBlockState(event.getPos()).getValue(BlockGenerator.FACING)), event.getWorld().getBlockState(event.getPos()).getBlock(), false);
                 }
             } else if (event.getEntityPlayer().isSneaking()) {
                 if (event.getWorld().getBlockState(event.getPos()).getMaterial().isReplaceable()) {
