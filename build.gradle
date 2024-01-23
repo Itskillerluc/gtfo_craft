@@ -16,7 +16,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0'
+version = '1.0.1'
 group = 'io.github.itskillerluc.gtfo_craft' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'GTFO Craft Protocol'
 
@@ -123,6 +123,7 @@ jar {
     }
     manifest {
         attributes([
+                "FMLCorePluginContainsFMLMod":"true",
                 "ForceLoadAsMod": 'true',
                 'TweakOrder': '0',
                         "Specification-Title": "gtfo_craft",
