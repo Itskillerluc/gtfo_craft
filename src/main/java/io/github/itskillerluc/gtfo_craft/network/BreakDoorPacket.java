@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.List;
 
-public class BreakDoorPacket implements IMessage {
+public class BreakDoorPacket implements IMessage,IMessageHandler<BreakDoorPacket, IMessage> {
     public static final List<Block> CONTROLLERS = Lists.newArrayList(BlockRegistry.COMMON_DOOR_SMALL_CONTROLLER, BlockRegistry.COMMON_DOOR_LARGE_CONTROLLER);
     public static final List<Block> HELPERS = Lists.newArrayList(BlockRegistry.COMMON_DOOR_SMALL_HELPER, BlockRegistry.COMMON_DOOR_LARGE_HELPER);
     public BlockPos pos;
@@ -40,23 +40,21 @@ public class BreakDoorPacket implements IMessage {
         ByteBufUtils.writeTag(buf, compound);
     }
 
-    public static class Handler implements IMessageHandler<BreakDoorPacket, IMessage> {
-        @Override
-        public IMessage onMessage(BreakDoorPacket message, MessageContext ctx) {
-            TileEntity entity = ctx.getServerHandler().player.getServerWorld().getTileEntity(message.pos);
-            if (entity instanceof TileEntityCommonDoorLarge) {
-                ((TileEntityCommonDoorLarge) entity).destroy();
-            } else if (entity instanceof TileEntityCommonDoorSmall) {
-                ((TileEntityCommonDoorSmall) entity).destroy();
-            } else if (entity instanceof TileEntityDoorHelper) {
-                TileEntity te = ctx.getServerHandler().player.getServerWorld().getTileEntity(((TileEntityDoorHelper) entity).master);
-                if (te instanceof TileEntityCommonDoorSmall) {
-                    ((TileEntityCommonDoorSmall) te).destroy();
-                } else if (te instanceof TileEntityCommonDoorLarge) {
-                    ((TileEntityCommonDoorLarge) te).destroy();
-                }
+    @Override
+    public IMessage onMessage(BreakDoorPacket message, MessageContext ctx) {
+        TileEntity entity = ctx.getServerHandler().player.getServerWorld().getTileEntity(message.pos);
+        if (entity instanceof TileEntityCommonDoorLarge) {
+            ((TileEntityCommonDoorLarge) entity).destroy();
+        } else if (entity instanceof TileEntityCommonDoorSmall) {
+            ((TileEntityCommonDoorSmall) entity).destroy();
+        } else if (entity instanceof TileEntityDoorHelper) {
+            TileEntity te = ctx.getServerHandler().player.getServerWorld().getTileEntity(((TileEntityDoorHelper) entity).master);
+            if (te instanceof TileEntityCommonDoorSmall) {
+                ((TileEntityCommonDoorSmall) te).destroy();
+            } else if (te instanceof TileEntityCommonDoorLarge) {
+                ((TileEntityCommonDoorLarge) te).destroy();
             }
-            return null;
         }
+        return null;
     }
 }

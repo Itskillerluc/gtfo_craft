@@ -15,11 +15,11 @@ public class PacketHandler {
 
     public static void init() {
         int id = 0;
-        HANDLER.registerMessage(BatteryPacket.Handler.class, BatteryPacket.class, id++, Side.CLIENT);
-        HANDLER.registerMessage(SyncScanPacket.Handler.class, SyncScanPacket.class, id++, Side.CLIENT);
-        HANDLER.registerMessage(DoorPacket.Handler.class, DoorPacket.class, id++, Side.CLIENT);
-        HANDLER.registerMessage(BreakDoorPacket.Handler.class, BreakDoorPacket.class, id++, Side.SERVER);
-        HANDLER.registerMessage(WakeUpPacket.Handler.class, WakeUpPacket.class, id++, Side.SERVER);
+        HANDLER.registerMessage(BatteryPacket.class, BatteryPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(SyncScanPacket.class, SyncScanPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(DoorPacket.class, DoorPacket.class, id++, Side.CLIENT);
+        HANDLER.registerMessage(BreakDoorPacket.class, BreakDoorPacket.class, id++, Side.SERVER);
+        HANDLER.registerMessage(WakeUpPacket.class, WakeUpPacket.class, id++, Side.SERVER);
     }
 
     /**

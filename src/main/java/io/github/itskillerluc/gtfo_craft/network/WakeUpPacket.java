@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.UUID;
 
-public class WakeUpPacket implements IMessage {
+public class WakeUpPacket implements IMessage,IMessageHandler<WakeUpPacket, IMessage> {
     public UUID uuid;
 
     public WakeUpPacket(UUID uuid) {
@@ -28,12 +28,10 @@ public class WakeUpPacket implements IMessage {
         buf.writeLong(uuid.getLeastSignificantBits());
     }
 
-    public static class Handler implements IMessageHandler<WakeUpPacket, IMessage> {
-        @Override
-        public IMessage onMessage(WakeUpPacket message, MessageContext ctx) {
-            ModEntity entity = (ModEntity) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(message.uuid);
-            entity.getDataManager().set(ModEntity.SLEEPING, false);
-            return null;
-        }
+    @Override
+    public IMessage onMessage(WakeUpPacket message, MessageContext ctx) {
+        ModEntity entity = (ModEntity) ctx.getServerHandler().player.getServerWorld().getEntityFromUuid(message.uuid);
+        entity.getDataManager().set(ModEntity.SLEEPING, false);
+        return null;
     }
 }

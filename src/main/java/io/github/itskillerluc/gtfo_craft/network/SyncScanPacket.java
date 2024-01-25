@@ -10,12 +10,14 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SyncScanPacket implements IMessage {
+public class SyncScanPacket implements IMessage,IMessageHandler<SyncScanPacket, IMessage> {
     public List<Scan> scans;
 
     public SyncScanPacket() {}
@@ -43,12 +45,11 @@ public class SyncScanPacket implements IMessage {
         }
     }
 
-    public static class Handler implements IMessageHandler<SyncScanPacket, IMessage> {
-        @Override
-        public IMessage onMessage(SyncScanPacket message, MessageContext ctx) {
-            ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList.clear();
-            ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList.addAll(message.scans);
-            return null;
-        }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IMessage onMessage(SyncScanPacket message, MessageContext ctx) {
+        ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList.clear();
+        ScanWorldSavedData.get(Minecraft.getMinecraft().world).scanList.addAll(message.scans);
+        return null;
     }
 }

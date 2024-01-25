@@ -32,12 +32,6 @@ public class GtfoCraft
     @SidedProxy(clientSide = "io.github.itskillerluc.gtfo_craft.proxy.ClientProxy", serverSide = "io.github.itskillerluc.gtfo_craft.proxy.CommonProxy")
     public static CommonProxy proxy;
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        event.getModMetadata().version = VERSION;
-        PacketHandler.init();
-    }
-
     @EventHandler
     public void init(FMLInitializationEvent event) {
         GeckoLib.initialize();
@@ -50,8 +44,9 @@ public class GtfoCraft
     }
 
     @Mod.EventHandler
-    public void registerRenderers(FMLPreInitializationEvent event) {
-        proxy.registerRenderers(event);
+    public void preInit(FMLPreInitializationEvent event) {
+        event.getModMetadata().version = VERSION;
+        proxy.preInit(event);
     }
 
     @EventHandler

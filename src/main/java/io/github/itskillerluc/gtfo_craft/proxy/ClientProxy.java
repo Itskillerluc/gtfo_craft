@@ -38,7 +38,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void registerRenderers(FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(EntityStrikerStanding.class, RenderStrikerStanding::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityStrikerCrawling.class, RenderStrikerCrawling::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityStrikerCrouching.class, RenderStrikerCrouching::new);
@@ -83,5 +83,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorLarge.class, new RenderBulkheadDoorLarge());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBulkheadDoorSmall.class, new RenderBulkheadDoorSmall());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCocoon.class, new RenderCocoon());
+
+        super.preInit(event);
     }
 }
